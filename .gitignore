@@ -4,3 +4,7 @@
 *.jar
 *.war
 *.ear
+.idea
+build
+uptodate-gradle-plugin.iml
+.gradle
