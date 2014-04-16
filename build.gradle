@@ -1,4 +1,9 @@
 apply plugin: 'groovy'
+apply plugin: 'maven'
+
+group = 'com.ofg'
+version = '0.0.1'
+description = 'Core of UpToDate plugin'
 
 dependencies {
 }
@@ -10,13 +15,13 @@ repositories {
 
 dependencies {
     compile gradleApi()
+    compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.6'
     testCompile 'junit:junit:4.11'
     testCompile 'org.spockframework:spock-core:0.7-groovy-1.8'
     testCompile 'com.github.dreamhead:moco-core:0.9.1'
     testRuntime 'cglib:cglib-nodep:2.2.2'
     testRuntime 'org.objenesis:objenesis:1.2'
 }
-
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.11'

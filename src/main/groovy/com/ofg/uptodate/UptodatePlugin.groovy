@@ -4,15 +4,18 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 
+import javax.inject.Inject
+
 class UptodatePlugin implements Plugin<Project> {
     static final String TASK_NAME = 'uptodate'
     static final String NEW_VERSIONS_MESSAGE_HEAD = 'New versions available in maven central:\n'
     private final LoggerProxy loggerProxy
-
+   
     UptodatePlugin() {
         loggerProxy = new LoggerProxy()
     }
-
+    
+    @Inject
     UptodatePlugin(LoggerProxy loggerProxy) {
         this.loggerProxy = loggerProxy
     }

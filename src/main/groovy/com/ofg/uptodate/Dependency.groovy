@@ -1,6 +1,8 @@
 package com.ofg.uptodate
 
-@groovy.transform.PackageScope
+import groovy.transform.PackageScope 
+
+@PackageScope
 class Dependency {
     private final String configuration
     private final String group
