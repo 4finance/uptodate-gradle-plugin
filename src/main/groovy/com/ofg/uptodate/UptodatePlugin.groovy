@@ -10,12 +10,12 @@ class UptodatePlugin implements Plugin<Project> {
     static final String TASK_NAME = 'uptodate'
     static final String NEW_VERSIONS_MESSAGE_HEAD = 'New versions available in maven central:\n'
     private final LoggerProxy loggerProxy
-   
+
+    @Inject
     UptodatePlugin() {
         loggerProxy = new LoggerProxy()
-    }
+    }    
     
-    @Inject
     UptodatePlugin(LoggerProxy loggerProxy) {
         this.loggerProxy = loggerProxy
     }
@@ -34,9 +34,8 @@ class UptodatePlugin implements Plugin<Project> {
 
     private List<Dependency> getDependencies(Project project) {
         return project.configurations.collectNested { conf ->
-            conf.allDependencies.collect { dep ->
-                new Dependency(conf.name, dep.group, dep.name, dep.version)
-        }}.flatten()
+            conf.allDependencies.collect { dep -> new Dependency(dep.group, dep.name, dep.version) }
+        }.flatten()
     }
 
 

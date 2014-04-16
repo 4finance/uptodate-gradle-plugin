@@ -1,16 +1,16 @@
 package com.ofg.uptodate
 
-import groovy.transform.PackageScope 
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.PackageScope
 
 @PackageScope
+@EqualsAndHashCode
 class Dependency {
-    private final String configuration
     private final String group
     private final String name
     private final String version
 
-    Dependency(String configuration, String group, String name, String version) {
-        this.configuration = configuration
+    Dependency(String group, String name, String version) {
         this.group = group
         this.name = name
         this.version = version
@@ -19,13 +19,12 @@ class Dependency {
     Dependency(Dependency dependency, String version) {
         name = dependency.name
         group = dependency.group
-        configuration = dependency.configuration
         this.version = version
     }
 
     @Override
     public String toString() {
-        return "$configuration '$group:$name:$version'"
+        return "'$group:$name:$version'"
     }
 
     String getConfiguration() {
