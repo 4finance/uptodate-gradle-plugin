@@ -36,7 +36,7 @@ class Jsons {
                                                 "suggestions": []
                                             }}
                                             """
-    static final String MOCKITO_RESPONSE = """
+    static final String HIBERNATE_RESPONSE = """
                                             {"responseHeader": {
                                                 "status": 0,
                                                 "QTime": 0,
@@ -45,10 +45,9 @@ class Jsons {
                                                     "fl": "id,g,a,latestVersion,p,ec,repositoryId,text,timestamp,versionCount",
                                                     "sort": "score desc,timestamp desc,g asc,a asc",
                                                     "indent": "off",
-                                                    "q": "id:\\"org.mockito:mockito-core\\"",
+                                                    "q": "id:\\"org.hibernate:hibernate-core\\"",
                                                     "spellcheck.count": "5",
                                                     "wt": "json",
-                                                    "rows": "20",
                                                     "version": "2.2"
                                                 }
                                             }, "response": {
@@ -56,16 +55,16 @@ class Jsons {
                                                 "start": 0,
                                                 "docs": [
                                                     {
-                                                        "id": "org.mockito:mockito-core",
-                                                        "g": "org.mockito",
-                                                        "a": "mockito-core",
-                                                        "latestVersion": "1.9.5",
+                                                        "id": "org.hibernate:hibernate-core",
+                                                        "g": "org.hibernate",
+                                                        "a": "hibernate-core",
+                                                        "latestVersion": "4.3.5.Final",
                                                         "repositoryId": "central",
                                                         "p": "jar",
-                                                        "timestamp": 1350209209000,
-                                                        "versionCount": 17,
-                                                        "text": ["org.mockito", "mockito-core", "-sources.jar", "-javadoc.jar", ".jar", ".pom"],
-                                                        "ec": ["-sources.jar", "-javadoc.jar", ".jar", ".pom"]
+                                                        "timestamp": 1396450371000,
+                                                        "versionCount": 98,
+                                                        "text": ["org.hibernate","hibernate-core","-sources.jar",".jar",".pom"],
+                                                        "ec": ["-sources.jar", ".jar", ".pom"]
                                                     }
                                                 ]
                                             }, "spellcheck": {

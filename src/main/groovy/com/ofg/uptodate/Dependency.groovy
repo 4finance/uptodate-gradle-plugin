@@ -4,7 +4,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.PackageScope
 
 @PackageScope
-@EqualsAndHashCode
+@EqualsAndHashCode(includeFields = true)
 class Dependency {
     private final String group
     private final String name

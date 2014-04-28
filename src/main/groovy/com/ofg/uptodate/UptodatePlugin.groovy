@@ -14,8 +14,8 @@ class UptodatePlugin implements Plugin<Project> {
     @Inject
     UptodatePlugin() {
         loggerProxy = new LoggerProxy()
-    }    
-    
+    }
+
     UptodatePlugin(LoggerProxy loggerProxy) {
         this.loggerProxy = loggerProxy
     }
@@ -35,8 +35,6 @@ class UptodatePlugin implements Plugin<Project> {
     private List<Dependency> getDependencies(Project project) {
         return project.configurations.collectNested { conf ->
             conf.allDependencies.collect { dep -> new Dependency(dep.group, dep.name, dep.version) }
-        }.flatten()
+        }.flatten().unique()
     }
-
-
 }
