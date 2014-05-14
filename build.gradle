@@ -1,12 +1,18 @@
+buildscript {
+    repositories {
+        maven { url 'http://jcenter.bintray.com' }
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
+    }
+}
+
+apply plugin: 'bintray'
 apply plugin: 'groovy'
 apply plugin: 'maven'
 
 group = 'com.ofg'
-version = '0.0.1'
 description = 'Core of UpToDate plugin'
-
-dependencies {
-}
 
 repositories {
     mavenLocal()
@@ -16,6 +22,7 @@ repositories {
 dependencies {
     compile gradleApi()
     compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.6'
+    
     testCompile 'junit:junit:4.11'
     testCompile 'org.spockframework:spock-core:0.7-groovy-1.8'
     testCompile 'com.github.dreamhead:moco-core:0.9.1'
@@ -25,4 +32,18 @@ dependencies {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.11'
+}
+
+bintray {
+    user = System.properties['bintrayUser']
+    key = System.properties['bintrayKey']
+    pkg {
+        repo = 'uptodate-gradle-plugin'
+        userOrg = '4finance' 
+        name = 'uptodate-gradle-plugin'
+        desc = 'Gradle plugin that tells you what libs have new versions on Maven Central'
+        licenses = ['Apache-2.0']
+        labels = ['gradle']
+    }
+    dryRun = 'dry' 
 }
