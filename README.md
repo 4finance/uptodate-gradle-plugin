@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/4finance/uptodate-gradle-plugin.svg?branch=master)](https://travis-ci.org/4finance/uptodate-gradle-plugin)
+
 uptodate-gradle-plugin
 ======================
 
