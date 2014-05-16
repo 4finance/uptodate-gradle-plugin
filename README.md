@@ -40,7 +40,7 @@ buildscript {
 apply plugin: 'uptodate'
 ```
 
-And not you can run the plugin with
+And now you can run the plugin with
 ```
 gradle uptodate
 ```
