@@ -2,15 +2,28 @@
 uptodate-gradle-plugin
 ======================
 
-Gradle plugin that tells you what libs have new versions on Maven Central
+Gradle plugin that tells you what libs have new versions on Maven Central, so when you come back to a project, you know what you can update.
 
-### Current build status
+### How it works?
 
-[![Build Status](https://travis-ci.org/4finance/uptodate-gradle-plugin.svg?branch=master)](https://travis-ci.org/4finance/uptodate-gradle-plugin)
+You run the plugin:
 
-version 0.0.1 (2014/05/14)
+```
+gradle uptodate
+```
 
-### Add dependency to jcenter and to the plugin
+And you get for example this:
+
+```
+New versions available in maven central:
+'com.fasterxml.jackson.core:jackson-databind:2.4.0-rc3'
+'org.jacoco:org.jacoco.agent:0.7.1.201405082137'
+:build
+```
+
+### How to install it?
+
+#### Step 1: Add dependency to jcenter and to the plugin
 ```
 buildscript {
     repositories {	
@@ -22,36 +35,21 @@ buildscript {
 }
 ```
 
-### Running the plugin
+#### Step 2: Add the plugin to your build (gradle.build)
+```
+apply plugin: 'uptodate'
+```
+
+And not you can run the plugin with
 ```
 gradle uptodate
 ```
 
-Example of output:
-```
-:clean
-:addHashFile
-:compileJava
-:compileGroovy
-:processResources
-:classes
-:jar
-:bootRepackage
-:assemble
-:compileTestJava
-:compileTestGroovy
-:processTestResources
-:testClasses
-:test
-:check
-:uptodate
-New versions available in maven central:
-'com.fasterxml.jackson.core:jackson-databind:2.4.0-rc3'
-'org.jacoco:org.jacoco.agent:0.7.1.201405082137'
-:build
-```
+### How to add private maven repos?
 
-### Configuring plugin in build.gradle
+If you have your own maven repo (most companies do), that just add it to plugin configuration and it will verify newer versions there as well.
+
+So in your build.gradle, add:
 
 ```
 uptodate {
@@ -59,7 +57,19 @@ uptodate {
 }
 ```
 
-### Attaching uptodate plugin to your build
+### How to run the plugin on every build?
+
+You can run the plugin automatically on every build, just by adding to your build.gradle
+
 ```
 build.dependsOn 'uptodate'
 ```
+
+But be warned, this will slow down the build by a few seconds (required to hit maven remote repo with http), so it is not suggested unless you don't care about build time.
+
+
+### Current build status
+
+[![Build Status](https://travis-ci.org/4finance/uptodate-gradle-plugin.svg?branch=master)](https://travis-ci.org/4finance/uptodate-gradle-plugin)
+
+version 0.0.1 (2014/05/14)
