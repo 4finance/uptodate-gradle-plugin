@@ -5,6 +5,7 @@ import com.github.dreamhead.moco.ResponseHandler
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Specification
+import com.github.dreamhead.moco.Runnable as MocoRunnable
 
 import static com.github.dreamhead.moco.Moco.*
 import static com.github.dreamhead.moco.Runner.running
@@ -35,12 +36,7 @@ class UptodatePluginSpec extends Specification {
             project.dependencies.add(COMPILE_CONFIGURATION, 'org.hibernate:hibernate-core:4.2.9.Final')
             project.dependencies.add(TEST_COMPILE_CONFIGURATION, 'junit:junit:4.11')
         when:
-            running(server, new com.github.dreamhead.moco.Runnable() {
-                @Override
-                void run() throws Exception {
-                    project.tasks.getByName(TASK_NAME).execute()
-                }
-            })
+            running(server, { project.tasks.getByName(TASK_NAME).execute() } as MocoRunnable)
         then:
             1 * loggerProxy.warn(_, {
                 it == "New versions available in maven central:\n" +
@@ -54,12 +50,7 @@ class UptodatePluginSpec extends Specification {
         and:
             project.dependencies.add(COMPILE_CONFIGURATION, 'net.gvmtool:gvm-sdk:0.5.5')
         when:
-            running(server, new com.github.dreamhead.moco.Runnable() {
-                @Override
-                void run() throws Exception {
-                    project.tasks.getByName(TASK_NAME).execute()
-                }
-            })
+            running(server, { project.tasks.getByName(TASK_NAME).execute() } as MocoRunnable)
         then:
             0 * loggerProxy.warn(_, _)
     }
@@ -70,12 +61,7 @@ class UptodatePluginSpec extends Specification {
         and:
             project.dependencies.add(TEST_COMPILE_CONFIGURATION, 'junit:junit:4.11')
         when:
-            running(server, new com.github.dreamhead.moco.Runnable() {
-                @Override
-                void run() throws Exception {
-                    project.tasks.getByName(TASK_NAME).execute()
-                }
-            })
+            running(server, { project.tasks.getByName(TASK_NAME).execute() } as MocoRunnable)
         then:
             0 * loggerProxy.warn(_, _)
             1 * loggerProxy.info(_, {
