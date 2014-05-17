@@ -60,10 +60,26 @@ class UptodatePluginSpec extends Specification {
                     project.tasks.getByName(TASK_NAME).execute()
                 }
             })
-
         then:
-            1 * loggerProxy.warn(_, {
-                it == "New versions available in maven central:\n"
+            0 * loggerProxy.warn(_, _)
+    }
+
+    def "should not display header on warn but only message on info when no new dependencies are found"() {
+        given:
+            server.request(eq(query('q'),'id:"junit:junit"')).response(jsonContentType(), with(text(Jsons.JUNIT_RESPONSE)))
+        and:
+            project.dependencies.add(TEST_COMPILE_CONFIGURATION, 'junit:junit:4.11')
+        when:
+            running(server, new com.github.dreamhead.moco.Runnable() {
+                @Override
+                void run() throws Exception {
+                    project.tasks.getByName(TASK_NAME).execute()
+                }
+            })
+        then:
+            0 * loggerProxy.warn(_, _)
+            1 * loggerProxy.info(_, {
+                it == "No new versions are available in maven central."
             })
     }
 
