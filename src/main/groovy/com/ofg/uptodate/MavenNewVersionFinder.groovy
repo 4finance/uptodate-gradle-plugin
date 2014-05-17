@@ -27,10 +27,10 @@ class MavenNewVersionFinder implements NewVersionFinder {
 
     public static final Closure<Future> getLatestFromMavenCentralRepo = {HTTPBuilder httpBuilder, Dependency dependency ->
         httpBuilder.get(query: [q: "id:\"$dependency.group:$dependency.name\"", wt: "json"]) { resp, json ->
-            [dependency, new Dependency(dependency, json.response.docs.first().latestVersion)]
+            [dependency, new Dependency(dependency, json.response.docs[0]?.latestVersion)]
         }
     }
     public static final Closure<Boolean> getOnlyNewer = { List<Dependency> dependenciesToCompare ->
-        dependenciesToCompare[0].version != dependenciesToCompare[1].version
+        dependenciesToCompare[0].version != dependenciesToCompare[1].version && dependenciesToCompare[1].version != null
     }
 }

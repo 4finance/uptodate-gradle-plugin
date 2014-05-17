@@ -71,4 +71,45 @@ class Jsons {
                                                 "suggestions": []
                                             }}
                                             """
+
+    static final String NOT_FOUND_GVM_RESPONSE = """
+                                        {
+                                            "responseHeader": {
+                                                "status": 0,
+                                                "QTime": 1,
+                                                "params": {
+                                                    "spellcheck": "true",
+                                                    "fl": "id,g,a,latestVersion,p,ec,repositoryId,text,timestamp,versionCount",
+                                                    "sort": "score desc,timestamp desc,g asc,a asc",
+                                                    "indent": "off",
+                                                    "q": "id:\\"net.gvmtool:gvm-sdk\\"",
+                                                    "spellcheck.count": "5",
+                                                    "wt": "json",
+                                                    "version": "2.2"
+                                                }
+                                            },
+                                            "response": {
+                                                "numFound": 0,
+                                                "start": 0,
+                                                "docs": [ ]
+                                            },
+                                            "spellcheck": {
+                                                "suggestions": [
+                                                    "gvm",
+                                                    {
+                                                        "numFound": 5,
+                                                        "startOffset": 16,
+                                                        "endOffset": 23,
+                                                        "suggestion": [
+                                                            "jvm",
+                                                            "gem",
+                                                            "gsm",
+                                                            "gcm",
+                                                            "gvt"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                        """
 }
