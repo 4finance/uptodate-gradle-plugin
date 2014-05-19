@@ -9,6 +9,7 @@ import javax.inject.Inject
 class UptodatePlugin implements Plugin<Project> {
     static final String TASK_NAME = 'uptodate'
     static final String NEW_VERSIONS_MESSAGE_HEAD = 'New versions available in maven central:\n'
+    static final String NO_NEW_VERSIONS_MESSAGE = 'No new versions are available in maven central.'
     private final LoggerProxy loggerProxy
 
     @Inject
@@ -22,13 +23,17 @@ class UptodatePlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        project.extensions.create("uptodate", UptodatePluginConfiguration)
+        project.extensions.create(TASK_NAME, UptodatePluginConfiguration)
 
         project.task(TASK_NAME) << { Task task ->
             NewVersionFinder newVersionFinder = new MavenNewVersionFinder(project.extensions.uptodate.mavenRepo)
             List<Dependency> dependencies = getDependencies(project)
             List<Dependency> dependenciesWithNewVersions = newVersionFinder.findNewer(dependencies)
-            loggerProxy.warn(task.getLogger(), NEW_VERSIONS_MESSAGE_HEAD + dependenciesWithNewVersions.join('\n'))
+            if (dependenciesWithNewVersions.isEmpty()) {
+                loggerProxy.info(task.getLogger(), NO_NEW_VERSIONS_MESSAGE)
+            } else {
+                loggerProxy.warn(task.getLogger(), NEW_VERSIONS_MESSAGE_HEAD + dependenciesWithNewVersions.join('\n'))
+            }
         }
     }
 
