@@ -13,10 +13,11 @@ apply plugin: 'bintray'
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'uptodate'
+apply plugin: 'maven-publish'
 
 group = 'com.ofg'
 description = 'Core of UpToDate plugin'
-version = '0.0.2'
+version = '0.0.3-SNAPSHOT'
 
 repositories {
     mavenLocal()
@@ -38,9 +39,28 @@ task wrapper(type: Wrapper) {
     gradleVersion = '1.11'
 }
 
+bintrayUpload.dependsOn 'build'
+
+publishing {
+    publications {
+        plugin(MavenPublication) {
+            from components.java
+
+            artifact sourcesJar {
+                classifier "sources"
+            }
+
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+        }
+    }
+}
+
 bintray {
     user = System.properties['bintrayUser']
     key = System.properties['bintrayKey']
+    publications = ['plugin']
     pkg {
         repo = 'uptodate-gradle-plugin'
         userOrg = '4finance' 

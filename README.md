@@ -53,7 +53,7 @@ So in your build.gradle, add:
 
 ```
 uptodate {
-    mavenRepo = "address to your custom repo (defaults to maven central repo)"
+    mavenRepo = "address to your custom repo solrsearch (defaults to maven central repo solrsearch)"
 }
 ```
 
@@ -72,4 +72,7 @@ But be warned, this will slow down the build by a few seconds (required to hit m
 
 [![Build Status](https://travis-ci.org/4finance/uptodate-gradle-plugin.svg?branch=master)](https://travis-ci.org/4finance/uptodate-gradle-plugin)
 
-version 0.0.1 (2014/05/14)
+
+### Changelog
+
+To see what has changed in recent versions of Uptodate plugin see the [CHANGELOG](CHANGELOG.md) 
