@@ -1,18 +1,16 @@
 buildscript {
     repositories {
         mavenLocal()
-        maven { url 'http://jcenter.bintray.com' }
+        jcenter()
     }
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
-        classpath 'com.ofg:uptodate-gradle-plugin:0.0.1'
     }
 }
 
 apply plugin: 'bintray'
 apply plugin: 'groovy'
 apply plugin: 'maven'
-apply plugin: 'uptodate'
 apply plugin: 'maven-publish'
 
 group = 'com.ofg'
@@ -22,11 +20,12 @@ version = '0.0.3-SNAPSHOT'
 repositories {
     mavenLocal()
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     compile gradleApi()
-    compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.6'
+    compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
 
     testCompile 'junit:junit:4.11'
     testCompile 'org.spockframework:spock-core:0.7-groovy-1.8'
@@ -36,7 +35,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.11'
+    gradleVersion = '1.12'
 }
 
 bintrayUpload.dependsOn 'build'
