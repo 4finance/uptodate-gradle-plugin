@@ -45,6 +45,24 @@ And now you can run the plugin with
 gradle uptodate
 ```
 
+### How to configure which configurations should be checked for updates?
+
+By default all project configurations are checked for updates but you can exclude any of them.
+```
+uptodate {
+    excludeConfigurations 'providedCompile', 'providedRuntime'
+}
+```
+
+If you want to check only specific configurations it's also possible, simply include those configurations.
+```
+uptodate {
+    includeConfigurations 'compile'
+}
+```
+
+Please note that excludes take precedence over includes.
+
 ### How to add private maven repos?
 
 If you have your own maven repo (most companies do), that just add it to plugin configuration and it will verify newer versions there as well.
