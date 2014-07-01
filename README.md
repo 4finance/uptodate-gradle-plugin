@@ -15,10 +15,10 @@ gradle uptodate
 And you get for example this:
 
 ```
-New versions available in maven central:
-'com.fasterxml.jackson.core:jackson-databind:2.4.0-rc3'
-'org.jacoco:org.jacoco.agent:0.7.1.201405082137'
-:build
+New versions available in Maven Central:
+'com.google.guava:guava:17.0'
+'org.hibernate:hibernate-entitymanager:4.3.5.Final'
+'org.hibernate:hibernate-core:4.3.5.Final'
 ```
 
 ### How to install it?
