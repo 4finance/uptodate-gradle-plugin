@@ -27,10 +27,10 @@ New versions available in maven central:
 ```
 buildscript {
     repositories {	
-	      jcenter()
+        jcenter()
     }
     dependencies {
-        classpath("com.ofg:uptodate-gradle-plugin:0.0.2")
+        classpath('com.ofg:uptodate-gradle-plugin:0.0.3')
     }
 }
 ```
