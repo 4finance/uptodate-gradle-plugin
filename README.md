@@ -63,7 +63,26 @@ uptodate {
 
 Please note that excludes take precedence over includes.
 
-### How to add private maven repos?
+You can also provide patterns of versions that you would like to exclude (below you can see the default configuration)
+
+```
+uptodate {
+    versionToExcludePatterns = ['.*-beta.*', '.*-rc.*', 'RC[0-9]+']
+}
+
+```
+
+### How to provide connection timeout
+
+To provide connection timeout you just have to pass the connectionTimeout parameter as follows (below you can see the default value in ms)
+
+```
+uptodate {
+    connectionTimeout = 5000
+}
+```
+
+### How to add private solrsearch based repos?
 
 If you have your own maven repo (most companies do), that just add it to plugin configuration and it will verify newer versions there as well.
 

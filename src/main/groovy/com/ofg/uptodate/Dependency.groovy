@@ -8,15 +8,15 @@ import groovy.transform.PackageScope
 class Dependency {
     final String group
     final String name
-    final String version
+    final DependencyVersion version
 
     Dependency(String group, String name, String version) {
         this.group = group
         this.name = name
-        this.version = version
+        this.version = new DependencyVersion(version)
     }
 
-    Dependency(Dependency dependency, String version) {
+    Dependency(Dependency dependency, DependencyVersion version) {
         name = dependency.name
         group = dependency.group
         this.version = version
