@@ -67,7 +67,7 @@ You can also provide patterns of versions that you would like to exclude (below 
 
 ```
 uptodate {
-    versionToExcludePatterns = ['.*-beta.*', '.*-rc.*', 'RC[0-9]+']
+    versionToExcludePatterns '.*-beta.*', '.*-rc.*', '^.*RC[0-9]+'
 }
 
 ```
@@ -78,7 +78,7 @@ To provide connection timeout you just have to pass the connectionTimeout parame
 
 ```
 uptodate {
-    connectionTimeout = 5000
+    connectionTimeout 5000
 }
 ```
 

@@ -4,7 +4,7 @@ class UptodatePluginExtension {
     String mavenRepo = MavenNewVersionFinder.MAVEN_CENTRAL_REPO_URL
     final IncludedExcludedConfigurationsHolder configurations = new IncludedExcludedConfigurationsHolder()
     int connectionTimeout = 5000
-    List<String> versionToExcludePatterns = ['.*-beta.*', '.*-rc.*', 'RC[0-9]+']
+    List<String> versionToExcludePatterns = ['.*-beta.*', '.*-rc.*', '^.*RC[0-9]+']
 
     void connectionTimeout(int connectionTimeout) {
         this.connectionTimeout = connectionTimeout
