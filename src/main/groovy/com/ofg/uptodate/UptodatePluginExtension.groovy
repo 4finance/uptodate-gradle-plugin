@@ -3,6 +3,7 @@ package com.ofg.uptodate
 class UptodatePluginExtension {
     String mavenRepo = MavenNewVersionFinder.MAVEN_CENTRAL_REPO_URL
     final IncludedExcludedConfigurationsHolder configurations = new IncludedExcludedConfigurationsHolder()
+    int connectionTimeout = 5000
 
     void includeConfigurations(String... configurations) {
         this.configurations.included.addAll(configurations)

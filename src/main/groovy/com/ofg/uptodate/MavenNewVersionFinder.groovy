@@ -9,9 +9,11 @@ class MavenNewVersionFinder implements NewVersionFinder {
 
     static final String MAVEN_CENTRAL_REPO_URL = "http://search.maven.org/solrsearch/select"
     private final String mavenUrl
+    private final int connectionTimeout
 
-    MavenNewVersionFinder(String mavenUrl) {
-        this.mavenUrl = mavenUrl
+    MavenNewVersionFinder(UptodatePluginExtension uptodatePluginExtension) {
+        this.mavenUrl = uptodatePluginExtension.mavenRepo
+        this.connectionTimeout = uptodatePluginExtension.connectionTimeout
     }
 
     @Override
@@ -20,7 +22,7 @@ class MavenNewVersionFinder implements NewVersionFinder {
     }
 
     private List<Dependency> findNewerInMavenCentralRepo(List<Dependency> dependencies) {
-        HTTPBuilder httpBuilder = new AsyncHTTPBuilder(poolSize: dependencies.size(), uri: mavenUrl)
+        HTTPBuilder httpBuilder = new AsyncHTTPBuilder(timeout: connectionTimeout, poolSize: dependencies.size(), uri: mavenUrl)
         Closure latestFromMavenGetter = getLatestFromMavenCentralRepo.curry(httpBuilder)
         return dependencies.collect(latestFromMavenGetter).collect{it.get()}.grep(getOnlyNewer).collect {it[1]}
     }

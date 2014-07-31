@@ -25,9 +25,8 @@ class UptodatePlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.extensions.create(TASK_NAME, UptodatePluginExtension)
-
         project.task(TASK_NAME) << { Task task ->
-            NewVersionFinder newVersionFinder = new MavenNewVersionFinder(project.extensions.uptodate.mavenRepo)
+            NewVersionFinder newVersionFinder = new MavenNewVersionFinder(project.extensions.uptodate)
             List<Dependency> dependencies = getDependencies(project)
             List<Dependency> dependenciesWithNewVersions = newVersionFinder.findNewer(dependencies)
             if (dependenciesWithNewVersions.isEmpty()) {

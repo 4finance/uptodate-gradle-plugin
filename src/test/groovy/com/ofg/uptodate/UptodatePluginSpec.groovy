@@ -1,31 +1,38 @@
 package com.ofg.uptodate
 
-import com.github.dreamhead.moco.HttpServer
-import com.github.dreamhead.moco.Setting
+import com.ofg.uptodate.http.WireMockSpec
+import org.codehaus.groovy.runtime.StackTraceUtils
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
-import spock.lang.Specification
-import com.github.dreamhead.moco.Runnable as MocoRunnable
 
-import static com.github.dreamhead.moco.Moco.*
-import static com.github.dreamhead.moco.Runner.running
+import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static com.ofg.uptodate.UptodatePlugin.getTASK_NAME
+import static java.net.URLEncoder.encode
 
-class UptodatePluginSpec extends Specification {
+class UptodatePluginSpec extends WireMockSpec {
     static final String COMPILE_CONFIGURATION = 'compile'
     static final String TEST_COMPILE_CONFIGURATION = 'testCompile'
     static final int MOCK_HTTP_SERVER_PORT = 12306
 
+    static final String ROOT_PATH = "/"
+    static final String QUERY_PARAM = "?q="
+    static final String URL_ENCODING = 'UTF-8'
+    static final String JSON_URL_SUFFIX = "&wt=json"
+
     Project project = ProjectBuilder.builder().build()
     LoggerProxy loggerProxy = Mock()
     UptodatePlugin plugin = new UptodatePlugin(loggerProxy)
-    HttpServer server = httpserver(MOCK_HTTP_SERVER_PORT)
 
     def setup() {
         def compileConfiguration = project.configurations.create(COMPILE_CONFIGURATION)
         project.configurations.create(TEST_COMPILE_CONFIGURATION) {extendsFrom compileConfiguration}
         plugin.apply(project)
-        project.extensions.uptodate.mavenRepo = "http://localhost:${MOCK_HTTP_SERVER_PORT}"
+        project.extensions.uptodate.mavenRepo = "http://localhost:${MOCK_HTTP_SERVER_PORT}/"
+    }
+
+    @Override
+    protected Integer getHttpServerPort() {
+        return MOCK_HTTP_SERVER_PORT
     }
 
     def "should list all dependencies, that have newer versions in Maven Central"() {
@@ -81,11 +88,28 @@ class UptodatePluginSpec extends Specification {
                 "'junit:junit:4.11'")
     }
 
-    private Setting artifactMetadataRequestResponse(String artifact, String response) {
-        server.request(eq(query('q'),"id:\"$artifact\"")).response(header("content-type", "application/json"), with(text(response)))
+    def 'should fail to find any updates due to timeout'() {
+        given:
+            stubResponseWithADelayOf(500)
+            project.dependencies.add(TEST_COMPILE_CONFIGURATION, 'junit:junit:4.8')
+        and:
+            project.extensions.uptodate.connectionTimeout = 100
+        when:
+            executeUptodateTask()
+        then:
+            Throwable thrownException = thrown()
+            StackTraceUtils.extractRootCause(thrownException).class == SocketTimeoutException
+    }
+
+    private void artifactMetadataRequestResponse(String artifact, String response) {
+        stubInteraction(get(urlEqualTo("$ROOT_PATH$QUERY_PARAM${encode("id:\"$artifact\"", URL_ENCODING)}$JSON_URL_SUFFIX")), aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(response))
     }
 
     private void executeUptodateTask() {
-        running(server, { project.tasks.getByName(TASK_NAME).execute() } as MocoRunnable)
+        project.tasks.getByName(TASK_NAME).execute()
+    }
+
+    private void stubResponseWithADelayOf(int delayInMs) {
+        stubInteraction(get(urlMatching('/.*')), aResponse().withFixedDelay(500))
     }
 }

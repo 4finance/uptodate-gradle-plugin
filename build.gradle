@@ -29,7 +29,7 @@ dependencies {
 
     testCompile 'junit:junit:4.11'
     testCompile 'org.spockframework:spock-core:0.7-groovy-1.8'
-    testCompile 'com.github.dreamhead:moco-core:0.9.1'
+    testCompile 'com.github.tomakehurst:wiremock:1.46'
     testRuntime 'cglib:cglib-nodep:2.2.2'
     testRuntime 'org.objenesis:objenesis:1.2'
 }
