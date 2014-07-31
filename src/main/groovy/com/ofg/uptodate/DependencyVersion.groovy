@@ -46,11 +46,12 @@ class DependencyVersion implements Comparable<DependencyVersion> {
         } else if (neitherHasRevisionFilled(other)) {
             return 0
         }
-        return checkIfCurrentObjectIsNullVersion()
+        // this: 1.3, other 1.3.RC
+        return (isCurrentRevNullVersion() && other.rev.finalVersion) ? -1 : 1
     }
 
-    private int checkIfCurrentObjectIsNullVersion() {
-        return this.rev == NULL_VERSION ? 1 : -1
+    private boolean isCurrentRevNullVersion() {
+        return this.rev == NULL_VERSION
     }
 
     private int compareRevisionsWith(DependencyVersion other) {

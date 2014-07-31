@@ -6,6 +6,14 @@ class UptodatePluginExtension {
     int connectionTimeout = 5000
     List<String> versionToExcludePatterns = ['.*-beta.*', '.*-rc.*', 'RC[0-9]+']
 
+    void connectionTimeout(int connectionTimeout) {
+        this.connectionTimeout = connectionTimeout
+    }
+
+    void versionToExcludePatterns(String... versionsToExclude) {
+        this.versionToExcludePatterns = Arrays.asList(versionsToExclude)
+    }
+
     void includeConfigurations(String... configurations) {
         this.configurations.included.addAll(configurations)
     }
