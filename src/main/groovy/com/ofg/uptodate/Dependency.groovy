@@ -6,9 +6,9 @@ import groovy.transform.PackageScope
 @PackageScope
 @EqualsAndHashCode(includeFields = true)
 class Dependency {
-    private final String group
-    private final String name
-    private final String version
+    final String group
+    final String name
+    final String version
 
     Dependency(String group, String name, String version) {
         this.group = group
@@ -25,21 +25,5 @@ class Dependency {
     @Override
     public String toString() {
         return "'$group:$name:$version'"
-    }
-
-    String getConfiguration() {
-        return configuration
-    }
-
-    String getGroup() {
-        return group
-    }
-
-    String getName() {
-        return name
-    }
-
-    String getVersion() {
-        return version
     }
 }
