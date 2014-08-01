@@ -6,23 +6,24 @@ class DependencyVersionSpec extends Specification {
 
     def 'should resolve which version is greater'() {
         given:
-            DependencyVersion dependencyVersion1 = new DependencyVersion(versionString1)
-            DependencyVersion dependencyVersion2 = new DependencyVersion(versionString2)
+            DependencyVersion higherDependencyVersion = new DependencyVersion(higherVersion)
+            DependencyVersion lowerDependencyVersion = new DependencyVersion(lowerVersion)
         expect:
-            (dependencyVersion1 <=> dependencyVersion2) == comparisonResult
+            higherDependencyVersion >lowerDependencyVersion
         where:
-            versionString1   | versionString2   || comparisonResult
-            '2.0.0'          | '1.0.0'          || 1
-            '1.1.0'          | '1.0.0'          || 1
-            '1.1.1'          | '1.1.0'          || 1
-            '1.1'            | '1.0'            || 1
-            '1.1'            | '1.1-beta'       || 1
-            '1.3'            | '1.3.RC'         || 1
-            '3.3.2'          | '3.3'            || 1
-            '1.1.1.1'        | '1.1.1.0'        || 1
-            '1.1.1.1'        | '1.1.1.1-beta'   || 1
-            '1.1.2'          | '1.1.1.1'        || 1
-            '1.1.2'          | '1.1.2-beta'     || 1
-            '0.7-groovy-2.0' | '0.7-groovy-1.8' || 1
+            higherVersion    | lowerVersion
+            '2.0.0'          | '1.0.0'
+            '1.1.0'          | '1.0.0'
+            '1.1.1'          | '1.1.0'
+            '1.1'            | '1.0'
+            '1.1'            | '1.1-beta'
+            '1.3'            | '1.3.RC'
+            '1.3'            | '1.3.Beta'
+            '3.3.2'          | '3.3'
+            '1.1.1.1'        | '1.1.1.0'
+            '1.1.1.1'        | '1.1.1.1-beta'
+            '1.1.2'          | '1.1.1.1'
+            '1.1.2'          | '1.1.2-beta'
+            '0.7-groovy-2.0' | '0.7-groovy-1.8'
     }
 }

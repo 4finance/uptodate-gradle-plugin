@@ -330,5 +330,22 @@ class Jsons {
                                                 ]
                                             }
                                         }
-                                        """
+                                        """ 
+    
+    public static final String RESPONSE_TEMPLATE = '''
+                                            {
+                                              "response": {
+                                                "docs": [
+                                                  {
+                                                    "id": "org.hibernate:hibernate-core:$artifactVersion",
+                                                    "g": "org.hibernate",
+                                                    "a": "hibernate-core",
+                                                    "v": "$artifactVersion",
+                                                    "p": "jar",
+                                                    "timestamp": 1405579331000
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                            '''
 }

@@ -1,14 +1,12 @@
 package com.ofg.uptodate
-
 import com.ofg.uptodate.http.WireMockSpec
+import groovy.text.SimpleTemplateEngine
 import org.codehaus.groovy.runtime.StackTraceUtils
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
-import static com.ofg.uptodate.Jsons.HIBERNATE_RESPONSE
-import static com.ofg.uptodate.Jsons.JUNIT_RESPONSE
-import static com.ofg.uptodate.Jsons.NOT_FOUND_GVM_RESPONSE
+import static com.ofg.uptodate.Jsons.*
 import static com.ofg.uptodate.UptodatePlugin.getTASK_NAME
 import static com.ofg.uptodate.UrlEspaceUtils.escape
 
@@ -59,6 +57,20 @@ class UptodatePluginSpec extends WireMockSpec {
             executeUptodateTask()
         then:
             0 * loggerProxy.warn(_, _)
+    }
+
+    def "should not fail or display excluded versions for dependencies found in Maven Central"() {
+        given:
+            artifactMetadataRequestResponse('org.hibernate', 'hibernate-core', new SimpleTemplateEngine().createTemplate(RESPONSE_TEMPLATE).make([artifactVersion: artifactVersion]).toString())
+            project.extensions.uptodate.versionToExcludePatterns = ['(?i).*[-.]alpha.*', '(?i).*[-.]beta.*', '(?i).*?RC\\d*', '(?i).*?CR\\d*']
+        and:
+            project.dependencies.add(COMPILE_CONFIGURATION, 'org.hibernate:hibernate-core:0.5.5')
+        when:
+            executeUptodateTask()
+        then:
+            0 * loggerProxy.warn(_, _)
+        where:
+            artifactVersion << [ '2.2.2-BETA', '2.2.Beta3', '2.2.2-alpha', '2.2.Alpha', '1.3.RC', '1.3.CR1' ] 
     }
 
     def "should not display header on warn but only message on info when no new dependencies are found"() {
