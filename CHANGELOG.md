@@ -1,3 +1,9 @@
+0.0.4
+-----
+New features:
+* connection timeout
+* dependencies version exclude patterns
+
 0.0.3
 -----
 New features:
