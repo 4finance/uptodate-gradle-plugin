@@ -1,3 +1,8 @@
+0.0.5
+-----
+Bug fixes:
+* fixed a bug related to passing no minor version (for example 'CD-000')
+
 0.0.4
 -----
 New features:
