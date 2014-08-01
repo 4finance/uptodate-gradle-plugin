@@ -25,5 +25,6 @@ class DependencyVersionSpec extends Specification {
             '1.1.2'          | '1.1.1.1'
             '1.1.2'          | '1.1.2-beta'
             '0.7-groovy-2.0' | '0.7-groovy-1.8'
+            'CD-001'         | 'CD-000'
     }
 }

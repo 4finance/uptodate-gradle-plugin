@@ -14,9 +14,21 @@ class DependencyVersion implements Comparable<DependencyVersion> {
         this.unparsedVersion = unparsedVersion
         String[] splitVersion = unparsedVersion.split('\\.')
         major = new Version(splitVersion[0], splitVersion[0].isNumber())
-        minor = getParsedRevision(splitVersion[1])
-        rev = splitVersion.length > 2 ? getParsedRevision(splitVersion[2]) : NULL_VERSION
-        build = splitVersion.length > 3 ? getParsedRevision(splitVersion[3]) : NULL_VERSION
+        minor = minorVersionExists(splitVersion) ? getParsedRevision(splitVersion[1]) : NULL_VERSION
+        rev = revVersionExists(splitVersion) ? getParsedRevision(splitVersion[2]) : NULL_VERSION
+        build = buildVersionExists(splitVersion) ? getParsedRevision(splitVersion[3]) : NULL_VERSION
+    }
+
+    private boolean buildVersionExists(String[] splitVersion) {
+        splitVersion.length > 3
+    }
+
+    private boolean revVersionExists(String[] splitVersion) {
+        splitVersion.length > 2
+    }
+
+    private boolean minorVersionExists(String[] splitVersion) {
+        splitVersion.length > 1
     }
 
     private static Version getParsedRevision(String splitVersion) {

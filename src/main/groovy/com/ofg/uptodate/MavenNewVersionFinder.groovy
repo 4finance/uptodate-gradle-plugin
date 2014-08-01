@@ -32,7 +32,7 @@ class MavenNewVersionFinder implements NewVersionFinder {
     }
 
     public static final Closure<Future> getLatestFromMavenCentralRepo = {HTTPBuilder httpBuilder, List<String> versionToExcludePatterns, Dependency dependency ->
-        String listVersionsForGroupAndArtifactQuery = "q=${escape("g:\"$dependency.group\"")}+AND+${escape("a:\"$dependency.name\"")}&core=gav&rows=20&wt=json".toString()
+        String listVersionsForGroupAndArtifactQuery = "q=${escape("g:\"$dependency.group\"")}+AND+${escape("a:\"$dependency.name\"")}&core=gav&rows10&wt=json".toString()
         httpBuilder.get(queryString: listVersionsForGroupAndArtifactQuery) { resp, json ->
             DependencyVersion firstNonExcludedVersion = json.response.docs.findAll { doc ->
                 versionToExcludePatterns.every {
