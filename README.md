@@ -67,7 +67,7 @@ You can also provide patterns of versions that you would like to exclude (below 
 
 ```
 uptodate {
-    versionToExcludePatterns '.*-beta.*', '.*-rc.*', '^.*RC[0-9]+'
+    versionToExcludePatterns '(?i).*[-.]alpha.*', '(?i).*[-.]beta.*', '(?i).*?RC\\d*', '(?i).*?CR\\d*'
 }
 
 ```
