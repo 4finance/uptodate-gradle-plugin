@@ -1,10 +1,12 @@
 package com.ofg.uptodate
 
+import static com.ofg.uptodate.UptodatePluginExtension.VersionPatterns.*
+
 class UptodatePluginExtension {
     String mavenRepo = MavenNewVersionFinder.MAVEN_CENTRAL_REPO_URL
     final IncludedExcludedConfigurationsHolder configurations = new IncludedExcludedConfigurationsHolder()
     int connectionTimeout = 5000
-    List<String> versionToExcludePatterns = ['(?i).*[-.]alpha.*', '(?i).*[-.]beta.*', '(?i).*?RC\\d*', '(?i).*?CR\\d*']
+    List<String> versionToExcludePatterns = [ALPHA, BETA, RC, CR, SNAPSHOT]
 
     void connectionTimeout(int connectionTimeout) {
         this.connectionTimeout = connectionTimeout
@@ -25,5 +27,17 @@ class UptodatePluginExtension {
     static class IncludedExcludedConfigurationsHolder {
         final Set<String> included = []
         final Set<String> excluded = []
+    }
+
+    static class VersionPatterns {
+        static final String ALPHA = caseInsensitive('.*[-.]alpha-?\\d*$')
+        static final String BETA = caseInsensitive('.*[-.]beta-?\\d*$')
+        static final String RC = caseInsensitive('.*[-.]RC-?\\d*$')
+        static final String CR = caseInsensitive('.*[-.]CR-?\\d*$')
+        static final String SNAPSHOT = caseInsensitive('.*-SNAPSHOT$')
+
+        static String caseInsensitive(String pattern) {
+            return "(?i)$pattern"
+        }
     }
 }
