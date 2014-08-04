@@ -9,6 +9,9 @@ New features:
 * connection timeout
 * dependencies version exclude patterns
 
+Bug fixes:
+* [Issue #5 - Dependencies with version different than the latest available in Maven Central are treated as outdated](https://github.com/4finance/uptodate-gradle-plugin/issues/5)
+
 0.0.3
 -----
 New features:
