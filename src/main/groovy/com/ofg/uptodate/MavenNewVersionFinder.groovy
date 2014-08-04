@@ -11,13 +11,15 @@ class MavenNewVersionFinder implements NewVersionFinder {
 
     static final String MAVEN_CENTRAL_REPO_URL = "http://search.maven.org/solrsearch/select"
     private final String mavenUrl
+    private final int maxHttpConnectionsPoolSize
     private final int connectionTimeout
     private final List<String> versionToExcludePatterns
 
     MavenNewVersionFinder(UptodatePluginExtension uptodatePluginExtension) {
-        this.mavenUrl = uptodatePluginExtension.mavenRepo
-        this.connectionTimeout = uptodatePluginExtension.connectionTimeout
-        this.versionToExcludePatterns = uptodatePluginExtension.versionToExcludePatterns
+        mavenUrl = uptodatePluginExtension.mavenRepo
+        maxHttpConnectionsPoolSize = uptodatePluginExtension.simultaneousHttpConnections
+        connectionTimeout = uptodatePluginExtension.connectionTimeout
+        versionToExcludePatterns = uptodatePluginExtension.versionToExcludePatterns
     }
 
     @Override
@@ -26,7 +28,8 @@ class MavenNewVersionFinder implements NewVersionFinder {
     }
 
     private List<Dependency> findNewerInMavenCentralRepo(List<Dependency> dependencies) {
-        HTTPBuilder httpBuilder = new AsyncHTTPBuilder(timeout: connectionTimeout, poolSize: dependencies.size(), uri: mavenUrl)
+        int httpPoolSize = Math.min(dependencies.size(), maxHttpConnectionsPoolSize)
+        HTTPBuilder httpBuilder = new AsyncHTTPBuilder(timeout: connectionTimeout, poolSize: httpPoolSize, uri: mavenUrl)
         Closure latestFromMavenGetter = getLatestFromMavenCentralRepo.curry(httpBuilder, versionToExcludePatterns)
         return dependencies.collect(latestFromMavenGetter).collect{it.get()}.grep(getOnlyNewer).collect {it[1]}
     }

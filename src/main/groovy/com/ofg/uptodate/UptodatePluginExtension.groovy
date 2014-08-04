@@ -5,6 +5,7 @@ import static com.ofg.uptodate.UptodatePluginExtension.VersionPatterns.*
 class UptodatePluginExtension {
     String mavenRepo = MavenNewVersionFinder.MAVEN_CENTRAL_REPO_URL
     final IncludedExcludedConfigurationsHolder configurations = new IncludedExcludedConfigurationsHolder()
+    int simultaneousHttpConnections = 8
     int connectionTimeout = 5000
     List<String> versionToExcludePatterns = [ALPHA, BETA, RC, CR, SNAPSHOT]
 
