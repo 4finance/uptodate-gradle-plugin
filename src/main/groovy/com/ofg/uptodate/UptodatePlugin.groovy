@@ -48,7 +48,7 @@ class UptodatePlugin implements Plugin<Project> {
     private List<Dependency> getDependencies(Set<Configuration> configurations) {
         log.debug("Getting dependencies for configurations [$configurations]")
         return configurations.collectNested { conf ->
-            conf.dependencies.findAll{ dep -> dep.name != null }.collect { dep ->
+            conf.dependencies.findAll{ dep -> dep.name && dep.group && dep.version }.collect { dep ->
                 log.debug("Collecting dependency with group: [$dep.group] name: [$dep.name] and version: [$dep.version]")    
                 new Dependency(dep.group, dep.name, dep.version) 
             }
