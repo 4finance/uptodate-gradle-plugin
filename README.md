@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/4finance/uptodate-gradle-plugin.svg?branch=master)](https://travis-ci.org/4finance/uptodate-gradle-plugin) [![Coverage Status](http://img.shields.io/coveralls/4finance/uptodate-gradle-plugin/master.svg)](https://coveralls.io/r/4finance/uptodate-gradle-plugin)
 
 uptodate-gradle-plugin
 ======================
@@ -109,12 +110,6 @@ build.dependsOn 'uptodate'
 ```
 
 But be warned, this will slow down the build by a few seconds (required to hit maven remote repo with http), so it is not suggested unless you don't care about build time.
-
-
-### Current build status
-
-[![Build Status](https://travis-ci.org/4finance/uptodate-gradle-plugin.svg?branch=master)](https://travis-ci.org/4finance/uptodate-gradle-plugin)
-
 
 ### Changelog
 
