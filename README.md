@@ -30,7 +30,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath('com.ofg:uptodate-gradle-plugin:0.0.5')
+        classpath('com.ofg:uptodate-gradle-plugin:0.0.6')
     }
 }
 ```
@@ -63,22 +63,28 @@ uptodate {
 
 Please note that excludes take precedence over includes.
 
-You can also provide patterns of versions that you would like to exclude (below you can see the default configuration)
+### How to exclude non-final versions from reported updates?
+
+You can also provide patterns of versions that you would like to exclude.
+There are also some patterns (like BETA, RC, etc.) defined in com.ofg.uptodate.UptodatePluginExtension.VersionPatterns
+
+By default following patterns are excluded: ALPHA, BETA, RC, CR, SNAPSHOT
 
 ```
 uptodate {
-    versionToExcludePatterns '(?i).*[-.]alpha.*', '(?i).*[-.]beta.*', '(?i).*?RC\\d*', '(?i).*?CR\\d*'
+    versionToExcludePatterns [ ALPHA, BETA, '.*-demo-?\\d*$' ]
 }
 
 ```
 
-### How to provide connection timeout
+### How to tune HTTP connections?
 
-To provide connection timeout you just have to pass the connectionTimeout parameter as follows (below you can see the default value in ms)
+You can change connection timeout (5000 ms by default) and/or limit simultaneous HTTP connections (8 connections by default) by connectionTimeout and simultaneousHttpConnections properties respectively.
 
 ```
 uptodate {
-    connectionTimeout 5000
+    connectionTimeout 10000
+    simultaneousHttpConnections  4
 }
 ```
 

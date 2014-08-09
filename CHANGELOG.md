@@ -1,3 +1,12 @@
+0.0.6
+-----
+New features:
+* max simultaneous HTTP connections configuration
+* exclude SNAPSHOT versions
+
+Bug fixes:
+* fixed checking version against gradleApi()
+
 0.0.5
 -----
 Bug fixes:
