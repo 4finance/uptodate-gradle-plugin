@@ -8,8 +8,8 @@ import org.gradle.testfixtures.ProjectBuilder
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static com.ofg.uptodate.Jsons.*
-import static com.ofg.uptodate.UptodatePlugin.getTASK_NAME
-import static com.ofg.uptodate.UptodatePluginExtension.VersionPatterns.*
+import static com.ofg.uptodate.UptodatePlugin.TASK_NAME
+import static com.ofg.uptodate.VersionPatterns.*
 import static com.ofg.uptodate.UrlEspaceUtils.escape
 
 class UptodatePluginSpec extends WireMockSpec {

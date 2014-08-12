@@ -89,21 +89,40 @@ class DependencyVersion implements Comparable<DependencyVersion> {
 
         @Override
         int compareTo(Version o) {
-            if (this.finalVersion && !o.finalVersion) {
-                return 1
-            } else if (!this.finalVersion && o.finalVersion) {
-                return -1
+            Version extractedVersion = tryToExtractVersion(this.versionNumber)
+            Version extractedOtherVersion = tryToExtractVersion(o.versionNumber)
+            if(extractedVersion.versionNumber == extractedOtherVersion.versionNumber) {
+                if (extractedVersion.finalVersion && !extractedOtherVersion.finalVersion) {
+                    return 1
+                } else if (!extractedVersion.finalVersion && extractedOtherVersion.finalVersion) {
+                    return -1
+                }
+                return 0
             }
-            if (this.versionNumber.isNumber() && o.versionNumber.isNumber()) {
-                return this.versionNumber.toInteger() <=> o.versionNumber.toInteger()
+            if (extractedVersion.isNumber() && extractedOtherVersion.isNumber()) {
+                return extractedVersion.toInteger() <=> extractedOtherVersion.toInteger()
             }
-            boolean bothNotNumbers = !this.versionNumber.isNumber() && !o.versionNumber.isNumber()
-            if (bothNotNumbers) {
-                return this.versionNumber <=> o.versionNumber
+            return extractedVersion.versionNumber <=> extractedOtherVersion.versionNumber
+        }
+
+        private Version tryToExtractVersion(String version) {
+            String matchedPattern = VersionPatterns.ALL_PATTERNS.find { version.matches(it) }
+            if (!matchedPattern) {
+                return new Version(version, version.isNumber())
             }
-            return this.versionNumber.isNumber() ?  1 : -1
+            String versionNumber = version.split('[-|.]')[0]
+            return new Version(versionNumber, false)
+        }
+
+        boolean isNumber() {
+            return versionNumber.isNumber()
+        }
+
+        Integer toInteger() {
+            return versionNumber.toInteger()
         }
     }
+
 
     @Override
     String toString() {

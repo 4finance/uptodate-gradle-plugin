@@ -1,10 +1,12 @@
 package com.ofg.uptodate
 
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class DependencyVersionSpec extends Specification {
 
-    def 'should resolve which version is greater'() {
+    @Unroll
+    def 'should resolve [#higherVersion] as higher version than [#lowerVersion]'() {
         given:
             DependencyVersion higherDependencyVersion = new DependencyVersion(higherVersion)
             DependencyVersion lowerDependencyVersion = new DependencyVersion(lowerVersion)
@@ -26,5 +28,7 @@ class DependencyVersionSpec extends Specification {
             '1.1.2'          | '1.1.2-beta'
             '0.7-groovy-2.0' | '0.7-groovy-1.8'
             'CD-001'         | 'CD-000'
+            '0.9.9-RC1'      | '0.9.8'
+            '0.9.9.RC1'      | '0.9.8'
     }
 }

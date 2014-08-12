@@ -1,6 +1,6 @@
 package com.ofg.uptodate
 
-import static com.ofg.uptodate.UptodatePluginExtension.VersionPatterns.*
+import static com.ofg.uptodate.VersionPatterns.*
 
 class UptodatePluginExtension {
     String mavenRepo = MavenNewVersionFinder.MAVEN_CENTRAL_REPO_URL
@@ -28,17 +28,5 @@ class UptodatePluginExtension {
     static class IncludedExcludedConfigurationsHolder {
         final Set<String> included = []
         final Set<String> excluded = []
-    }
-
-    static class VersionPatterns {
-        static final String ALPHA = caseInsensitive('.*[-.]alpha-?\\d*$')
-        static final String BETA = caseInsensitive('.*[-.]beta-?\\d*$')
-        static final String RC = caseInsensitive('.*[-.]RC-?\\d*$')
-        static final String CR = caseInsensitive('.*[-.]CR-?\\d*$')
-        static final String SNAPSHOT = caseInsensitive('.*-SNAPSHOT$')
-
-        static String caseInsensitive(String pattern) {
-            return "(?i)$pattern"
-        }
     }
 }

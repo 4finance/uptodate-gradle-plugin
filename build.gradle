@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.5'
 
         if (project.hasProperty('coverage')) {
             classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:1.0.2'
@@ -12,9 +12,8 @@ buildscript {
     }
 }
 
-apply plugin: 'bintray'
+apply plugin: 'com.jfrog.bintray'
 apply plugin: 'groovy'
-apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 group = 'com.ofg'

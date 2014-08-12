@@ -10,9 +10,9 @@ import javax.inject.Inject
 
 @Slf4j
 class UptodatePlugin implements Plugin<Project> {
-    static final String TASK_NAME = 'uptodate'
-    static final String NEW_VERSIONS_MESSAGE_HEAD = 'New versions available in Maven Central:\n'
-    static final String NO_NEW_VERSIONS_MESSAGE = 'No new versions are available in Maven Central.'
+    public static final String TASK_NAME = 'uptodate'
+    public static final String NEW_VERSIONS_MESSAGE_HEAD = 'New versions available in Maven Central:\n'
+    public static final String NO_NEW_VERSIONS_MESSAGE = 'No new versions are available in Maven Central.'
     private final LoggerProxy loggerProxy
 
     @Inject
