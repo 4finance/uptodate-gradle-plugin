@@ -9,7 +9,7 @@ class DependencyVersionSpec extends Specification {
             DependencyVersion higherDependencyVersion = new DependencyVersion(higherVersion)
             DependencyVersion lowerDependencyVersion = new DependencyVersion(lowerVersion)
         expect:
-            higherDependencyVersion >lowerDependencyVersion
+            higherDependencyVersion > lowerDependencyVersion
         where:
             higherVersion    | lowerVersion
             '2.0.0'          | '1.0.0'

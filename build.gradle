@@ -67,6 +67,9 @@ bintray {
         desc = 'Gradle plugin that tells you what libs have new versions on Maven Central'
         licenses = ['Apache-2.0']
         labels = ['gradle']
+        version {
+            attributes = ['gradle-plugin': 'com.ofg.uptodate:uptodate-gradle-plugin:uptodate-gradle-plugin']
+        }
     } 
 }
 
