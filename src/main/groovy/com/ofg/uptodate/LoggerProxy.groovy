@@ -9,4 +9,7 @@ class LoggerProxy {
     void info(Logger logger, String warning) {
         logger.info(warning)
     }
+    void debug(Logger logger, String warning) {
+        logger.debug(warning)
+    }
 }

@@ -175,6 +175,7 @@ class Jsons {
                                               }
                                             }
                                             """
+
     public static final String HIBERNATE_RESPONSE = """
                                             {
                                               "responseHeader": {
@@ -275,6 +276,49 @@ class Jsons {
                                                     "v": "4.2.12.Final",
                                                     "p": "jar",
                                                     "timestamp": 1396988160000,
+                                                    "tags": [
+                                                      "hibernate",
+                                                      "project",
+                                                      "module"
+                                                    ],
+                                                    "ec": [
+                                                      "-sources.jar",
+                                                      ".jar",
+                                                      ".pom"
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                            """
+    
+    public static final String OLD_HIBERNATE_RESPONSE = """
+                                            {
+                                              "responseHeader": {
+                                                "status": 0,
+                                                "QTime": 4,
+                                                "params": {
+                                                  "fl": "id,g,a,v,p,ec,timestamp,tags",
+                                                  "sort": "score desc,timestamp desc,g asc,a asc,v desc",
+                                                  "indent": "off",
+                                                  "q": "g:\\"org.hibernate\\" AND a:\\"hibernate-core\\"",
+                                                  "core": "gav",
+                                                  "wt": "json",
+                                                  "rows": "5",
+                                                  "version": "2.2"
+                                                }
+                                              },
+                                              "response": {
+                                                "numFound": 102,
+                                                "start": 0,
+                                                "docs": [
+                                                  {
+                                                    "id": "org.hibernate:hibernate-core:2.0.0.Final",
+                                                    "g": "org.hibernate",
+                                                    "a": "hibernate-core",
+                                                    "v": "2.0.0.Final",
+                                                    "p": "jar",
+                                                    "timestamp": 1405579331000,
                                                     "tags": [
                                                       "hibernate",
                                                       "project",

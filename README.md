@@ -16,7 +16,7 @@ gradle uptodate
 And you get for example this:
 
 ```
-New versions available in Maven Central:
+New versions available:
 'com.google.guava:guava:17.0'
 'org.hibernate:hibernate-entitymanager:4.3.5.Final'
 'org.hibernate:hibernate-core:4.3.5.Final'
@@ -24,7 +24,7 @@ New versions available in Maven Central:
 
 ### How to install it?
 
-#### Step 1: Add dependency to jcenter and to the plugin
+#### Step 1: Add dependency to JCenter and to the plugin
 ```
 buildscript {
     repositories {	
@@ -86,18 +86,6 @@ You can change connection timeout (5000 ms by default) and/or limit simultaneous
 uptodate {
     connectionTimeout 10000
     simultaneousHttpConnections  4
-}
-```
-
-### How to add private solrsearch based repos?
-
-If you have your own maven repo (most companies do), that just add it to plugin configuration and it will verify newer versions there as well.
-
-So in your build.gradle, add:
-
-```
-uptodate {
-    mavenRepo = "address to your custom repo solrsearch (defaults to maven central repo solrsearch)"
 }
 ```
 

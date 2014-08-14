@@ -1,5 +1,9 @@
-package com.ofg.uptodate
+package com.ofg.uptodate.finder
 
+import com.ofg.uptodate.VersionPatterns
+import groovy.transform.EqualsAndHashCode
+
+@EqualsAndHashCode
 class DependencyVersion implements Comparable<DependencyVersion> {
 
     private static Version NULL_VERSION = new Version('', false)
@@ -78,6 +82,7 @@ class DependencyVersion implements Comparable<DependencyVersion> {
         return this.rev == NULL_VERSION && other.rev == NULL_VERSION
     }
 
+    @EqualsAndHashCode
     static class Version implements Comparable<Version> {
         final String versionNumber
         final boolean finalVersion
@@ -122,7 +127,6 @@ class DependencyVersion implements Comparable<DependencyVersion> {
             return versionNumber.toInteger()
         }
     }
-
 
     @Override
     String toString() {

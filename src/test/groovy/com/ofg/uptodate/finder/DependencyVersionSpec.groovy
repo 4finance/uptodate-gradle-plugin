@@ -1,4 +1,4 @@
-package com.ofg.uptodate
+package com.ofg.uptodate.finder
 
 import spock.lang.Specification
 import spock.lang.Unroll

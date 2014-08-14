@@ -1,5 +1,8 @@
 package com.ofg.uptodate
-
+import com.ofg.uptodate.finder.Dependency
+import com.ofg.uptodate.finder.JCenterNewVersionFinder
+import com.ofg.uptodate.finder.MavenNewVersionFinder
+import com.ofg.uptodate.finder.NewVersionFinderInAllRepositories
 import groovy.util.logging.Slf4j
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -11,8 +14,7 @@ import javax.inject.Inject
 @Slf4j
 class UptodatePlugin implements Plugin<Project> {
     public static final String TASK_NAME = 'uptodate'
-    public static final String NEW_VERSIONS_MESSAGE_HEAD = 'New versions available in Maven Central:\n'
-    public static final String NO_NEW_VERSIONS_MESSAGE = 'No new versions are available in Maven Central.'
+    public static final String GRADLE_BINTRAY_JCENTER_REPO_NAME = 'BintrayJCenter'
     private final LoggerProxy loggerProxy
 
     @Inject
@@ -27,18 +29,34 @@ class UptodatePlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.extensions.create(TASK_NAME, UptodatePluginExtension)
+        UptodatePluginExtension uptodatePluginExtension = project.extensions.uptodate        
         Task createdTask = project.task(TASK_NAME) << { Task task ->
-            NewVersionFinder newVersionFinder = new MavenNewVersionFinder(project.extensions.uptodate)
+            printMissingJCenterRepoIfApplicable(uptodatePluginExtension, project)
+            NewVersionFinderInAllRepositories newVersionFinder = new NewVersionFinderInAllRepositories(loggerProxy, [new MavenNewVersionFinder(loggerProxy, uptodatePluginExtension), new JCenterNewVersionFinder(loggerProxy, uptodatePluginExtension)])
             List<Dependency> dependencies = getDependencies(project)
-            List<Dependency> dependenciesWithNewVersions = newVersionFinder.findNewer(dependencies)
-            if (dependenciesWithNewVersions.isEmpty()) {
-                loggerProxy.info(task.logger, NO_NEW_VERSIONS_MESSAGE)
-            } else {
-                loggerProxy.warn(task.logger, NEW_VERSIONS_MESSAGE_HEAD + dependenciesWithNewVersions.join('\n'))
-            }
+            Set<Dependency> dependenciesWithNewVersions = newVersionFinder.findNewer(dependencies)
+            newVersionFinder.printDependencies(dependenciesWithNewVersions)
         }
         createdTask.group = "Dependencies"
-        createdTask.description = "Checks your dependencies against a Maven Solr search based repository for newer versions"
+        createdTask.description = "Checks your dependencies against provided repositories (defaults to Maven Central and JCenter)"
+    }
+
+    private void printMissingJCenterRepoIfApplicable(UptodatePluginExtension uptodatePluginExtension, Project project) {
+        if (uptodatePluginExtension.showMissingJCenterMessage && !jCenterRepositoryIsPresent(project)) {
+            loggerProxy.info(log, '''JCenter repository is not found in the configured repositories.
+                                     You may consider setting it up as follows:
+                                                
+                                     repositories {
+                                         jcenter()
+                                     }                                    
+                                  ''')
+        }
+    }
+
+    private boolean jCenterRepositoryIsPresent(Project project) {
+        return project.repositories.find {
+            it.name == GRADLE_BINTRAY_JCENTER_REPO_NAME
+        }
     }
 
     private List<Dependency> getDependencies(Project project) {

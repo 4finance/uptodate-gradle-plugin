@@ -1,5 +1,6 @@
-package com.ofg.uptodate
+package com.ofg.uptodate.finder
 
+import com.ofg.uptodate.finder.Dependency
 import spock.lang.Specification
 
 class DependencyEqualsSpec extends Specification {
