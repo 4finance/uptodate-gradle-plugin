@@ -38,7 +38,7 @@ buildscript {
 
 #### Step 2: Add the plugin to your build (gradle.build)
 ```
-apply plugin: 'uptodate'
+apply plugin: 'com.ofg.uptodate'
 ```
 
 And now you can run the plugin with

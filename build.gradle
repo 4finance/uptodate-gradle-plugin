@@ -67,7 +67,7 @@ bintray {
         licenses = ['Apache-2.0']
         labels = ['gradle']
         version {
-            attributes = ['gradle-plugin': 'com.ofg.uptodate:uptodate-gradle-plugin:uptodate-gradle-plugin']
+            attributes = ['gradle-plugin': 'com.ofg.uptodate:com.ofg:uptodate-gradle-plugin']
         }
     } 
 }
