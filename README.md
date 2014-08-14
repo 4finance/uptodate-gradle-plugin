@@ -31,7 +31,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath('com.ofg:uptodate-gradle-plugin:0.0.6')
+        classpath('com.ofg:uptodate-gradle-plugin:1.0.0')
     }
 }
 ```
@@ -69,7 +69,7 @@ Please note that excludes take precedence over includes.
 You can also provide patterns of versions that you would like to exclude.
 There are also some patterns (like BETA, RC, etc.) defined in com.ofg.uptodate.UptodatePluginExtension.VersionPatterns
 
-By default following patterns are excluded: ALPHA, BETA, RC, CR, SNAPSHOT
+By default following patterns are excluded: ALPHA, BETA, RC, CR, SNAPSHOT, MILESTONE, RELEASE( i.e. r08)
 
 ```
 uptodate {

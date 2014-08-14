@@ -18,7 +18,7 @@ apply plugin: 'maven-publish'
 
 group = 'com.ofg'
 description = 'Core of UpToDate plugin'
-version = '1.0.0-SNAPSHOT'
+version = '1.0.0'
 
 repositories {
     mavenLocal()
