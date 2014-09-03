@@ -13,6 +13,9 @@ New features:
 * verification of versions against JCenter
 * plugin available at http://plugins.gradle.org - see http://plugins.gradle.org/plugin/com.ofg.uptodate
 
+Breaking changes:
+* renamed plugin from `uptodate` to `com.ofg.uptodate`
+
 0.0.6
 -----
 New features:
