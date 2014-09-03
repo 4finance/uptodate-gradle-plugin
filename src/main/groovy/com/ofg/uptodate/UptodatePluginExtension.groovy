@@ -29,8 +29,6 @@ class UptodatePluginExtension {
     */
     String mavenRepo = MavenNewVersionFinder.MAVEN_CENTRAL_REPO_URL
     
-    final IncludedExcludedConfigurationsHolder configurations = new IncludedExcludedConfigurationsHolder()
-
     /**
      * Number of maximal http connections to external repos
      */
@@ -42,25 +40,20 @@ class UptodatePluginExtension {
     int connectionTimeout = 5000
 
     /**
-     * List of patterns for versions to exclude
+     * Patterns for versions that will not be considered as updates
      */
-    List<String> versionToExcludePatterns = VersionPatterns.ALL_PATTERNS
+    final List<String> excludedVersionPatterns = VersionPatterns.ALL_PATTERNS
 
-    /**
-     * Connection timeout for connections to external services
-     * @param connectionTimeout
-     */
-    void connectionTimeout(int connectionTimeout) {
-        this.connectionTimeout = connectionTimeout
+    void addExcludedVersionPatterns(String... patternsToExclude) {
+        excludedVersionPatterns.addAll(patternsToExclude)
     }
 
-    /**
-     * Patterns of versions that you want to exclude
-     * @param versionsToExclude
-     */
-    void versionToExcludePatterns(String... versionsToExclude) {
-        this.versionToExcludePatterns = Arrays.asList(versionsToExclude)
+    void setExcludedVersionPatterns(String... patternsToExclude) {
+        excludedVersionPatterns.clear()
+        excludedVersionPatterns.addAll(patternsToExclude)
     }
+
+    final IncludedExcludedConfigurationsHolder configurations = new IncludedExcludedConfigurationsHolder()
 
     /**
      * String names of configurations to include for checking

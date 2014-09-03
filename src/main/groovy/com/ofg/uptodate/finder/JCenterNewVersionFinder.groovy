@@ -23,7 +23,7 @@ class JCenterNewVersionFinder implements NewVersionFinder {
     JCenterNewVersionFinder(LoggerProxy loggerProxy, UptodatePluginExtension uptodatePluginExtension) {
         maxHttpConnectionsPoolSize = uptodatePluginExtension.simultaneousHttpConnections
         connectionTimeout = uptodatePluginExtension.connectionTimeout
-        versionToExcludePatterns = uptodatePluginExtension.versionToExcludePatterns
+        versionToExcludePatterns = uptodatePluginExtension.excludedVersionPatterns
         ignoreJCenter = uptodatePluginExtension.ignoreJCenter
         jCenterRepo = uptodatePluginExtension.jCenterRepo
         this.loggerProxy = loggerProxy

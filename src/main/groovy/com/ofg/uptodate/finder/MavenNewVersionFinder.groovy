@@ -25,7 +25,7 @@ class MavenNewVersionFinder implements NewVersionFinder {
         mavenUrl = uptodatePluginExtension.mavenRepo
         maxHttpConnectionsPoolSize = uptodatePluginExtension.simultaneousHttpConnections
         connectionTimeout = uptodatePluginExtension.connectionTimeout
-        versionToExcludePatterns = uptodatePluginExtension.versionToExcludePatterns
+        versionToExcludePatterns = uptodatePluginExtension.excludedVersionPatterns
         ignoreMaven = uptodatePluginExtension.ignoreMavenCentral
         this.loggerProxy = loggerProxy
     }
