@@ -31,7 +31,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath('com.ofg:uptodate-gradle-plugin:1.0.0')
+        classpath('com.ofg:uptodate-gradle-plugin:1.1.0')
     }
 }
 ```
@@ -72,10 +72,19 @@ There are also some patterns (like BETA, RC, etc.) defined in com.ofg.uptodate.U
 By default following patterns are excluded: ALPHA, BETA, RC, CR, SNAPSHOT, MILESTONE, RELEASE( i.e. r08)
 
 ```
-uptodate {
-    versionToExcludePatterns [ ALPHA, BETA, '.*-demo-?\\d*$' ]
-}
+import static com.ofg.uptodate.VersionPatterns.*
 
+uptodate {
+    setExcludedVersionPatterns ALPHA, BETA, '.*-demo-?\\d*$'
+}
+```
+
+You can also add your own patterns to the already excluded version patterns.
+
+```
+uptodate {
+    addExcludedVersionPatterns '.*-demo-?\\d*$'
+}
 ```
 
 ### How to tune HTTP connections?

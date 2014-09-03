@@ -1,3 +1,12 @@
+1.1.0
+-----
+New features:
+* adding new excluded version patterns to already excluded ones
+
+Changes to plugin configuration DSL:
+* removed `versionToExcludePatterns` method and property - use `addExcludedVersionPatterns` and `setExcludedVersionPatterns` methods instead
+* removed `connectionTimeout` method - use `connectionTimeout` property instead
+
 1.0.0
 -----
 New features:

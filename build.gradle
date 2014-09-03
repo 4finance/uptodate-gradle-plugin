@@ -18,7 +18,7 @@ apply plugin: 'maven-publish'
 
 group = 'com.ofg'
 description = 'Core of UpToDate plugin'
-version = '1.0.1-SNAPSHOT'
+version = '1.1.0'
 
 repositories {
     mavenLocal()
@@ -47,10 +47,8 @@ publishing {
     publications {
         plugin(MavenPublication) {
             from components.java
-
-            artifact sourcesJar {
-                classifier 'sources'
-            }
+            artifact sourcesJar
+            artifact javadocJar
         }
     }
 }
@@ -72,13 +70,19 @@ bintray {
     } 
 }
 
-task sourcesJar(type: Jar, dependsOn:classes) {
+task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
 
+task javadocJar(type: Jar, dependsOn: groovydoc) {
+    classifier = 'javadoc'
+    from groovydoc.destinationDir
+}
+
 artifacts {
     archives sourcesJar
+    archives javadocJar
 }
 
 if (project.hasProperty('coverage')) {
