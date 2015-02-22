@@ -1,5 +1,4 @@
 package com.ofg.uptodate.finder
-
 import com.ofg.uptodate.LoggerProxy
 import com.ofg.uptodate.UptodatePluginExtension
 import groovy.util.logging.Slf4j
@@ -34,8 +33,12 @@ class MavenNewVersionFinder implements NewVersionFinder {
     List<Dependency> findNewer(List<Dependency> dependencies) {
         if (ignoreMaven) {
             return []
+        } else if(dependencies.empty) {
+            return []
         }
-        return dependencies.isEmpty() ? [] : findNewerInMavenCentralRepo(dependencies)
+        List<Dependency> newerDependencies = findNewerInMavenCentralRepo(dependencies)
+        loggerProxy.debug(log, "Newer dependencies found in Maven Central $newerDependencies")
+        return newerDependencies
     }
 
     private List<Dependency> findNewerInMavenCentralRepo(List<Dependency> dependencies) {
@@ -45,7 +48,7 @@ class MavenNewVersionFinder implements NewVersionFinder {
         return dependencies.collect(latestFromMavenGetter).collect{it.get()}.grep(getOnlyNewer).collect {it[1]}
     }
 
-    public static final Closure<Future> getLatestFromMavenCentralRepo = {HTTPBuilder httpBuilder, List<String> versionToExcludePatterns, Dependency dependency ->
+    private final Closure<Future> getLatestFromMavenCentralRepo = {HTTPBuilder httpBuilder, List<String> versionToExcludePatterns, Dependency dependency ->
         String listVersionsForGroupAndArtifactQuery = "q=${escape("g:\"$dependency.group\"")}+AND+${escape("a:\"$dependency.name\"")}&core=gav&rows10&wt=json".toString()
         httpBuilder.get(queryString: listVersionsForGroupAndArtifactQuery) { resp, json ->
             if(!json) {
@@ -60,8 +63,21 @@ class MavenNewVersionFinder implements NewVersionFinder {
         }
     }
 
-    public static final Closure<Boolean> getOnlyNewer = { List<Dependency> dependenciesToCompare ->
-        !dependenciesToCompare.empty && dependenciesToCompare[1].version != null && dependenciesToCompare[1].version > dependenciesToCompare[0].version
+    private final Closure<Boolean> getOnlyNewer = { List<Dependency> dependenciesToCompare ->
+        loggerProxy.debug(log, "Maven Central Dependencies to get only newer $dependenciesToCompare")
+        boolean dependenciesToCompareEmpty = dependenciesToCompare.empty
+        if (dependenciesToCompareEmpty) {
+            loggerProxy.debug(log, "Dependencies to compare are empty - sth went wrong so no newer version was found")
+            return false
+        }
+        boolean foundInRepoVersionHasNullVersion = dependenciesToCompare[1].version == null
+        if (foundInRepoVersionHasNullVersion) {
+            loggerProxy.debug(log, "The retrieved dependency has null version value thus no newer version was found")
+            return false
+        }
+        boolean fetchedDependencyHasGreaterVersion = dependenciesToCompare[1].version > dependenciesToCompare[0].version
+        loggerProxy.debug(log, "Fetched dependency has greater version than the current one [$fetchedDependencyHasGreaterVersion]")
+        return  fetchedDependencyHasGreaterVersion
     }
 
 }

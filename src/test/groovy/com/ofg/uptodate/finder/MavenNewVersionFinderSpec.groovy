@@ -1,4 +1,5 @@
 package com.ofg.uptodate.finder
+
 import groovy.text.SimpleTemplateEngine
 import org.codehaus.groovy.runtime.StackTraceUtils
 
@@ -100,6 +101,18 @@ class MavenNewVersionFinderSpec extends NewFinderSpec {
         then:
             Throwable thrownException = thrown()
             StackTraceUtils.extractRootCause(thrownException).class == SocketTimeoutException
+    }
+
+    def 'should not list any newer versions if the current version seems greater than the final version taken from Maven Central'() {
+        given:
+            artifactMetadataRequestResponse('javax.servlet.jsp','jsp-api', JSP_API_RESPONE)
+        and:
+            project.dependencies.add(COMPILE_CONFIGURATION, 'javax.servlet.jsp:jsp-api:2.2.1-b03')
+        when:
+            executeUptodateTask()
+        then:
+            0 * loggerProxy.warn(_, _)
+            1 * loggerProxy.info(_, "No new versions are available.")
     }
 
 

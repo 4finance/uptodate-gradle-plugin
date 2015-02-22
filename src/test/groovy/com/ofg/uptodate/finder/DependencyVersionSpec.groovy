@@ -30,5 +30,6 @@ class DependencyVersionSpec extends Specification {
             'CD-001'         | 'CD-000'
             '0.9.9-RC1'      | '0.9.8'
             '0.9.9.RC1'      | '0.9.8'
+            '2.2.1-b03'      | '2.2'
     }
 }

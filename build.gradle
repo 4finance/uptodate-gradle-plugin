@@ -61,7 +61,7 @@ bintray {
         repo = 'uptodate-gradle-plugin'
         userOrg = '4finance' 
         name = 'uptodate-gradle-plugin'
-        desc = 'Gradle plugin that tells you what libs have new versions on Maven Central'
+        desc = 'Gradle plugin that tells you what libs have new versions in Maven Central / JCenter'
         licenses = ['Apache-2.0']
         labels = ['gradle']
         version {

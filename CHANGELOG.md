@@ -1,3 +1,8 @@
+1.1.1
+-----
+Bug fixes:
+* [#13](https://github.com/4finance/uptodate-gradle-plugin/issues/13) Two new versions found in project
+
 1.1.0
 -----
 New features:

@@ -33,18 +33,22 @@ class JCenterNewVersionFinder implements NewVersionFinder {
     List<Dependency> findNewer(List<Dependency> dependencies) {
         if (ignoreJCenter) {
             return []
+        } else if (dependencies.empty) {
+            return []
         }
-        return dependencies.isEmpty() ? [] : findNewerInMavenCentralRepo(dependencies)
+        List<Dependency> newerDependencies = findNewerInJCenter(dependencies)
+        loggerProxy.debug(log, "Newer dependencies found in JCenter $newerDependencies")
+        return newerDependencies
     }
     
-    private List<Dependency> findNewerInMavenCentralRepo(List<Dependency> dependencies) {
+    private List<Dependency> findNewerInJCenter(List<Dependency> dependencies) {
         int httpPoolSize = Math.min(dependencies.size(), maxHttpConnectionsPoolSize)        
         HTTPBuilder httpBuilder = new AsyncHTTPBuilder(timeout: connectionTimeout, poolSize: httpPoolSize, uri: jCenterRepo)
-        Closure latestFromMavenGetter = getLatestFromMavenCentralRepo.curry(httpBuilder, versionToExcludePatterns, loggerProxy)
+        Closure latestFromMavenGetter = getLatestFromJCenterRepo.curry(httpBuilder, versionToExcludePatterns, loggerProxy)
         return dependencies.collect(latestFromMavenGetter).collect{ it.get() }.grep(getOnlyNewer).collect { it[1] }
     }
 
-    public static final Closure<Future> getLatestFromMavenCentralRepo = {HTTPBuilder httpBuilder, List<String> versionToExcludePatterns, LoggerProxy loggerProxy, Dependency dependency ->
+    public final Closure<Future> getLatestFromJCenterRepo = {HTTPBuilder httpBuilder, List<String> versionToExcludePatterns, LoggerProxy loggerProxy, Dependency dependency ->
         appendFailureHandling(httpBuilder, loggerProxy, dependency.name)
         httpBuilder.get(path: "/${dependency.group.split('\\.').join('/')}/${dependency.name}/maven-metadata.xml") { resp, xml ->
             if(!xml) {
@@ -57,14 +61,14 @@ class JCenterNewVersionFinder implements NewVersionFinder {
         } as Future
     }
 
-    private static void appendFailureHandling(HTTPBuilder httpBuilder, LoggerProxy loggerProxy, String dependencyName) {
+    private void appendFailureHandling(HTTPBuilder httpBuilder, LoggerProxy loggerProxy, String dependencyName) {
         httpBuilder.handler.failure = { resp ->
             loggerProxy.debug(log, "Error with status [$resp.status] occurred while trying to download dependency [$dependencyName]")
             return []
         }
     }
 
-    private static DependencyVersion getLatestDependencyVersion(String releaseVersion, NodeChild xml, List<String> versionToExcludePatterns) {
+    private DependencyVersion getLatestDependencyVersion(String releaseVersion, NodeChild xml, List<String> versionToExcludePatterns) {
         if (versionNotMatchesExcludes(versionToExcludePatterns, releaseVersion)) {
             return new DependencyVersion(releaseVersion)
         }
@@ -76,13 +80,13 @@ class JCenterNewVersionFinder implements NewVersionFinder {
 
     }
 
-    private static boolean versionNotMatchesExcludes(List<String> versionToExcludePatterns, String version) {
+    private boolean versionNotMatchesExcludes(List<String> versionToExcludePatterns, String version) {
         return versionToExcludePatterns.every {
             !version.matches(it)
         }
     }
 
-    public static final Closure<Boolean> getOnlyNewer = { List<Dependency> dependenciesToCompare ->
+    private final Closure<Boolean> getOnlyNewer = { List<Dependency> dependenciesToCompare ->
         !dependenciesToCompare.empty && dependenciesToCompare[1].version != null && dependenciesToCompare[1].version > dependenciesToCompare[0].version
     }
 }

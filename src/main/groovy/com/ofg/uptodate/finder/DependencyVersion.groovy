@@ -7,6 +7,8 @@ import groovy.transform.EqualsAndHashCode
 class DependencyVersion implements Comparable<DependencyVersion> {
 
     private static Version NULL_VERSION = new Version('', false)
+    private static final int THIS_VERSION_LOWER = -1
+    private static final int THIS_VERSION_HIGHER = 1
 
     final String unparsedVersion
     final Version major
@@ -63,7 +65,8 @@ class DependencyVersion implements Comparable<DependencyVersion> {
             return 0
         }
         // this: 1.3, other 1.3.RC
-        return (isCurrentRevNullVersion() && other.rev.finalVersion) ? -1 : 1
+        return (isCurrentRevNullVersion() && other.rev.finalVersion) ?
+                THIS_VERSION_LOWER : revisionMostLikelyGreaterThanNullVersion(other)
     }
 
     private boolean isCurrentRevNullVersion() {
@@ -80,6 +83,11 @@ class DependencyVersion implements Comparable<DependencyVersion> {
 
     private boolean neitherHasRevisionFilled(DependencyVersion other) {
         return this.rev == NULL_VERSION && other.rev == NULL_VERSION
+    }
+
+    // this 2.2, other 2.2.1-b03
+    private int revisionMostLikelyGreaterThanNullVersion(DependencyVersion other) {
+        return other.rev.versionNumber.matches('^[0-9]+.*$') ? THIS_VERSION_LOWER : THIS_VERSION_HIGHER
     }
 
     @EqualsAndHashCode
