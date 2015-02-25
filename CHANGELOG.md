@@ -1,3 +1,9 @@
+1.2.0
+-----
+New features:
+* [#18](https://github.com/4finance/uptodate-gradle-plugin/issues/18) Support Proxy configuration
+* Moving towards Github release notes and changelog - this file will be deprecated
+
 1.1.1
 -----
 Bug fixes:

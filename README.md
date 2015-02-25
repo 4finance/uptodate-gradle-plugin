@@ -31,7 +31,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath('com.ofg:uptodate-gradle-plugin:1.1.0')
+        classpath('com.ofg:uptodate-gradle-plugin:1.2.0')
     }
 }
 ```
