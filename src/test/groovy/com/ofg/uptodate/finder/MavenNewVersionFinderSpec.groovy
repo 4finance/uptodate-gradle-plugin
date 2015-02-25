@@ -6,7 +6,7 @@ import org.codehaus.groovy.runtime.StackTraceUtils
 import static com.ofg.uptodate.Jsons.*
 import static com.ofg.uptodate.VersionPatterns.*
 
-@Mixin(MavenReponseProvider)
+@Mixin([MavenReponseProvider, HttpProxyServerProvider])
 class MavenNewVersionFinderSpec extends NewFinderSpec {
 
     def setup() {
@@ -16,6 +16,14 @@ class MavenNewVersionFinderSpec extends NewFinderSpec {
 
     protected void artifactMetadataRequestResponse(String group, String name, String response) {
         stubInteractionForMavenCentral(group, name, response)
+    }
+    
+    private void artifactMetadataRequestResponseThroughProxy(String group, String name, String response) {
+        stubProxyInteractionForMavenCentral(group, name, response)
+    }
+    
+    private void runningBehindHttpProxy() {
+        startHttpProxyServer()
     }
     
     @Override
@@ -115,5 +123,28 @@ class MavenNewVersionFinderSpec extends NewFinderSpec {
             1 * loggerProxy.info(_, "No new versions are available.")
     }
 
+    def 'should list all dependencies that have newer versions if running behind a proxy server configured via plugin'() {
+        given:
+            runningBehindHttpProxy()
+        and:
+            artifactMetadataRequestResponseThroughProxy('org.hibernate', 'hibernate-core', HIBERNATE_RESPONSE)
+            artifactMetadataRequestResponseThroughProxy('junit' ,'junit', JUNIT_RESPONSE)
+        and:
+            project.dependencies.add(COMPILE_CONFIGURATION, 'org.hibernate:hibernate-core:4.2.9.Final')
+            project.dependencies.add(TEST_COMPILE_CONFIGURATION, 'junit:junit:4.11')
+        and:
+            project.extensions.uptodate.with {
+                proxyHostname = 'localhost'
+                proxyPort = MOCK_HTTP_PROXY_SERVER_PORT
+                proxyScheme = 'http'
+            }
+        when:
+            executeUptodateTask()
+        then:
+            1 * loggerProxy.warn(_, "New versions available:\n" +
+                "'org.hibernate:hibernate-core:4.3.6.Final'")
+        cleanup:
+            shutdownHttpProxyServer()
+    }
 
 }

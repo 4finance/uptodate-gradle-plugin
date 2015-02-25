@@ -19,6 +19,9 @@ class MavenNewVersionFinder implements NewVersionFinder {
     private final List<String> versionToExcludePatterns
     private final boolean ignoreMaven
     private final LoggerProxy loggerProxy
+    private final String proxyHost
+    private final int proxyPort
+    private final String proxyScheme
 
     MavenNewVersionFinder(LoggerProxy loggerProxy, UptodatePluginExtension uptodatePluginExtension) {
         mavenUrl = uptodatePluginExtension.mavenRepo
@@ -26,6 +29,9 @@ class MavenNewVersionFinder implements NewVersionFinder {
         connectionTimeout = uptodatePluginExtension.connectionTimeout
         versionToExcludePatterns = uptodatePluginExtension.excludedVersionPatterns
         ignoreMaven = uptodatePluginExtension.ignoreMavenCentral
+        proxyHost = uptodatePluginExtension.proxyHostname
+        proxyPort = uptodatePluginExtension.proxyPort
+        proxyScheme = uptodatePluginExtension.proxyScheme
         this.loggerProxy = loggerProxy
     }
 
@@ -44,8 +50,15 @@ class MavenNewVersionFinder implements NewVersionFinder {
     private List<Dependency> findNewerInMavenCentralRepo(List<Dependency> dependencies) {
         int httpPoolSize = Math.min(dependencies.size(), maxHttpConnectionsPoolSize)
         HTTPBuilder httpBuilder = new AsyncHTTPBuilder(timeout: connectionTimeout, poolSize: httpPoolSize, uri: mavenUrl)
+        setProxyIfApplicable(httpBuilder)
         Closure latestFromMavenGetter = getLatestFromMavenCentralRepo.curry(httpBuilder, versionToExcludePatterns)
         return dependencies.collect(latestFromMavenGetter).collect{it.get()}.grep(getOnlyNewer).collect {it[1]}
+    }
+
+    private setProxyIfApplicable(HTTPBuilder httpBuilder) {
+        if (proxyHost) {
+            httpBuilder.setProxy(proxyHost, proxyPort, proxyScheme)
+        }
     }
 
     private final Closure<Future> getLatestFromMavenCentralRepo = {HTTPBuilder httpBuilder, List<String> versionToExcludePatterns, Dependency dependency ->

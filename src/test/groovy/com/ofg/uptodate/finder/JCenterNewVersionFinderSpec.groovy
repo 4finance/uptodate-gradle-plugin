@@ -5,7 +5,7 @@ import org.codehaus.groovy.runtime.StackTraceUtils
 import static com.ofg.uptodate.VersionPatterns.*
 import static com.ofg.uptodate.Xmls.*
 
-@Mixin(JCenterReponseProvider)
+@Mixin([JCenterReponseProvider, HttpProxyServerProvider])
 class JCenterNewVersionFinderSpec extends NewFinderSpec {
     
     def setup() {
@@ -16,6 +16,14 @@ class JCenterNewVersionFinderSpec extends NewFinderSpec {
     @Override
     protected void artifactMetadataRequestResponse(String group, String name, String response) {
         stubInteractionForJcenter(group, name, response)
+    }
+
+    private void artifactMetadataRequestResponseThroughProxy(String group, String name, String response) {
+        stubProxyInteractionForJcenter(group, name, response)
+    }
+
+    private void runningBehindHttpProxy() {
+        startHttpProxyServer()
     }
 
     def "should list all dependencies, that have newer versions"() {
@@ -98,5 +106,27 @@ class JCenterNewVersionFinderSpec extends NewFinderSpec {
             StackTraceUtils.extractRootCause(thrownException).class == SocketTimeoutException
     }
 
-   
+    def 'should list all dependencies that have newer versions if running behind a proxy server'() {
+        given:
+            runningBehindHttpProxy()
+        and:
+            artifactMetadataRequestResponseThroughProxy('org.hibernate', 'hibernate-core', HIBERNATE_CORE_META_DATA)
+            artifactMetadataRequestResponseThroughProxy('junit' ,'junit', JUNIT_META_DATA)
+        and:
+            project.dependencies.add(COMPILE_CONFIGURATION, 'org.hibernate:hibernate-core:4.2.9.Final')
+            project.dependencies.add(TEST_COMPILE_CONFIGURATION, 'junit:junit:4.11')
+        and:
+            project.extensions.uptodate.with {
+                proxyHostname = 'localhost'
+                proxyPort = MOCK_HTTP_PROXY_SERVER_PORT
+                proxyScheme = 'http'
+            }
+        when:
+            executeUptodateTask()
+        then:
+            1 * loggerProxy.warn(_, "New versions available:\n" +
+                "'org.hibernate:hibernate-core:4.3.6.Final'")
+        cleanup:
+            shutdownHttpProxyServer()
+    }   
 }
