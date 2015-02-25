@@ -50,11 +50,15 @@ class MavenNewVersionFinder implements NewVersionFinder {
     private List<Dependency> findNewerInMavenCentralRepo(List<Dependency> dependencies) {
         int httpPoolSize = Math.min(dependencies.size(), maxHttpConnectionsPoolSize)
         HTTPBuilder httpBuilder = new AsyncHTTPBuilder(timeout: connectionTimeout, poolSize: httpPoolSize, uri: mavenUrl)
+        setProxyIfApplicable(httpBuilder)
+        Closure latestFromMavenGetter = getLatestFromMavenCentralRepo.curry(httpBuilder, versionToExcludePatterns)
+        return dependencies.collect(latestFromMavenGetter).collect{it.get()}.grep(getOnlyNewer).collect {it[1]}
+    }
+
+    private setProxyIfApplicable(HTTPBuilder httpBuilder) {
         if (proxyHost) {
             httpBuilder.setProxy(proxyHost, proxyPort, proxyScheme)
         }
-        Closure latestFromMavenGetter = getLatestFromMavenCentralRepo.curry(httpBuilder, versionToExcludePatterns)
-        return dependencies.collect(latestFromMavenGetter).collect{it.get()}.grep(getOnlyNewer).collect {it[1]}
     }
 
     private final Closure<Future> getLatestFromMavenCentralRepo = {HTTPBuilder httpBuilder, List<String> versionToExcludePatterns, Dependency dependency ->

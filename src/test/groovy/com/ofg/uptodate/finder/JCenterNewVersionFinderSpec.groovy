@@ -116,9 +116,11 @@ class JCenterNewVersionFinderSpec extends NewFinderSpec {
             project.dependencies.add(COMPILE_CONFIGURATION, 'org.hibernate:hibernate-core:4.2.9.Final')
             project.dependencies.add(TEST_COMPILE_CONFIGURATION, 'junit:junit:4.11')
         and:
-            project.extensions.uptodate.proxyHostname = 'localhost'
-            project.extensions.uptodate.proxyPort = MOCK_HTTP_PROXY_SERVER_PORT
-            project.extensions.uptodate.proxyScheme = 'http'
+            project.extensions.uptodate.with {
+                proxyHostname = 'localhost'
+                proxyPort = MOCK_HTTP_PROXY_SERVER_PORT
+                proxyScheme = 'http'
+            }
         when:
             executeUptodateTask()
         then:

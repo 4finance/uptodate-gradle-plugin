@@ -1,10 +1,11 @@
 package com.ofg.uptodate.finder
-
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.ofg.uptodate.http.HttpMockServer
+import groovy.transform.PackageScope
 
+@PackageScope
 class HttpProxyServerProvider {
     
     public static final int MOCK_HTTP_PROXY_SERVER_PORT = 12406

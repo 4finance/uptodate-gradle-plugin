@@ -50,11 +50,15 @@ class JCenterNewVersionFinder implements NewVersionFinder {
     private List<Dependency> findNewerInJCenter(List<Dependency> dependencies) {
         int httpPoolSize = Math.min(dependencies.size(), maxHttpConnectionsPoolSize)        
         HTTPBuilder httpBuilder = new AsyncHTTPBuilder(timeout: connectionTimeout, poolSize: httpPoolSize, uri: jCenterRepo)
+        setProxyIfApplicable(httpBuilder)
+        Closure latestFromMavenGetter = getLatestFromJCenterRepo.curry(httpBuilder, versionToExcludePatterns, loggerProxy)
+        return dependencies.collect(latestFromMavenGetter).collect{ it.get() }.grep(getOnlyNewer).collect { it[1] }
+    }
+
+    private void setProxyIfApplicable(AsyncHTTPBuilder httpBuilder) {
         if (proxyHost) {
             httpBuilder.setProxy(proxyHost, proxyPort, proxyScheme)
         }
-        Closure latestFromMavenGetter = getLatestFromJCenterRepo.curry(httpBuilder, versionToExcludePatterns, loggerProxy)
-        return dependencies.collect(latestFromMavenGetter).collect{ it.get() }.grep(getOnlyNewer).collect { it[1] }
     }
 
     public final Closure<Future> getLatestFromJCenterRepo = {HTTPBuilder httpBuilder, List<String> versionToExcludePatterns, LoggerProxy loggerProxy, Dependency dependency ->
