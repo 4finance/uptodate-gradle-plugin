@@ -10,4 +10,8 @@ class MavenReponseProvider {
     void stubInteractionForMavenCentral(String group, String name, String response) {
         stubInteraction(get(urlMatching( "^.*${ROOT_PATH}q=${escape("g:\"$group\"")}$SOLR_AND${escape("a:\"$name\"")}.*")), aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(response))
     }
+
+    void stubProxyInteractionForMavenCentral(String group, String name, String response) {
+        stubProxyInteraction(get(urlMatching( "^.*${ROOT_PATH}q=${escape("g:\"$group\"")}$SOLR_AND${escape("a:\"$name\"")}.*")), aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(response))
+    } 
 }

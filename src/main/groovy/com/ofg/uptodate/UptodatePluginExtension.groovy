@@ -40,6 +40,21 @@ class UptodatePluginExtension {
     int connectionTimeout = 5000
 
     /**
+     * Proxy server hostname
+     */
+    String proxyHostname
+
+    /**
+     * Proxy server port. Defaults to -1, meaning the default port corresponding to proxyScheme
+     */
+    int proxyPort = -1
+
+    /**
+     * The name of the scheme to be used for connecting to the proxy server (usually 'http' or https', defaults to 'http') 
+     */
+    String proxyScheme = "http"
+    
+    /**
      * Patterns for versions that will not be considered as updates
      */
     final List<String> excludedVersionPatterns = VersionPatterns.ALL_PATTERNS

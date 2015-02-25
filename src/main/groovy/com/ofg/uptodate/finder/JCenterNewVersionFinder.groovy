@@ -19,6 +19,9 @@ class JCenterNewVersionFinder implements NewVersionFinder {
     private final boolean ignoreJCenter
     private final String jCenterRepo
     private final LoggerProxy loggerProxy
+    private final String proxyHost
+    private final int proxyPort
+    private final String proxyScheme
 
     JCenterNewVersionFinder(LoggerProxy loggerProxy, UptodatePluginExtension uptodatePluginExtension) {
         maxHttpConnectionsPoolSize = uptodatePluginExtension.simultaneousHttpConnections
@@ -26,6 +29,9 @@ class JCenterNewVersionFinder implements NewVersionFinder {
         versionToExcludePatterns = uptodatePluginExtension.excludedVersionPatterns
         ignoreJCenter = uptodatePluginExtension.ignoreJCenter
         jCenterRepo = uptodatePluginExtension.jCenterRepo
+        proxyHost = uptodatePluginExtension.proxyHostname
+        proxyPort = uptodatePluginExtension.proxyPort
+        proxyScheme = uptodatePluginExtension.proxyScheme
         this.loggerProxy = loggerProxy
     }
 
@@ -44,6 +50,9 @@ class JCenterNewVersionFinder implements NewVersionFinder {
     private List<Dependency> findNewerInJCenter(List<Dependency> dependencies) {
         int httpPoolSize = Math.min(dependencies.size(), maxHttpConnectionsPoolSize)        
         HTTPBuilder httpBuilder = new AsyncHTTPBuilder(timeout: connectionTimeout, poolSize: httpPoolSize, uri: jCenterRepo)
+        if (proxyHost) {
+            httpBuilder.setProxy(proxyHost, proxyPort, proxyScheme)
+        }
         Closure latestFromMavenGetter = getLatestFromJCenterRepo.curry(httpBuilder, versionToExcludePatterns, loggerProxy)
         return dependencies.collect(latestFromMavenGetter).collect{ it.get() }.grep(getOnlyNewer).collect { it[1] }
     }

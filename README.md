@@ -98,6 +98,17 @@ uptodate {
 }
 ```
 
+### How to run the plugin if you are behind an HTTP proxy?
+You can configure your proxy settings by adding the proxyHostname, proxyPort (defaults to -1, which is the default port of the scheme) and proxyScheme (defaults to 'http') properties to the plugin configuration.
+
+```
+uptodate {
+    proxyHostname 'localhost'
+    proxyPort 15000
+    proxyScheme 'http'
+}
+```
+
 ### How to run the plugin on every build?
 
 You can run the plugin automatically on every build, just by adding to your build.gradle
