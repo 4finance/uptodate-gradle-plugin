@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/4finance/uptodate-gradle-plugin.svg?branch=master)](https://travis-ci.org/4finance/uptodate-gradle-plugin) [![Coverage Status](http://img.shields.io/coveralls/4finance/uptodate-gradle-plugin/master.svg)](https://coveralls.io/r/4finance/uptodate-gradle-plugin)
+[ ![Download](https://api.bintray.com/packages/4finance/uptodate-gradle-plugin/uptodate-gradle-plugin/images/download.svg) ](https://bintray.com/4finance/uptodate-gradle-plugin/uptodate-gradle-plugin/_latestVersion)
 
 uptodate-gradle-plugin
 ======================
