@@ -1,8 +1,6 @@
 package com.ofg.uptodate
-import com.ofg.uptodate.finder.Dependency
-import com.ofg.uptodate.finder.JCenterNewVersionFinder
-import com.ofg.uptodate.finder.MavenNewVersionFinder
-import com.ofg.uptodate.finder.NewVersionFinderInAllRepositories
+
+import com.ofg.uptodate.finder.*
 import groovy.util.logging.Slf4j
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -10,6 +8,9 @@ import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 
 import javax.inject.Inject
+
+import static com.ofg.uptodate.finder.NewVersionFinder.jCenterNewVersionFinder
+import static com.ofg.uptodate.finder.NewVersionFinder.mavenNewVersionFinder
 
 @Slf4j
 class UptodatePlugin implements Plugin<Project> {
@@ -29,10 +30,14 @@ class UptodatePlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.extensions.create(TASK_NAME, UptodatePluginExtension)
-        UptodatePluginExtension uptodatePluginExtension = project.extensions.uptodate        
+        UptodatePluginExtension uptodatePluginExtension = project.extensions.uptodate
         Task createdTask = project.task(TASK_NAME) << { Task task ->
             printMissingJCenterRepoIfApplicable(uptodatePluginExtension, project)
-            NewVersionFinderInAllRepositories newVersionFinder = new NewVersionFinderInAllRepositories(loggerProxy, [new MavenNewVersionFinder(loggerProxy, uptodatePluginExtension), new JCenterNewVersionFinder(loggerProxy, uptodatePluginExtension)])
+            NewVersionFinderInAllRepositories newVersionFinder = new NewVersionFinderInAllRepositories(loggerProxy,
+                    [
+                            mavenNewVersionFinder(loggerProxy, uptodatePluginExtension),
+                            jCenterNewVersionFinder(loggerProxy, uptodatePluginExtension)
+                    ])
             List<Dependency> dependencies = getDependencies(project)
             Set<Dependency> dependenciesWithNewVersions = newVersionFinder.findNewer(dependencies)
             newVersionFinder.printDependencies(dependenciesWithNewVersions)
@@ -68,9 +73,9 @@ class UptodatePlugin implements Plugin<Project> {
     private List<Dependency> getDependencies(Set<Configuration> configurations) {
         log.debug("Getting dependencies for configurations [$configurations]")
         return configurations.collectNested { conf ->
-            conf.dependencies.findAll{ dep -> dep.name && dep.group && dep.version }.collect { dep ->
-                log.debug("Collecting dependency with group: [$dep.group] name: [$dep.name] and version: [$dep.version]")    
-                new Dependency(dep.group, dep.name, dep.version) 
+            conf.dependencies.findAll { dep -> dep.name && dep.group && dep.version }.collect { dep ->
+                log.debug("Collecting dependency with group: [$dep.group] name: [$dep.name] and version: [$dep.version]")
+                new Dependency(dep.group, dep.name, dep.version)
             }
         }.flatten().unique()
     }

@@ -1,6 +1,7 @@
 package com.ofg.uptodate
-import com.ofg.uptodate.finder.JCenterNewVersionFinder
-import com.ofg.uptodate.finder.MavenNewVersionFinder
+
+import com.ofg.uptodate.finder.JCenterRepositorySettingsProvider
+import com.ofg.uptodate.finder.MavenRepositorySettingsProvider
 
 class UptodatePluginExtension {
     
@@ -22,12 +23,12 @@ class UptodatePluginExtension {
     /**
      * Link to JCenter repo (or nay other that follows their convention)
      */
-    String jCenterRepo = JCenterNewVersionFinder.JCENTER_REPO_URL
+    String jCenterRepo = JCenterRepositorySettingsProvider.JCENTER_REPO_URL
 
     /**
     * Link to Maven Central repo (or nay other that follows their convention)
     */
-    String mavenRepo = MavenNewVersionFinder.MAVEN_CENTRAL_REPO_URL
+    String mavenRepo = MavenRepositorySettingsProvider.MAVEN_CENTRAL_REPO_URL
     
     /**
      * Number of maximal http connections to external repos
