@@ -22,9 +22,7 @@ class NewVersionFinder {
     }
 
     List<Dependency> findNewer(List<Dependency> dependencies) {
-        if (finderConfiguration.ignore) {
-            return []
-        } else if (dependencies.empty) {
+        if (finderConfiguration.ignore || dependencies.empty) {
             return []
         }
 

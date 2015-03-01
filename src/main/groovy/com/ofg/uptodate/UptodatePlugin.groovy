@@ -34,10 +34,8 @@ class UptodatePlugin implements Plugin<Project> {
         Task createdTask = project.task(TASK_NAME) << { Task task ->
             printMissingJCenterRepoIfApplicable(uptodatePluginExtension, project)
             NewVersionFinderInAllRepositories newVersionFinder = new NewVersionFinderInAllRepositories(loggerProxy,
-                    [
-                            new MavenNewVersionFinderFactory(loggerProxy).build(uptodatePluginExtension),
-                            new JCenterNewVersionFinderFactory(loggerProxy).build(uptodatePluginExtension)
-                    ])
+                    [new MavenNewVersionFinderFactory(loggerProxy).build(uptodatePluginExtension),
+                     new JCenterNewVersionFinderFactory(loggerProxy).build(uptodatePluginExtension)])
             List<Dependency> dependencies = getDependencies(project)
             Set<Dependency> dependenciesWithNewVersions = newVersionFinder.findNewer(dependencies)
             newVersionFinder.printDependencies(dependenciesWithNewVersions)
