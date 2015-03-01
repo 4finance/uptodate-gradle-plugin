@@ -11,26 +11,12 @@ class NewVersionFinder {
     private final FinderConfiguration finderConfiguration
     private final LoggerProxy loggerProxy
 
-    private NewVersionFinder(LoggerProxy loggerProxy,
-                             RepositorySettingsProvider repositorySettingsProvider,
-                             LatestDependenciesProvider latestDependenciesProvider,
-                             UptodatePluginExtension uptodatePluginExtension) {
+    NewVersionFinder(LoggerProxy loggerProxy,
+                     RepositorySettingsProvider repositorySettingsProvider,
+                     LatestDependenciesProvider latestDependenciesProvider,
+                     UptodatePluginExtension uptodatePluginExtension) {
 
-        RepositorySettings repositorySettings = repositorySettingsProvider.getFrom(uptodatePluginExtension)
-        finderConfiguration = new FinderConfiguration(
-                ignore: repositorySettings.ignoreRepo,
-                httpConnectionSettings: new HttpConnectionSettings(
-                        url: repositorySettings.repoUrl,
-                        proxySettings: new ProxySettings(
-                                hostname: uptodatePluginExtension.proxyHostname,
-                                port: uptodatePluginExtension.proxyPort,
-                                scheme: uptodatePluginExtension.proxyScheme
-                        ),
-                        poolSize: uptodatePluginExtension.simultaneousHttpConnections,
-                        timeout: uptodatePluginExtension.connectionTimeout
-                ),
-                excludedVersionPatterns: uptodatePluginExtension.excludedVersionPatterns
-        )
+        finderConfiguration = new FinderConfiguration(repositorySettingsProvider.getFrom(uptodatePluginExtension), uptodatePluginExtension)
         this.latestDependenciesProvider = latestDependenciesProvider
         this.loggerProxy = loggerProxy
     }
@@ -45,13 +31,5 @@ class NewVersionFinder {
         List<Dependency> newerDependencies = latestDependenciesProvider.findLatest(dependencies, finderConfiguration)
         loggerProxy.debug(log, "Newer dependencies found in $finderConfiguration.httpConnectionSettings.url $newerDependencies")
         return newerDependencies
-    }
-
-    static NewVersionFinder mavenNewVersionFinder(LoggerProxy loggerProxy, UptodatePluginExtension uptodatePluginExtension) {
-        return new NewVersionFinder(loggerProxy, new MavenRepositorySettingsProvider(), new MavenLatestDependenciesProvider(loggerProxy), uptodatePluginExtension);
-    }
-
-    static NewVersionFinder jCenterNewVersionFinder(LoggerProxy loggerProxy, UptodatePluginExtension uptodatePluginExtension) {
-        return new NewVersionFinder(loggerProxy, new JCenterRepositorySettingsProvider(), new JCenterLatestDependenciesProvider(loggerProxy), uptodatePluginExtension);
     }
 }

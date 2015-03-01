@@ -1,6 +1,9 @@
 package com.ofg.uptodate
 
-import com.ofg.uptodate.finder.*
+import com.ofg.uptodate.finder.Dependency
+import com.ofg.uptodate.finder.JCenterNewVersionFinderFactory
+import com.ofg.uptodate.finder.MavenNewVersionFinderFactory
+import com.ofg.uptodate.finder.NewVersionFinderInAllRepositories
 import groovy.util.logging.Slf4j
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -8,9 +11,6 @@ import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 
 import javax.inject.Inject
-
-import static com.ofg.uptodate.finder.NewVersionFinder.jCenterNewVersionFinder
-import static com.ofg.uptodate.finder.NewVersionFinder.mavenNewVersionFinder
 
 @Slf4j
 class UptodatePlugin implements Plugin<Project> {
@@ -35,8 +35,8 @@ class UptodatePlugin implements Plugin<Project> {
             printMissingJCenterRepoIfApplicable(uptodatePluginExtension, project)
             NewVersionFinderInAllRepositories newVersionFinder = new NewVersionFinderInAllRepositories(loggerProxy,
                     [
-                            mavenNewVersionFinder(loggerProxy, uptodatePluginExtension),
-                            jCenterNewVersionFinder(loggerProxy, uptodatePluginExtension)
+                            new MavenNewVersionFinderFactory(loggerProxy).build(uptodatePluginExtension),
+                            new JCenterNewVersionFinderFactory(loggerProxy).build(uptodatePluginExtension)
                     ])
             List<Dependency> dependencies = getDependencies(project)
             Set<Dependency> dependenciesWithNewVersions = newVersionFinder.findNewer(dependencies)
