@@ -1,5 +1,4 @@
 package com.ofg.uptodate.finder.jcenter
-
 import com.ofg.uptodate.finder.HttpProxyServerProvider
 import com.ofg.uptodate.finder.NewFinderSpec
 import groovy.text.SimpleTemplateEngine
@@ -109,7 +108,7 @@ class JCenterNewVersionFinderSpec extends NewFinderSpec {
             StackTraceUtils.extractRootCause(thrownException).class == SocketTimeoutException
     }
 
-    def 'should list all dependencies that have newer versions if running behind a proxy server'() {
+    def 'should list all dependencies that have newer versions if running behind a proxy server configured via plugin'() {
         given:
             runningBehindHttpProxy()
         and:
@@ -120,7 +119,7 @@ class JCenterNewVersionFinderSpec extends NewFinderSpec {
             project.dependencies.add(TEST_COMPILE_CONFIGURATION, 'junit:junit:4.11')
         and:
             project.extensions.uptodate.with {
-                proxyHostname = 'localhost'
+                proxyHostname = MOCK_HTTP_PROXY_SERVER_HOST
                 proxyPort = MOCK_HTTP_PROXY_SERVER_PORT
                 proxyScheme = 'http'
             }
@@ -131,5 +130,28 @@ class JCenterNewVersionFinderSpec extends NewFinderSpec {
                 "'org.hibernate:hibernate-core:4.3.6.Final'")
         cleanup:
             shutdownHttpProxyServer()
-    }   
+    }
+
+    def 'should list all dependencies that have newer versions if running behind a proxy server configured via system properties'() {
+        given:
+            runningBehindHttpProxy()
+        and:
+            artifactMetadataRequestResponseThroughProxy('org.hibernate', 'hibernate-core', HIBERNATE_CORE_META_DATA)
+            artifactMetadataRequestResponseThroughProxy('junit' ,'junit', JUNIT_META_DATA)
+        and:
+            project.dependencies.add(COMPILE_CONFIGURATION, 'org.hibernate:hibernate-core:4.2.9.Final')
+            project.dependencies.add(TEST_COMPILE_CONFIGURATION, 'junit:junit:4.11')
+        and:
+            String previousProxyHostname = System.setProperty('http.proxyHost', MOCK_HTTP_PROXY_SERVER_HOST)
+            String previousProxyPort = System.setProperty('http.proxyPort', MOCK_HTTP_PROXY_SERVER_PORT.toString())
+        when:
+            executeUptodateTask()
+        then:
+            1 * loggerProxy.warn(_, "New versions available:\n" +
+                "'org.hibernate:hibernate-core:4.3.6.Final'")
+        cleanup:
+            shutdownHttpProxyServer()
+            System.setProperty('http.proxyHost', previousProxyHostname ?: '')
+            System.setProperty('http.proxyPort', previousProxyPort ?: '')
+    }
 }

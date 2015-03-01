@@ -100,7 +100,23 @@ uptodate {
 ```
 
 ### How to run the plugin if you are behind an HTTP proxy?
-You can configure your proxy settings by adding the proxyHostname, proxyPort (defaults to -1, which is the default port of the scheme) and proxyScheme (defaults to 'http') properties to the plugin configuration.
+
+The proxy settings can be configured by using one of the following approaches:
+
+#### 1. Via System properties (recommended)
+
+Make sure to have the following properties configured when running the plugin:
+
+```
+http.proxyHost=localhost
+http.proxyPort=15000
+https.proxyHost=localhost
+https.proxyPort=15000
+```
+
+#### 2. Via plugin configuration
+
+Add the proxyHostname, proxyPort (defaults to -1, which is the default port of the scheme) and proxyScheme (defaults to 'http') properties to the plugin configuration.
 
 ```
 uptodate {
