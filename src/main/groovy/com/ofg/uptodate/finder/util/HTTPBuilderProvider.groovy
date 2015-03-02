@@ -1,27 +1,25 @@
-package com.ofg.uptodate.finder
+package com.ofg.uptodate.finder.util
 
+import com.ofg.uptodate.LoggerProxy
+import com.ofg.uptodate.finder.Dependency
+import com.ofg.uptodate.finder.HttpConnectionSettings
 import groovyx.net.http.AsyncHTTPBuilder
 import groovyx.net.http.HTTPBuilder
+import org.slf4j.Logger
 
 class HTTPBuilderProvider {
 
     private final HttpConnectionSettings httpConnectionSettings
-    private int poolSize
 
     HTTPBuilderProvider(HttpConnectionSettings httpConnectionSettings) {
         this.httpConnectionSettings = httpConnectionSettings
     }
 
-    HTTPBuilderProvider withPoolSize(int poolSize) {
-        this.poolSize = poolSize
-        return this
-    }
-
-    HTTPBuilder get() {
+    HTTPBuilder getWithPoolSizeFor(List<Dependency> dependencies) {
         HTTPBuilder httpBuilder = new AsyncHTTPBuilder(
                 uri: httpConnectionSettings.url,
                 timeout: httpConnectionSettings.timeout,
-                poolSize: poolSize
+                poolSize: Math.min(dependencies.size(), httpConnectionSettings.poolSize)
         )
         return configureProxySettingsIfApplicable(httpBuilder)
     }
@@ -33,5 +31,15 @@ class HTTPBuilderProvider {
             }
         }
         return httpBuilder
+    }
+
+    static class FailureHandlers {
+
+        static Closure<List<Dependency>> logOnlyFailureHandler(LoggerProxy loggerProxy, Logger log, String dependencyName) {
+            { resp ->
+                loggerProxy.debug(log, "Error with status [$resp.status] occurred while trying to download dependency [$dependencyName]")
+                return []
+            }
+        }
     }
 }
