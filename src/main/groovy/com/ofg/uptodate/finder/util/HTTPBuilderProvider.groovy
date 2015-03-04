@@ -15,11 +15,11 @@ class HTTPBuilderProvider {
         this.httpConnectionSettings = httpConnectionSettings
     }
 
-    HTTPBuilder getWithPoolSizeFor(List<Dependency> dependencies) {
+    HTTPBuilder get() {
         HTTPBuilder httpBuilder = new AsyncHTTPBuilder(
                 uri: httpConnectionSettings.url,
                 timeout: httpConnectionSettings.timeout,
-                poolSize: Math.min(dependencies.size(), httpConnectionSettings.poolSize)
+                poolSize: httpConnectionSettings.poolSize
         )
         return configureProxySettingsIfApplicable(httpBuilder)
     }

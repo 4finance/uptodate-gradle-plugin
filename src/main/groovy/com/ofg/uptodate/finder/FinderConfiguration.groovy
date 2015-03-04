@@ -1,8 +1,7 @@
 package com.ofg.uptodate.finder
-import com.ofg.uptodate.UptodatePluginExtension
-import groovy.transform.PackageScope
 
-@PackageScope
+import com.ofg.uptodate.UptodatePluginExtension
+
 class FinderConfiguration {
 
     final boolean ignore
@@ -10,7 +9,8 @@ class FinderConfiguration {
     final List<String> excludedVersionPatterns
 
     FinderConfiguration(RepositorySettings repositorySettings,
-                        UptodatePluginExtension uptodatePluginExtension) {
+                        UptodatePluginExtension uptodatePluginExtension,
+                        int numberOfDependencies) {
 
         ignore = repositorySettings.ignoreRepo
         httpConnectionSettings = new HttpConnectionSettings(
@@ -20,7 +20,7 @@ class FinderConfiguration {
                         port: uptodatePluginExtension.proxyPort,
                         scheme: uptodatePluginExtension.proxyScheme
                 ),
-                poolSize: uptodatePluginExtension.simultaneousHttpConnections,
+                poolSize: Math.min(numberOfDependencies, uptodatePluginExtension.simultaneousHttpConnections),
                 timeout: uptodatePluginExtension.connectionTimeout
         )
         excludedVersionPatterns = uptodatePluginExtension.excludedVersionPatterns

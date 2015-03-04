@@ -2,7 +2,7 @@ package com.ofg.uptodate.finder.util
 
 class StringMatcher {
 
-    String text
+    private final String text
 
     StringMatcher(String text) {
         this.text = text

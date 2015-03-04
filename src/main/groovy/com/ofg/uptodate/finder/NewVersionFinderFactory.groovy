@@ -4,5 +4,5 @@ import com.ofg.uptodate.UptodatePluginExtension
 
 interface NewVersionFinderFactory {
 
-    NewVersionFinder create(UptodatePluginExtension uptodatePluginExtension)
+    NewVersionFinder create(UptodatePluginExtension uptodatePluginExtension, List<Dependency> dependencies)
 }

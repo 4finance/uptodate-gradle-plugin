@@ -33,12 +33,16 @@ class UptodatePlugin implements Plugin<Project> {
         UptodatePluginExtension uptodatePluginExtension = project.extensions.uptodate
         Task createdTask = project.task(TASK_NAME) << { Task task ->
             printMissingJCenterRepoIfApplicable(uptodatePluginExtension, project)
-            NewVersionFinderInAllRepositories newVersionFinder = new NewVersionFinderInAllRepositories(loggerProxy,
-                    [new MavenNewVersionFinderFactory(loggerProxy).create(uptodatePluginExtension),
-                     new JCenterNewVersionFinderFactory(loggerProxy).create(uptodatePluginExtension)])
             List<Dependency> dependencies = getDependencies(project)
-            Set<Dependency> dependenciesWithNewVersions = newVersionFinder.findNewer(dependencies)
-            newVersionFinder.printDependencies(dependenciesWithNewVersions)
+            if (dependencies) {
+                NewVersionFinderInAllRepositories newVersionFinder = new NewVersionFinderInAllRepositories(loggerProxy,
+                        [new MavenNewVersionFinderFactory(loggerProxy).create(uptodatePluginExtension, dependencies),
+                         new JCenterNewVersionFinderFactory(loggerProxy).create(uptodatePluginExtension, dependencies)])
+                Set<Dependency> dependenciesWithNewVersions = newVersionFinder.findNewer(dependencies)
+                newVersionFinder.printDependencies(dependenciesWithNewVersions)
+            } else {
+                loggerProxy.info(log, 'No dependencies found in project configuration.')
+            }
         }
         createdTask.group = "Dependencies"
         createdTask.description = "Checks your dependencies against provided repositories (defaults to Maven Central and JCenter)"
