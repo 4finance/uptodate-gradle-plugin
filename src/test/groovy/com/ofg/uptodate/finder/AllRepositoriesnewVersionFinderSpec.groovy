@@ -1,5 +1,8 @@
 package com.ofg.uptodate.finder
 
+import com.ofg.uptodate.finder.jcenter.JCenterReponseProvider
+import com.ofg.uptodate.finder.maven.MavenReponseProvider
+
 import static com.ofg.uptodate.Jsons.JUNIT_RESPONSE
 import static com.ofg.uptodate.Jsons.OLD_HIBERNATE_RESPONSE
 import static com.ofg.uptodate.Xmls.HIBERNATE_CORE_META_DATA

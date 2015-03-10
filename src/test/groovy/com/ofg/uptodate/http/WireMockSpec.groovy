@@ -5,7 +5,7 @@ import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder
 import com.github.tomakehurst.wiremock.client.WireMock
 import spock.lang.Specification
 
-class WireMockSpec extends Specification {
+abstract class WireMockSpec extends Specification {
 
     HttpMockServer httpMockServer
     protected WireMock wireMock

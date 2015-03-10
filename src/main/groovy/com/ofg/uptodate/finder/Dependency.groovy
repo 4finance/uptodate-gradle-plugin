@@ -1,9 +1,7 @@
 package com.ofg.uptodate.finder
 
 import groovy.transform.EqualsAndHashCode
-import groovy.transform.PackageScope
 
-@PackageScope
 @EqualsAndHashCode
 class Dependency {
     final String group

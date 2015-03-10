@@ -1,5 +1,7 @@
-package com.ofg.uptodate.finder
+package com.ofg.uptodate.finder.maven
 
+import com.ofg.uptodate.finder.HttpProxyServerProvider
+import com.ofg.uptodate.finder.NewFinderSpec
 import groovy.text.SimpleTemplateEngine
 import org.codehaus.groovy.runtime.StackTraceUtils
 

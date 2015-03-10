@@ -1,7 +1,8 @@
 package com.ofg.uptodate
+
 import com.ofg.uptodate.finder.Dependency
-import com.ofg.uptodate.finder.JCenterNewVersionFinder
-import com.ofg.uptodate.finder.MavenNewVersionFinder
+import com.ofg.uptodate.finder.jcenter.JCenterNewVersionFinderFactory
+import com.ofg.uptodate.finder.maven.MavenNewVersionFinderFactory
 import com.ofg.uptodate.finder.NewVersionFinderInAllRepositories
 import groovy.util.logging.Slf4j
 import org.gradle.api.Plugin
@@ -29,13 +30,19 @@ class UptodatePlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.extensions.create(TASK_NAME, UptodatePluginExtension)
-        UptodatePluginExtension uptodatePluginExtension = project.extensions.uptodate        
+        UptodatePluginExtension uptodatePluginExtension = project.extensions.uptodate
         Task createdTask = project.task(TASK_NAME) << { Task task ->
             printMissingJCenterRepoIfApplicable(uptodatePluginExtension, project)
-            NewVersionFinderInAllRepositories newVersionFinder = new NewVersionFinderInAllRepositories(loggerProxy, [new MavenNewVersionFinder(loggerProxy, uptodatePluginExtension), new JCenterNewVersionFinder(loggerProxy, uptodatePluginExtension)])
             List<Dependency> dependencies = getDependencies(project)
-            Set<Dependency> dependenciesWithNewVersions = newVersionFinder.findNewer(dependencies)
-            newVersionFinder.printDependencies(dependenciesWithNewVersions)
+            if (dependencies) {
+                NewVersionFinderInAllRepositories newVersionFinder = new NewVersionFinderInAllRepositories(loggerProxy,
+                        [new MavenNewVersionFinderFactory(loggerProxy).create(uptodatePluginExtension, dependencies),
+                         new JCenterNewVersionFinderFactory(loggerProxy).create(uptodatePluginExtension, dependencies)])
+                Set<Dependency> dependenciesWithNewVersions = newVersionFinder.findNewer(dependencies)
+                newVersionFinder.printDependencies(dependenciesWithNewVersions)
+            } else {
+                loggerProxy.info(log, 'No dependencies found in project configuration.')
+            }
         }
         createdTask.group = "Dependencies"
         createdTask.description = "Checks your dependencies against provided repositories (defaults to Maven Central and JCenter)"
@@ -68,9 +75,9 @@ class UptodatePlugin implements Plugin<Project> {
     private List<Dependency> getDependencies(Set<Configuration> configurations) {
         log.debug("Getting dependencies for configurations [$configurations]")
         return configurations.collectNested { conf ->
-            conf.dependencies.findAll{ dep -> dep.name && dep.group && dep.version }.collect { dep ->
-                log.debug("Collecting dependency with group: [$dep.group] name: [$dep.name] and version: [$dep.version]")    
-                new Dependency(dep.group, dep.name, dep.version) 
+            conf.dependencies.findAll { dep -> dep.name && dep.group && dep.version }.collect { dep ->
+                log.debug("Collecting dependency with group: [$dep.group] name: [$dep.name] and version: [$dep.version]")
+                new Dependency(dep.group, dep.name, dep.version)
             }
         }.flatten().unique()
     }
