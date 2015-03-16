@@ -24,10 +24,8 @@ class HTTPBuilderProvider {
     }
 
     private HTTPBuilder configureProxySettingsIfApplicable(HTTPBuilder httpBuilder) {
-        httpConnectionSettings.with {
-            if (proxySettings) {
-                httpBuilder.setProxy(proxySettings.hostname, proxySettings.port, proxySettings.scheme)
-            }
+        httpConnectionSettings.proxySettings?.with {
+            httpBuilder.setProxy(hostname, port, scheme)
         }
         return httpBuilder
     }
