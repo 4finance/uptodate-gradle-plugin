@@ -1,5 +1,4 @@
 package com.ofg.uptodate.finder.maven
-
 import com.ofg.uptodate.finder.HttpProxyServerProvider
 import com.ofg.uptodate.finder.NewFinderSpec
 import groovy.text.SimpleTemplateEngine
@@ -136,7 +135,7 @@ class MavenNewVersionFinderSpec extends NewFinderSpec {
             project.dependencies.add(TEST_COMPILE_CONFIGURATION, 'junit:junit:4.11')
         and:
             project.extensions.uptodate.with {
-                proxyHostname = 'localhost'
+                proxyHostname = MOCK_HTTP_PROXY_SERVER_HOST
                 proxyPort = MOCK_HTTP_PROXY_SERVER_PORT
                 proxyScheme = 'http'
             }
@@ -149,4 +148,26 @@ class MavenNewVersionFinderSpec extends NewFinderSpec {
             shutdownHttpProxyServer()
     }
 
+    def 'should list all dependencies that have newer versions if running behind a proxy server configured via system properties'() {
+        given:
+            runningBehindHttpProxy()
+        and:
+            artifactMetadataRequestResponseThroughProxy('org.hibernate', 'hibernate-core', HIBERNATE_RESPONSE)
+            artifactMetadataRequestResponseThroughProxy('junit' ,'junit', JUNIT_RESPONSE)
+        and:
+            project.dependencies.add(COMPILE_CONFIGURATION, 'org.hibernate:hibernate-core:4.2.9.Final')
+            project.dependencies.add(TEST_COMPILE_CONFIGURATION, 'junit:junit:4.11')
+        and:
+            String previousProxyHostname = System.setProperty('http.proxyHost', MOCK_HTTP_PROXY_SERVER_HOST)
+            String previousProxyPort = System.setProperty('http.proxyPort', MOCK_HTTP_PROXY_SERVER_PORT.toString())
+        when:
+            executeUptodateTask()
+        then:
+            1 * loggerProxy.warn(_, "New versions available:\n" +
+                "'org.hibernate:hibernate-core:4.3.6.Final'")
+        cleanup:
+            shutdownHttpProxyServer()
+            System.setProperty('http.proxyHost', previousProxyHostname ?: '')
+            System.setProperty('http.proxyPort', previousProxyPort ?: '')
+    }
 }

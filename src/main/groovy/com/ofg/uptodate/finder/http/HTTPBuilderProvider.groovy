@@ -1,8 +1,7 @@
-package com.ofg.uptodate.finder.util
+package com.ofg.uptodate.finder.http
 
 import com.ofg.uptodate.LoggerProxy
 import com.ofg.uptodate.finder.Dependency
-import com.ofg.uptodate.finder.HttpConnectionSettings
 import groovyx.net.http.AsyncHTTPBuilder
 import groovyx.net.http.HTTPBuilder
 import org.slf4j.Logger
@@ -25,10 +24,8 @@ class HTTPBuilderProvider {
     }
 
     private HTTPBuilder configureProxySettingsIfApplicable(HTTPBuilder httpBuilder) {
-        httpConnectionSettings.proxySettings.with {
-            if (hostname) {
-                httpBuilder.setProxy(hostname, port, scheme)
-            }
+        httpConnectionSettings.proxySettings?.with {
+            httpBuilder.setProxy(hostname, port, scheme)
         }
         return httpBuilder
     }

@@ -1,6 +1,8 @@
 package com.ofg.uptodate.finder
 
 import com.ofg.uptodate.UptodatePluginExtension
+import com.ofg.uptodate.finder.http.HttpConnectionSettings
+import com.ofg.uptodate.finder.http.ProxySettingsResolver
 
 class FinderConfiguration {
 
@@ -15,11 +17,7 @@ class FinderConfiguration {
         ignore = repositorySettings.ignoreRepo
         httpConnectionSettings = new HttpConnectionSettings(
                 url: repositorySettings.repoUrl,
-                proxySettings: new ProxySettings(
-                        hostname: uptodatePluginExtension.proxyHostname,
-                        port: uptodatePluginExtension.proxyPort,
-                        scheme: uptodatePluginExtension.proxyScheme
-                ),
+                proxySettings: new ProxySettingsResolver(uptodatePluginExtension).resolve(),
                 poolSize: Math.min(numberOfDependencies, uptodatePluginExtension.simultaneousHttpConnections),
                 timeout: uptodatePluginExtension.connectionTimeout
         )
