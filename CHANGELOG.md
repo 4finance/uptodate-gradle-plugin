@@ -1,3 +1,7 @@
+1.3.0
+-----
+[Changes](https://github.com/4finance/uptodate-gradle-plugin/issues?q=is%3Aissue+is%3Aclosed+milestone%3A1.3.0)
+
 1.2.0
 -----
 New features:
