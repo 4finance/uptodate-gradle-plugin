@@ -28,7 +28,7 @@ New versions available:
 #### Step 1: Add dependency to JCenter and to the plugin
 ```
 buildscript {
-    repositories {	
+    repositories {
         jcenter()
     }
     dependencies {

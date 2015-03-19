@@ -4,6 +4,7 @@ import com.ofg.uptodate.finder.HttpProxyServerProvider
 import com.ofg.uptodate.finder.NewFinderSpec
 import groovy.text.SimpleTemplateEngine
 import org.codehaus.groovy.runtime.StackTraceUtils
+import spock.lang.Unroll
 
 import static com.ofg.uptodate.VersionPatterns.*
 import static com.ofg.uptodate.Xmls.*
@@ -55,10 +56,11 @@ class JCenterNewVersionFinderSpec extends NewFinderSpec {
             1 * loggerProxy.lifecycle(_, NO_NEW_VERSIONS_MESSAGE)
     }
 
+    @Unroll
     def "should not fail or display excluded versions for dependencies found in external repo"() {
         given:
             artifactMetadataRequestResponse('org.hibernate', 'hibernate-core', new SimpleTemplateEngine().createTemplate(RESPONSE_TEMPLATE).make([artifactVersion: artifactVersion]).toString())
-            project.extensions.uptodate.versionToExcludePatterns = [ALPHA, BETA, RC, CR, SNAPSHOT]
+            project.extensions.uptodate.setExcludedVersionPatterns(ALPHA, BETA, RC, CR, SNAPSHOT)
         and:
             project.dependencies.add(COMPILE_CONFIGURATION, 'org.hibernate:hibernate-core:0.5.5')
         when:

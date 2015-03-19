@@ -9,7 +9,6 @@ import com.ofg.uptodate.finder.NewVersionFinderFactory
 import com.ofg.uptodate.finder.http.HTTPBuilderProvider
 import com.ofg.uptodate.finder.FinderConfiguration
 import com.ofg.uptodate.finder.RepositorySettings
-import groovy.transform.PackageScope
 import groovy.util.logging.Slf4j
 import groovy.util.slurpersupport.NodeChild
 import groovyx.net.http.HTTPBuilder
@@ -18,7 +17,6 @@ import java.util.concurrent.Future
 
 import static com.ofg.uptodate.finder.http.HTTPBuilderProvider.FailureHandlers.logOnlyFailureHandler
 
-@PackageScope
 @Slf4j
 class JCenterNewVersionFinderFactory implements NewVersionFinderFactory {
 

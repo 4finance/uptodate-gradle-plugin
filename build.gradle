@@ -1,88 +1,73 @@
 buildscript {
     repositories {
-        mavenLocal()
         jcenter()
     }
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.5'
-
         if (project.hasProperty('coverage')) {
-            classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:1.0.2'
+            classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.3.1'
+        }
+        classpath "com.ofg:micro-common-release:0.1.17"
+    }
+    dependencies {
+        ant.unjar src: configurations.classpath.find { it.name.startsWith("micro-common-release") }, dest: 'build/release'
+    }
+}
+
+apply from: "${rootProject.buildDir}/release/gradle/version.gradle"
+scmVersion {
+    tag {
+        prefix = ''
+    }
+}
+
+project.group = 'com.ofg'
+project.version = scmVersion.version
+project.description = 'Gradle plugin that tells you what libs have new versions in Maven Central / JCenter'
+
+apply plugin: 'groovy'
+apply from: "${rootProject.buildDir}/release/gradle/publish.gradle"
+apply from: "${rootProject.buildDir}/release/gradle/release.gradle"
+
+bintray {
+    pkg {
+        repo = 'uptodate-gradle-plugin'
+        labels = ['gradle']
+        version {
+            attributes = ['gradle-plugin': 'com.ofg.uptodate:com.ofg:uptodate-gradle-plugin']
         }
     }
 }
 
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'groovy'
-apply plugin: 'maven-publish'
-
-group = 'com.ofg'
-description = 'Core of UpToDate plugin'
-version = '1.5.1-SNAPSHOT'
+sourceCompatibility = 1.7
 
 repositories {
-    mavenLocal()
-    mavenCentral()
     jcenter()
 }
 
 dependencies {
     compile gradleApi()
-    compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
+    compile("org.codehaus.groovy.modules.http-builder:http-builder:0.7.1") {
+        exclude group: 'xerces', module: 'xercesImpl' //conflicts with xercesImpl from Gradle (in functional tests)
+    }
 
-    testCompile 'junit:junit:4.11'
-    testCompile 'org.spockframework:spock-core:0.7-groovy-1.8'
-    testCompile 'com.github.tomakehurst:wiremock:1.47'
+    testCompile('org.spockframework:spock-core:1.0-groovy-2.3') {
+        exclude group: 'org.codehaus.groovy'    //to not override version from Gradle
+    }
+    testCompile 'com.github.tomakehurst:wiremock:1.50'  //1.51+ requires httpclient 4.3+ which conflicts with version distributed with Gradle
     testRuntime 'cglib:cglib-nodep:2.2.2'
     testRuntime 'org.objenesis:objenesis:1.2'
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+wrapper {
+    gradleVersion '2.3'
 }
 
 bintrayUpload.dependsOn 'build'
 
-publishing {
-    publications {
-        plugin(MavenPublication) {
-            from components.java
-            artifact sourcesJar
-            artifact javadocJar
-        }
+test {
+    testLogging {
+        exceptionFormat = 'full'
     }
-}
-
-bintray {
-    user = System.properties['bintrayUser']
-    key = System.properties['bintrayKey']
-    publications = ['plugin']
-    pkg {
-        repo = 'uptodate-gradle-plugin'
-        userOrg = '4finance' 
-        name = 'uptodate-gradle-plugin'
-        desc = 'Gradle plugin that tells you what libs have new versions in Maven Central / JCenter'
-        licenses = ['Apache-2.0']
-        labels = ['gradle']
-        version {
-            attributes = ['gradle-plugin': 'com.ofg.uptodate:com.ofg:uptodate-gradle-plugin']
-        }
-    } 
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: groovydoc) {
-    classifier = 'javadoc'
-    from groovydoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
 }
 
 if (project.hasProperty('coverage')) {
@@ -90,7 +75,7 @@ if (project.hasProperty('coverage')) {
     apply plugin: 'com.github.kt3k.coveralls'
 
     jacoco {
-        toolVersion = '0.7.1.201405082137'
+        toolVersion = '0.7.4.201502262128'
     }
 
     jacocoTestReport {
@@ -98,9 +83,6 @@ if (project.hasProperty('coverage')) {
             xml.enabled = true // coveralls plugin depends on xml format report
             html.enabled = true
         }
-    }
-    test {
-        ignoreFailures = true
     }
 }
 
