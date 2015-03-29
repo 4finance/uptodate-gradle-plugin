@@ -43,10 +43,10 @@ class NewVersionFinderInAllRepositories {
 
     void printDependencies(Set<Dependency> dependenciesWithNewVersions) {
         if (dependenciesWithNewVersions.isEmpty()) {
-            loggerProxy.info(log, NO_NEW_VERSIONS_MESSAGE)
+            loggerProxy.lifecycle(log, NO_NEW_VERSIONS_MESSAGE)
         } else {
             List<Dependency> sortedUpdates = dependenciesWithNewVersions.sort(new DependencyGroupAndNameComparator())
-            loggerProxy.warn(log, "$NEW_VERSIONS_MESSAGE_HEAD\n${sortedUpdates.join('\n')}")
+            loggerProxy.lifecycle(log, "$NEW_VERSIONS_MESSAGE_HEAD\n${sortedUpdates.join('\n')}")
         }    
     }
 }

@@ -33,7 +33,7 @@ class AllRepositoriesnewVersionFinderSpec extends NewFinderSpec {
         when:
             executeUptodateTask()
         then:
-            1 * loggerProxy.warn(_, "New versions available:\n" +
+            1 * loggerProxy.lifecycle(_, "New versions available:\n" +
                     "'junit:junit:4.11'\n" +
                     "'org.hibernate:hibernate-core:4.3.6.Final'")
     }    
