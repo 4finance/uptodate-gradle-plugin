@@ -4,11 +4,11 @@ import com.ofg.uptodate.LoggerProxy
 import com.ofg.uptodate.UptodatePluginExtension
 import com.ofg.uptodate.finder.*
 import com.ofg.uptodate.finder.http.HTTPBuilderProvider
-import com.ofg.uptodate.finder.Dependency
-import com.ofg.uptodate.finder.DependencyVersion
+import com.ofg.uptodate.finder.dependency.Dependency
+import com.ofg.uptodate.finder.dependency.Version
 import com.ofg.uptodate.finder.FinderConfiguration
 import com.ofg.uptodate.finder.RepositorySettings
-import com.ofg.uptodate.finder.util.StringMatcher
+import com.ofg.uptodate.finder.dependency.VersionPatternMatcher
 import groovy.transform.PackageScope
 import groovy.util.logging.Slf4j
 import groovy.util.slurpersupport.NodeChild
@@ -57,14 +57,14 @@ class JCenterNewVersionFinderFactory implements NewVersionFinderFactory {
         } as Future
     }
 
-    private DependencyVersion getLatestDependencyVersion(String releaseVersion, NodeChild xml, List<String> versionToExcludePatterns) {
-        if (new StringMatcher(releaseVersion).notMatchesAny(versionToExcludePatterns)) {
-            return new DependencyVersion(releaseVersion)
+    private Version getLatestDependencyVersion(String releaseVersion, NodeChild xml, List<String> versionToExcludePatterns) {
+        if (new VersionPatternMatcher(releaseVersion).notMatchesAny(versionToExcludePatterns)) {
+            return new Version(releaseVersion)
         }
         return xml.versioning.versions.version.findAll { NodeChild version ->
-            new StringMatcher(version.text()).notMatchesAny(versionToExcludePatterns)
+            new VersionPatternMatcher(version.text()).notMatchesAny(versionToExcludePatterns)
         }.collect {
-            NodeChild version -> new DependencyVersion(version.text())
+            NodeChild version -> new Version(version.text())
         }.max()
     }
 }

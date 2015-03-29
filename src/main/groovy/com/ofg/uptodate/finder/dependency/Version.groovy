@@ -1,22 +1,22 @@
-package com.ofg.uptodate.finder
+package com.ofg.uptodate.finder.dependency
 
 import groovy.transform.EqualsAndHashCode
 import org.gradle.mvn3.org.apache.maven.artifact.versioning.ArtifactVersion
 import org.gradle.mvn3.org.apache.maven.artifact.versioning.DefaultArtifactVersion
 
 @EqualsAndHashCode
-class DependencyVersion implements Comparable<DependencyVersion> {
+class Version implements Comparable<Version> {
 
-    final String unparsedVersion
+    private final String unparsedVersion
     final ArtifactVersion artifactVersion
 
-    DependencyVersion(String unparsedVersion) {
+    Version(String unparsedVersion) {
         this.unparsedVersion = unparsedVersion
         this.artifactVersion = new DefaultArtifactVersion(unparsedVersion)
     }
 
     @Override
-    int compareTo(DependencyVersion other) {
+    int compareTo(Version other) {
         return this.artifactVersion <=> other.artifactVersion
     }
 

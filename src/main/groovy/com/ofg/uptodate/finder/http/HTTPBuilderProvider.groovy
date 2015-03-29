@@ -1,7 +1,7 @@
 package com.ofg.uptodate.finder.http
 
 import com.ofg.uptodate.LoggerProxy
-import com.ofg.uptodate.finder.Dependency
+import com.ofg.uptodate.finder.dependency.Dependency
 import groovyx.net.http.AsyncHTTPBuilder
 import groovyx.net.http.HTTPBuilder
 import org.slf4j.Logger

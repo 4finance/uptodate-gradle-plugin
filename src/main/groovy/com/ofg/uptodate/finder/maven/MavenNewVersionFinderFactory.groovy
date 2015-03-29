@@ -4,11 +4,11 @@ import com.ofg.uptodate.LoggerProxy
 import com.ofg.uptodate.UptodatePluginExtension
 import com.ofg.uptodate.finder.*
 import com.ofg.uptodate.finder.http.HTTPBuilderProvider
-import com.ofg.uptodate.finder.Dependency
-import com.ofg.uptodate.finder.DependencyVersion
+import com.ofg.uptodate.finder.dependency.Dependency
+import com.ofg.uptodate.finder.dependency.Version
 import com.ofg.uptodate.finder.FinderConfiguration
 import com.ofg.uptodate.finder.RepositorySettings
-import com.ofg.uptodate.finder.util.StringMatcher
+import com.ofg.uptodate.finder.dependency.VersionPatternMatcher
 import groovy.transform.PackageScope
 import groovy.util.logging.Slf4j
 import groovyx.net.http.HTTPBuilder
@@ -53,9 +53,9 @@ class MavenNewVersionFinderFactory implements NewVersionFinderFactory {
             if (!json) {
                 return []
             }
-            DependencyVersion latestNonExcludedVersion = json.response.docs.findAll { doc ->
-                new StringMatcher(doc.v).notMatchesAny(versionToExcludePatterns)
-            }.collect { new DependencyVersion(it.v) }.max()
+            Version latestNonExcludedVersion = json.response.docs.findAll { doc ->
+                new VersionPatternMatcher(doc.v).notMatchesAny(versionToExcludePatterns)
+            }.collect { new Version(it.v) }.max()
             return [dependency, new Dependency(dependency, latestNonExcludedVersion)]
         }
     }

@@ -1,10 +1,10 @@
-package com.ofg.uptodate.finder.util
+package com.ofg.uptodate.finder.dependency
 
-class StringMatcher {
+class VersionPatternMatcher {
 
     private final String text
 
-    StringMatcher(String text) {
+    VersionPatternMatcher(String text) {
         this.text = text
     }
 

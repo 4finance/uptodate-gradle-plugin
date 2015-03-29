@@ -1,6 +1,7 @@
 package com.ofg.uptodate.finder
 
 import com.ofg.uptodate.LoggerProxy
+import com.ofg.uptodate.finder.dependency.Dependency
 import groovy.util.logging.Slf4j
 
 import java.util.concurrent.Future
