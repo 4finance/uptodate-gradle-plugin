@@ -2,15 +2,15 @@ package com.ofg.uptodate.finder.dependency
 
 class VersionPatternMatcher {
 
-    private final String text
+    private final String version
 
-    VersionPatternMatcher(String text) {
-        this.text = text
+    VersionPatternMatcher(String version) {
+        this.version = version
     }
 
-    boolean notMatchesAny(List<String> excludedPatterns) {
-        return excludedPatterns.every {
-            !text.matches(it)
+    boolean matchesNoneOf(List<String> patterns) {
+        return !patterns.any {
+            version.matches(it)
         }
     }
 }

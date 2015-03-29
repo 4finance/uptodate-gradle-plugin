@@ -54,7 +54,7 @@ class MavenNewVersionFinderFactory implements NewVersionFinderFactory {
                 return []
             }
             Version latestNonExcludedVersion = json.response.docs.findAll { doc ->
-                new VersionPatternMatcher(doc.v).notMatchesAny(versionToExcludePatterns)
+                new VersionPatternMatcher(doc.v).matchesNoneOf(versionToExcludePatterns)
             }.collect { new Version(it.v) }.max()
             return [dependency, new Dependency(dependency, latestNonExcludedVersion)]
         }

@@ -58,11 +58,11 @@ class JCenterNewVersionFinderFactory implements NewVersionFinderFactory {
     }
 
     private Version getLatestDependencyVersion(String releaseVersion, NodeChild xml, List<String> versionToExcludePatterns) {
-        if (new VersionPatternMatcher(releaseVersion).notMatchesAny(versionToExcludePatterns)) {
+        if (new VersionPatternMatcher(releaseVersion).matchesNoneOf(versionToExcludePatterns)) {
             return new Version(releaseVersion)
         }
         return xml.versioning.versions.version.findAll { NodeChild version ->
-            new VersionPatternMatcher(version.text()).notMatchesAny(versionToExcludePatterns)
+            new VersionPatternMatcher(version.text()).matchesNoneOf(versionToExcludePatterns)
         }.collect {
             NodeChild version -> new Version(version.text())
         }.max()
