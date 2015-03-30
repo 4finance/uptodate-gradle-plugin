@@ -3,13 +3,16 @@ package com.ofg.uptodate
 import org.slf4j.Logger
 
 class LoggerProxy {
-    void warn(Logger logger, String warning) {
-        logger.warn(warning)
+
+    void lifecycle(Logger logger, String message) {
+        logger.lifecycle(message)
     }
-    void info(Logger logger, String warning) {
-        logger.info(warning)
+
+    void info(Logger logger, String message) {
+        logger.info(message)
     }
-    void debug(Logger logger, String warning) {
-        logger.debug(warning)
+
+    void debug(Logger logger, String message) {
+        logger.debug(message)
     }
 }

@@ -1,4 +1,5 @@
 package com.ofg.uptodate.finder.maven
+
 import com.ofg.uptodate.finder.HttpProxyServerProvider
 import com.ofg.uptodate.finder.NewFinderSpec
 import groovy.text.SimpleTemplateEngine
@@ -6,6 +7,7 @@ import org.codehaus.groovy.runtime.StackTraceUtils
 
 import static com.ofg.uptodate.Jsons.*
 import static com.ofg.uptodate.VersionPatterns.*
+import static com.ofg.uptodate.finder.NewVersionFinderInAllRepositories.NO_NEW_VERSIONS_MESSAGE
 
 @Mixin([MavenReponseProvider, HttpProxyServerProvider])
 class MavenNewVersionFinderSpec extends NewFinderSpec {
@@ -42,7 +44,7 @@ class MavenNewVersionFinderSpec extends NewFinderSpec {
         when:
             executeUptodateTask()
         then:
-            1 * loggerProxy.warn(_, "New versions available:\n" +
+            1 * loggerProxy.lifecycle(_, "New versions available:\n" +
                     "'org.hibernate:hibernate-core:4.3.6.Final'")
     }
 
@@ -54,7 +56,7 @@ class MavenNewVersionFinderSpec extends NewFinderSpec {
         when:
             executeUptodateTask()
         then:
-            0 * loggerProxy.warn(_, _)
+            1 * loggerProxy.lifecycle(_, NO_NEW_VERSIONS_MESSAGE)
     }
 
     def "should not fail or display excluded versions for dependencies found in external repo"() {
@@ -66,12 +68,12 @@ class MavenNewVersionFinderSpec extends NewFinderSpec {
         when:
             executeUptodateTask()
         then:
-            0 * loggerProxy.warn(_, _)
+            1 * loggerProxy.lifecycle(_, NO_NEW_VERSIONS_MESSAGE)
         where:
             artifactVersion << ['2.2.2-BETA', '2.2.Beta3', '2.2.2-alpha', '2.2.Alpha-3', '1.3.RC', '1.3.CR1', '1.0.0-SNAPSHOT']
     }
 
-    def "should not display header on warn but only message on info when no new dependencies are found"() {
+    def 'should inform when no new dependencies are found'() {
         given:
             artifactMetadataRequestResponse('junit', 'junit', JUNIT_RESPONSE)
         and:
@@ -79,8 +81,7 @@ class MavenNewVersionFinderSpec extends NewFinderSpec {
         when:
             executeUptodateTask()
         then:
-            0 * loggerProxy.warn(_, _)
-            1 * loggerProxy.info(_, "No new versions are available.")
+            1 * loggerProxy.lifecycle(_, NO_NEW_VERSIONS_MESSAGE)
     }
 
     def 'should not list dependencies from excluded configurations'() {
@@ -95,7 +96,7 @@ class MavenNewVersionFinderSpec extends NewFinderSpec {
         when:
             executeUptodateTask()
         then:
-            1 * loggerProxy.warn(_, "New versions available:\n" +
+            1 * loggerProxy.lifecycle(_, "New versions available:\n" +
                 "'junit:junit:4.11'")
     }
 
@@ -120,8 +121,7 @@ class MavenNewVersionFinderSpec extends NewFinderSpec {
         when:
             executeUptodateTask()
         then:
-            0 * loggerProxy.warn(_, _)
-            1 * loggerProxy.info(_, "No new versions are available.")
+            1 * loggerProxy.lifecycle(_, NO_NEW_VERSIONS_MESSAGE)
     }
 
     def 'should list all dependencies that have newer versions if running behind a proxy server configured via plugin'() {
@@ -142,7 +142,7 @@ class MavenNewVersionFinderSpec extends NewFinderSpec {
         when:
             executeUptodateTask()
         then:
-            1 * loggerProxy.warn(_, "New versions available:\n" +
+            1 * loggerProxy.lifecycle(_, "New versions available:\n" +
                 "'org.hibernate:hibernate-core:4.3.6.Final'")
         cleanup:
             shutdownHttpProxyServer()
@@ -163,7 +163,7 @@ class MavenNewVersionFinderSpec extends NewFinderSpec {
         when:
             executeUptodateTask()
         then:
-            1 * loggerProxy.warn(_, "New versions available:\n" +
+            1 * loggerProxy.lifecycle(_, "New versions available:\n" +
                 "'org.hibernate:hibernate-core:4.3.6.Final'")
         cleanup:
             shutdownHttpProxyServer()

@@ -41,7 +41,7 @@ class UptodatePlugin implements Plugin<Project> {
                 Set<Dependency> dependenciesWithNewVersions = newVersionFinder.findNewer(dependencies)
                 newVersionFinder.printDependencies(dependenciesWithNewVersions)
             } else {
-                loggerProxy.info(log, 'No dependencies found in project configuration.')
+                loggerProxy.lifecycle(log, 'No dependencies found in project configuration.')
             }
         }
         createdTask.group = "Dependencies"

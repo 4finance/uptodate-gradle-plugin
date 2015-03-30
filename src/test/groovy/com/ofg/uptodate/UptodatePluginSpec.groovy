@@ -25,7 +25,6 @@ class UptodatePluginSpec extends Specification {
             executeUptodateTask()
         then:
             1 * loggerProxy.info(_, { it.contains('JCenter repository is not found')})
-            1 * loggerProxy.info(_, 'No dependencies found in project configuration.')
     }
 
     protected void executeUptodateTask() {
