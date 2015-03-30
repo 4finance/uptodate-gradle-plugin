@@ -1,3 +1,19 @@
+1.4.0
+-----
+New features:
+* [#32](https://github.com/4finance/uptodate-gradle-plugin/pull/32) Dependency updates are reported in lexical order
+
+Bug fixes:
+* [#30](https://github.com/4finance/uptodate-gradle-plugin/issues/30) AllRepositoriesnewVersionFinderSpec test failing in IntelliJ IDEA
+
+Breaking changes:
+* [#33](https://github.com/4finance/uptodate-gradle-plugin/pull/33) Dependency updates are logged on `lifecycle` log level instead of `warn`
+
+1.3.1
+-----
+Bug fixes:
+* [#15](https://github.com/4finance/uptodate-gradle-plugin/issues/25) Fixed dependency version comparison
+
 1.3.0
 -----
 [Changes](https://github.com/4finance/uptodate-gradle-plugin/issues?q=is%3Aissue+is%3Aclosed+milestone%3A1.3.0)
