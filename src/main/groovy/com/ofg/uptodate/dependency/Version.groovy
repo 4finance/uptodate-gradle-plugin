@@ -1,4 +1,4 @@
-package com.ofg.uptodate.finder.dependency
+package com.ofg.uptodate.dependency
 
 import groovy.transform.EqualsAndHashCode
 import org.gradle.mvn3.org.apache.maven.artifact.versioning.ArtifactVersion

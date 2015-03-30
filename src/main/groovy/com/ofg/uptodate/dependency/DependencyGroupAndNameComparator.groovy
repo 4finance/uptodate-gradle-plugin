@@ -1,4 +1,4 @@
-package com.ofg.uptodate.finder.dependency
+package com.ofg.uptodate.dependency
 
 class DependencyGroupAndNameComparator implements Comparator<Dependency> {
 

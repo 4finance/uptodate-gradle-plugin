@@ -2,13 +2,14 @@ package com.ofg.uptodate.finder.jcenter
 
 import com.ofg.uptodate.LoggerProxy
 import com.ofg.uptodate.UptodatePluginExtension
-import com.ofg.uptodate.finder.*
+import com.ofg.uptodate.dependency.Dependency
+import com.ofg.uptodate.dependency.Version
+import com.ofg.uptodate.dependency.VersionPatternMatcher
+import com.ofg.uptodate.finder.NewVersionFinder
+import com.ofg.uptodate.finder.NewVersionFinderFactory
 import com.ofg.uptodate.finder.http.HTTPBuilderProvider
-import com.ofg.uptodate.finder.dependency.Dependency
-import com.ofg.uptodate.finder.dependency.Version
 import com.ofg.uptodate.finder.FinderConfiguration
 import com.ofg.uptodate.finder.RepositorySettings
-import com.ofg.uptodate.finder.dependency.VersionPatternMatcher
 import groovy.transform.PackageScope
 import groovy.util.logging.Slf4j
 import groovy.util.slurpersupport.NodeChild

@@ -1,8 +1,8 @@
 package com.ofg.uptodate.finder
 
 import com.ofg.uptodate.LoggerProxy
-import com.ofg.uptodate.finder.dependency.Dependency
-import com.ofg.uptodate.finder.dependency.DependencyGroupAndNameComparator
+import com.ofg.uptodate.dependency.Dependency
+import com.ofg.uptodate.dependency.DependencyGroupAndNameComparator
 import groovy.util.logging.Slf4j
 
 @Slf4j
