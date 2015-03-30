@@ -1,6 +1,6 @@
 package com.ofg.uptodate
 
-import com.ofg.uptodate.finder.Dependency
+import com.ofg.uptodate.dependency.Dependency
 import com.ofg.uptodate.finder.jcenter.JCenterNewVersionFinderFactory
 import com.ofg.uptodate.finder.maven.MavenNewVersionFinderFactory
 import com.ofg.uptodate.finder.NewVersionFinderInAllRepositories

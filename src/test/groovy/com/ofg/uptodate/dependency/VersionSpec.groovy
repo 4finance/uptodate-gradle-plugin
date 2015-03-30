@@ -1,15 +1,15 @@
-package com.ofg.uptodate.finder
+package com.ofg.uptodate.dependency
 
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class DependencyVersionSpec extends Specification {
+class VersionSpec extends Specification {
 
     @Unroll
     def 'should resolve [#higherVersion] as higher version than [#lowerVersion]'() {
         given:
-            DependencyVersion higherDependencyVersion = new DependencyVersion(higherVersion)
-            DependencyVersion lowerDependencyVersion = new DependencyVersion(lowerVersion)
+            Version higherDependencyVersion = new Version(higherVersion)
+            Version lowerDependencyVersion = new Version(lowerVersion)
         expect:
             higherDependencyVersion > lowerDependencyVersion
         where:

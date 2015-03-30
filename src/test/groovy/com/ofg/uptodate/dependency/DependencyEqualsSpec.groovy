@@ -1,4 +1,4 @@
-package com.ofg.uptodate.finder
+package com.ofg.uptodate.dependency
 
 import spock.lang.Specification
 

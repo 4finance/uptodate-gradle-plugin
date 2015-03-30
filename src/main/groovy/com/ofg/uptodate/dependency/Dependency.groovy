@@ -1,4 +1,4 @@
-package com.ofg.uptodate.finder
+package com.ofg.uptodate.dependency
 
 import groovy.transform.EqualsAndHashCode
 
@@ -6,15 +6,15 @@ import groovy.transform.EqualsAndHashCode
 class Dependency {
     final String group
     final String name
-    final DependencyVersion version
+    final Version version
 
     Dependency(String group, String name, String version) {
         this.group = group
         this.name = name
-        this.version = new DependencyVersion(version)
+        this.version = new Version(version)
     }
 
-    Dependency(Dependency dependency, DependencyVersion version) {
+    Dependency(Dependency dependency, Version version) {
         name = dependency.name
         group = dependency.group
         this.version = version
