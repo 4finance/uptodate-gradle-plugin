@@ -1,3 +1,8 @@
+1.5.0
+-----
+Breaking changes:
+* Restore logging on `warn` log level
+
 1.4.0
 -----
 New features:
