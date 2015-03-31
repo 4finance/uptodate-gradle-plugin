@@ -11,8 +11,4 @@ class LoggerProxy {
     void info(Logger logger, String message) {
         logger.info(message)
     }
-
-    void debug(Logger logger, String message) {
-        logger.debug(message)
-    }
 }

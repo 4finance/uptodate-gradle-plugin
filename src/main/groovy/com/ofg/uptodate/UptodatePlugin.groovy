@@ -36,8 +36,8 @@ class UptodatePlugin implements Plugin<Project> {
             List<Dependency> dependencies = getDependencies(project)
             if (dependencies) {
                 NewVersionFinderInAllRepositories newVersionFinder = new NewVersionFinderInAllRepositories(loggerProxy,
-                        [new MavenNewVersionFinderFactory(loggerProxy).create(uptodatePluginExtension, dependencies),
-                         new JCenterNewVersionFinderFactory(loggerProxy).create(uptodatePluginExtension, dependencies)])
+                        [new MavenNewVersionFinderFactory().create(uptodatePluginExtension, dependencies),
+                         new JCenterNewVersionFinderFactory().create(uptodatePluginExtension, dependencies)])
                 Set<Dependency> dependenciesWithNewVersions = newVersionFinder.findNewer(dependencies)
                 newVersionFinder.printDependencies(dependenciesWithNewVersions)
             } else {
