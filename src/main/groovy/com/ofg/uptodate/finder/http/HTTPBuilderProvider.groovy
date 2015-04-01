@@ -1,6 +1,5 @@
 package com.ofg.uptodate.finder.http
 
-import com.ofg.uptodate.LoggerProxy
 import com.ofg.uptodate.dependency.Dependency
 import groovyx.net.http.AsyncHTTPBuilder
 import groovyx.net.http.HTTPBuilder
@@ -32,9 +31,9 @@ class HTTPBuilderProvider {
 
     static class FailureHandlers {
 
-        static Closure<List<Dependency>> logOnlyFailureHandler(LoggerProxy loggerProxy, Logger log, String dependencyName) {
+        static Closure<List<Dependency>> logOnlyFailureHandler(Logger log, String dependencyName) {
             { resp ->
-                loggerProxy.debug(log, "Error with status [$resp.status] occurred while trying to download dependency [$dependencyName]")
+                log.debug("Error with status [$resp.status] occurred while trying to download dependency [$dependencyName]")
                 return []
             }
         }

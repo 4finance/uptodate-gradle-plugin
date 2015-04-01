@@ -1,6 +1,5 @@
 package com.ofg.uptodate.finder.maven
 
-import com.ofg.uptodate.LoggerProxy
 import com.ofg.uptodate.UptodatePluginExtension
 import com.ofg.uptodate.dependency.Dependency
 import com.ofg.uptodate.dependency.Version
@@ -25,12 +24,6 @@ class MavenNewVersionFinderFactory implements NewVersionFinderFactory {
 
     public static final String MAVEN_CENTRAL_REPO_URL = "http://search.maven.org/solrsearch/select"
 
-    private final LoggerProxy loggerProxy
-
-    MavenNewVersionFinderFactory(LoggerProxy loggerProxy) {
-        this.loggerProxy = loggerProxy
-    }
-
     @Override
     NewVersionFinder create(UptodatePluginExtension uptodatePluginExtension, List<Dependency> dependencies) {
         FinderConfiguration finderConfiguration = new FinderConfiguration(
@@ -38,7 +31,6 @@ class MavenNewVersionFinderFactory implements NewVersionFinderFactory {
                 uptodatePluginExtension,
                 dependencies.size())
         return new NewVersionFinder(
-                loggerProxy,
                 mavenLatestVersionsCollector(finderConfiguration),
                 finderConfiguration)
     }
@@ -49,7 +41,7 @@ class MavenNewVersionFinderFactory implements NewVersionFinderFactory {
     }
 
     private Closure<Future> getLatestFromMavenCentralRepo = { HTTPBuilder httpBuilder, List<String> versionToExcludePatterns, Dependency dependency ->
-        httpBuilder.handler.failure = logOnlyFailureHandler(loggerProxy, log, dependency.name)
+        httpBuilder.handler.failure = logOnlyFailureHandler(log, dependency.name)
         httpBuilder.get(queryString: "q=${escape("g:\"$dependency.group\"")}+AND+${escape("a:\"$dependency.name\"")}&core=gav&rows10&wt=json".toString()) { resp, json ->
             if (!json) {
                 return []

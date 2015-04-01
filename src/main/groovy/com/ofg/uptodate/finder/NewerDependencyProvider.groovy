@@ -1,5 +1,5 @@
 package com.ofg.uptodate.finder
-import com.ofg.uptodate.LoggerProxy
+
 import com.ofg.uptodate.dependency.Dependency
 import groovy.util.logging.Slf4j
 
@@ -8,11 +8,9 @@ import java.util.concurrent.Future
 @Slf4j
 class NewerDependencyProvider {
     
-    private final LoggerProxy loggerProxy
     private final Closure<Future> latestVersionsCollector
 
-    NewerDependencyProvider(Closure<Future> latestVersionsCollector, LoggerProxy loggerProxy) {
-        this.loggerProxy = loggerProxy
+    NewerDependencyProvider(Closure<Future> latestVersionsCollector) {
         this.latestVersionsCollector = latestVersionsCollector
     }
     
@@ -21,17 +19,17 @@ class NewerDependencyProvider {
     }
 
     private Closure<Boolean> getOnlyNewer = { List<Dependency> dependenciesToCompare ->
-        loggerProxy.debug(log, "Dependencies to get only newer: $dependenciesToCompare")
+        log.debug("Dependencies to get only newer: $dependenciesToCompare")
         if (dependenciesToCompare.empty) {
-            loggerProxy.debug(log, "Dependencies to compare are empty - sth went wrong so no newer version was found")
+            log.debug('Dependencies to compare are empty - sth went wrong so no newer version was found')
             return false
         }
         if (!dependenciesToCompare[1].version) {
-            loggerProxy.debug(log, "The retrieved dependency has null version value thus no newer version was found")
+            log.debug('The retrieved dependency has null version value thus no newer version was found')
             return false
         }
         boolean fetchedDependencyHasGreaterVersion = dependenciesToCompare[1].version > dependenciesToCompare[0].version
-        loggerProxy.debug(log, "Fetched dependency has greater version than the current one [$fetchedDependencyHasGreaterVersion]")
+        log.debug("Fetched dependency has greater version than the current one [$fetchedDependencyHasGreaterVersion]")
         return fetchedDependencyHasGreaterVersion
     }
 }

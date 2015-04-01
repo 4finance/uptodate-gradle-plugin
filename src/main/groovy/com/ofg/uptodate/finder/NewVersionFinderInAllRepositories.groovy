@@ -26,16 +26,16 @@ class NewVersionFinderInAllRepositories {
             newestVersions << it.findNewer(dependencies)            
         }
         Set<Dependency> uniqueNewestVersions = newestVersions.flatten().unique(byGroupAndName()).toSet()
-        loggerProxy.debug(log, "Unique newest versions found $uniqueNewestVersions")
+        log.debug("Unique newest versions found $uniqueNewestVersions")
         return uniqueNewestVersions
     }
 
     Comparator<Dependency> byGroupAndName() {
         return { Dependency dependency, Dependency other ->
             if (dependency.hasSameGroupAndNameAs(other)) {
-                loggerProxy.debug(log, "Two dependencies have same group and name. First [$dependency], second [$other]")
+                log.debug("Two dependencies have same group and name. First [$dependency], second [$other]")
                 int thisVersionLowerOrEqual = dependency.version <= other.version ? 0 : 1
-                loggerProxy.debug(log, "First dep lower or equal than second [${thisVersionLowerOrEqual == 0}]")
+                log.debug("First dep lower or equal than second [${thisVersionLowerOrEqual == 0}]")
                 return thisVersionLowerOrEqual
             }
             return -1

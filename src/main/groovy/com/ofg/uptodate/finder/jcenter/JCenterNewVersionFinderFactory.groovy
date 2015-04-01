@@ -1,6 +1,5 @@
 package com.ofg.uptodate.finder.jcenter
 
-import com.ofg.uptodate.LoggerProxy
 import com.ofg.uptodate.UptodatePluginExtension
 import com.ofg.uptodate.dependency.Dependency
 import com.ofg.uptodate.dependency.Version
@@ -25,12 +24,6 @@ class JCenterNewVersionFinderFactory implements NewVersionFinderFactory {
 
     public static final String JCENTER_REPO_URL = "http://jcenter.bintray.com/"
 
-    private final LoggerProxy loggerProxy
-
-    JCenterNewVersionFinderFactory(LoggerProxy loggerProxy) {
-        this.loggerProxy = loggerProxy
-    }
-
     @Override
     NewVersionFinder create(UptodatePluginExtension uptodatePluginExtension, List<Dependency> dependencies) {
         FinderConfiguration finderConfiguration = new FinderConfiguration(
@@ -38,7 +31,6 @@ class JCenterNewVersionFinderFactory implements NewVersionFinderFactory {
                 uptodatePluginExtension,
                 dependencies.size())
         return new NewVersionFinder(
-                loggerProxy,
                 jCenterLatestVersionsCollector(finderConfiguration),
                 finderConfiguration)
     }
@@ -49,7 +41,7 @@ class JCenterNewVersionFinderFactory implements NewVersionFinderFactory {
     }
 
     private Closure<Future> getLatestFromJCenterRepo = { HTTPBuilder httpBuilder, List<String> versionToExcludePatterns, Dependency dependency ->
-        httpBuilder.handler.failure = logOnlyFailureHandler(loggerProxy, log, dependency.name)
+        httpBuilder.handler.failure = logOnlyFailureHandler(log, dependency.name)
         httpBuilder.get(path: "/${dependency.group.split('\\.').join('/')}/${dependency.name}/maven-metadata.xml") { resp, xml ->
             if (!xml) {
                 return []
