@@ -4,6 +4,7 @@ import com.ofg.uptodate.dependency.Dependency
 import com.ofg.uptodate.finder.jcenter.JCenterNewVersionFinderFactory
 import com.ofg.uptodate.finder.maven.MavenNewVersionFinderFactory
 import com.ofg.uptodate.finder.NewVersionFinderInAllRepositories
+import com.ofg.uptodate.reporting.NewVersionLogger
 import groovy.util.logging.Slf4j
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -16,6 +17,7 @@ import javax.inject.Inject
 class UptodatePlugin implements Plugin<Project> {
     public static final String TASK_NAME = 'uptodate'
     public static final String GRADLE_BINTRAY_JCENTER_REPO_NAME = 'BintrayJCenter'
+
     private final LoggerProxy loggerProxy
 
     @Inject
@@ -39,13 +41,13 @@ class UptodatePlugin implements Plugin<Project> {
                         [new MavenNewVersionFinderFactory().create(uptodatePluginExtension, dependencies),
                          new JCenterNewVersionFinderFactory().create(uptodatePluginExtension, dependencies)])
                 Set<Dependency> dependenciesWithNewVersions = newVersionFinder.findNewer(dependencies)
-                newVersionFinder.printDependencies(dependenciesWithNewVersions)
+                new NewVersionLogger(loggerProxy, project.name, uptodatePluginExtension.reportProjectName).reportUpdates(dependenciesWithNewVersions)
             } else {
                 loggerProxy.lifecycle(log, 'No dependencies found in project configuration.')
             }
         }
-        createdTask.group = "Dependencies"
-        createdTask.description = "Checks your dependencies against provided repositories (defaults to Maven Central and JCenter)"
+        createdTask.group = 'Dependencies'
+        createdTask.description = 'Checks your dependencies against provided repositories (defaults to Maven Central and JCenter)'
     }
 
     private void printMissingJCenterRepoIfApplicable(UptodatePluginExtension uptodatePluginExtension, Project project) {

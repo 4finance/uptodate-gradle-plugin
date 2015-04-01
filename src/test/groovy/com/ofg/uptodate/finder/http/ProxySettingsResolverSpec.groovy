@@ -52,6 +52,6 @@ class ProxySettingsResolverSpec extends Specification {
 
     def "should return null when no proxy settings found"() {
         expect:
-            null == new ProxySettingsResolver(new UptodatePluginExtension()).resolve()
+            new ProxySettingsResolver(new UptodatePluginExtension()).resolve() == null
     }
 }
