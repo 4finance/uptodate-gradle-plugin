@@ -22,7 +22,7 @@ import static com.ofg.uptodate.finder.http.HTTPBuilderProvider.FailureHandlers.l
 @Slf4j
 class MavenNewVersionFinderFactory implements NewVersionFinderFactory {
 
-    public static final String MAVEN_CENTRAL_REPO_URL = "http://search.maven.org/solrsearch/select"
+    public static final String MAVEN_CENTRAL_REPO_URL = "https://search.maven.org/solrsearch/select"
 
     @Override
     NewVersionFinder create(UptodatePluginExtension uptodatePluginExtension, List<Dependency> dependencies) {
