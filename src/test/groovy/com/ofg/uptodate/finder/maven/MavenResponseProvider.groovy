@@ -5,7 +5,7 @@ import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder
 import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static com.ofg.uptodate.UrlEspaceUtils.escape
 
-class MavenReponseProvider {
+class MavenResponseProvider {
 
     public static final String ROOT_PATH = "/\\?"
     public static final String SOLR_AND = '\\+AND\\+'
