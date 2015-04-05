@@ -42,12 +42,18 @@ class JCenterNewVersionFinderFactory implements NewVersionFinderFactory {
 
     private Closure<Future> getLatestFromJCenterRepo = { HTTPBuilder httpBuilder, List<String> versionToExcludePatterns, Dependency dependency ->
         httpBuilder.handler.failure = logOnlyFailureHandler(log, dependency.name)
+        handleApplicationUnknownContentTypeAsXml(httpBuilder)
         httpBuilder.get(path: "/${dependency.group.split('\\.').join('/')}/${dependency.name}/maven-metadata.xml") { resp, xml ->
             if (!xml) {
                 return []
             }
             return [dependency, new Dependency(dependency, getLatestDependencyVersion(xml.versioning.release.text(), xml, versionToExcludePatterns))]
         } as Future
+    }
+
+    //application/unknown is returned from jCenter when using CloudFront - #42
+    private void handleApplicationUnknownContentTypeAsXml(HTTPBuilder httpBuilder) {
+        httpBuilder.parser.'application/unknown' = httpBuilder.parser.'application/xml'
     }
 
     private Version getLatestDependencyVersion(String releaseVersion, NodeChild xml, List<String> versionToExcludePatterns) {

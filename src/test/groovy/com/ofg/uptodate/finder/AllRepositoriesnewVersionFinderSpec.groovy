@@ -1,7 +1,7 @@
 package com.ofg.uptodate.finder
 
-import com.ofg.uptodate.finder.jcenter.JCenterReponseProvider
-import com.ofg.uptodate.finder.maven.MavenReponseProvider
+import com.ofg.uptodate.finder.jcenter.JCenterResponseProvider
+import com.ofg.uptodate.finder.maven.MavenResponseProvider
 
 import static com.ofg.uptodate.Jsons.JUNIT_RESPONSE
 import static com.ofg.uptodate.Jsons.OLD_HIBERNATE_RESPONSE
@@ -9,7 +9,7 @@ import static com.ofg.uptodate.Xmls.HIBERNATE_CORE_META_DATA
 import static com.ofg.uptodate.Xmls.OLD_JUNIT_META_DATA
 import static com.ofg.uptodate.reporting.NewVersionLogger.NEW_VERSIONS_MESSAGE_HEADER
 
-@Mixin([MavenReponseProvider, JCenterReponseProvider])
+@Mixin([MavenResponseProvider, JCenterResponseProvider])
 class AllRepositoriesnewVersionFinderSpec extends NewFinderSpec {
    
     def setup() {
