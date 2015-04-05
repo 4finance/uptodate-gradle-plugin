@@ -1,9 +1,15 @@
 package com.ofg.uptodate
+
 import com.ofg.uptodate.finder.jcenter.JCenterNewVersionFinderFactory
 import com.ofg.uptodate.finder.maven.MavenNewVersionFinderFactory
 
 class UptodatePluginExtension {
     
+    /**
+     * Set to true if you want project name to be printed in updates report header
+     */
+    boolean reportProjectName = false
+
     /**
      * Set to true if you don't want to search for your dependency in Maven Central
      */

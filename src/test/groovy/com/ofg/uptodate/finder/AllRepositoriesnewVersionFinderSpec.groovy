@@ -7,6 +7,7 @@ import static com.ofg.uptodate.Jsons.JUNIT_RESPONSE
 import static com.ofg.uptodate.Jsons.OLD_HIBERNATE_RESPONSE
 import static com.ofg.uptodate.Xmls.HIBERNATE_CORE_META_DATA
 import static com.ofg.uptodate.Xmls.OLD_JUNIT_META_DATA
+import static com.ofg.uptodate.reporting.NewVersionLogger.NEW_VERSIONS_MESSAGE_HEADER
 
 @Mixin([MavenReponseProvider, JCenterReponseProvider])
 class AllRepositoriesnewVersionFinderSpec extends NewFinderSpec {
@@ -33,7 +34,7 @@ class AllRepositoriesnewVersionFinderSpec extends NewFinderSpec {
         when:
             executeUptodateTask()
         then:
-            1 * loggerProxy.lifecycle(_, "New versions available:\n" +
+            1 * loggerProxy.lifecycle(_, NEW_VERSIONS_MESSAGE_HEADER +
                     "'junit:junit:4.11'\n" +
                     "'org.hibernate:hibernate-core:4.3.6.Final'")
     }    

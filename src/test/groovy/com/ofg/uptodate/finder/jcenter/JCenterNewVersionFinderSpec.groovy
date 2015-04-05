@@ -7,7 +7,8 @@ import org.codehaus.groovy.runtime.StackTraceUtils
 
 import static com.ofg.uptodate.VersionPatterns.*
 import static com.ofg.uptodate.Xmls.*
-import static com.ofg.uptodate.finder.NewVersionFinderInAllRepositories.NO_NEW_VERSIONS_MESSAGE
+import static com.ofg.uptodate.reporting.NewVersionLogger.NO_NEW_VERSIONS_MESSAGE
+import static com.ofg.uptodate.reporting.NewVersionLogger.NEW_VERSIONS_MESSAGE_HEADER
 
 @Mixin([JCenterReponseProvider, HttpProxyServerProvider])
 class JCenterNewVersionFinderSpec extends NewFinderSpec {
@@ -40,7 +41,7 @@ class JCenterNewVersionFinderSpec extends NewFinderSpec {
         when:
             executeUptodateTask()
         then:
-            1 * loggerProxy.lifecycle(_, "New versions available:\n" +
+            1 * loggerProxy.lifecycle(_, NEW_VERSIONS_MESSAGE_HEADER +
                 "'org.hibernate:hibernate-core:4.3.6.Final'")
     }
 
@@ -92,7 +93,7 @@ class JCenterNewVersionFinderSpec extends NewFinderSpec {
         when:
             executeUptodateTask()
         then:
-            1 * loggerProxy.lifecycle(_, "New versions available:\n" +
+            1 * loggerProxy.lifecycle(_, NEW_VERSIONS_MESSAGE_HEADER +
                 "'junit:junit:4.11'")
     }
 
@@ -127,7 +128,7 @@ class JCenterNewVersionFinderSpec extends NewFinderSpec {
         when:
             executeUptodateTask()
         then:
-            1 * loggerProxy.lifecycle(_, "New versions available:\n" +
+            1 * loggerProxy.lifecycle(_, NEW_VERSIONS_MESSAGE_HEADER +
                 "'org.hibernate:hibernate-core:4.3.6.Final'")
         cleanup:
             shutdownHttpProxyServer()
@@ -148,7 +149,7 @@ class JCenterNewVersionFinderSpec extends NewFinderSpec {
         when:
             executeUptodateTask()
         then:
-            1 * loggerProxy.lifecycle(_, "New versions available:\n" +
+            1 * loggerProxy.lifecycle(_, NEW_VERSIONS_MESSAGE_HEADER +
                 "'org.hibernate:hibernate-core:4.3.6.Final'")
         cleanup:
             shutdownHttpProxyServer()

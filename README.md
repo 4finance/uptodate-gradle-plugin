@@ -126,6 +126,16 @@ uptodate {
 }
 ```
 
+### How to print project names along with information about new (or lack of) dependency updates?
+
+By default (sub)project names are not printed so that you can easily operate on uptodate task output (e.g.: `sort | uniq`) but you can include project names in update headers by:
+
+```
+uptodate {
+    reportProjectName true
+}
+```
+
 ### How to run the plugin on every build?
 
 You can run the plugin automatically on every build, just by adding to your build.gradle

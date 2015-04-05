@@ -2,15 +2,10 @@ package com.ofg.uptodate.finder
 
 import com.ofg.uptodate.LoggerProxy
 import com.ofg.uptodate.dependency.Dependency
-import com.ofg.uptodate.dependency.DependencyGroupAndNameComparator
 import groovy.util.logging.Slf4j
 
 @Slf4j
 class NewVersionFinderInAllRepositories {
-
-    public static final String NEW_VERSIONS_MESSAGE_HEAD = 'New versions available:'
-    public static final String NO_NEW_VERSIONS_MESSAGE = 'No new versions are available.'
-    private static final boolean DO_NOT_MUTATE_ORIGINAL_COLLECTION = false
 
     private final List<NewVersionFinder> newVersionFinders
     private final LoggerProxy loggerProxy
@@ -40,14 +35,5 @@ class NewVersionFinderInAllRepositories {
             }
             return -1
         } as Comparator<Dependency>
-    }
-
-    void printDependencies(Set<Dependency> dependenciesWithNewVersions) {
-        if (dependenciesWithNewVersions.isEmpty()) {
-            loggerProxy.lifecycle(log, NO_NEW_VERSIONS_MESSAGE)
-        } else {
-            List<Dependency> sortedUpdates = dependenciesWithNewVersions.sort(DO_NOT_MUTATE_ORIGINAL_COLLECTION, new DependencyGroupAndNameComparator())
-            loggerProxy.lifecycle(log, "$NEW_VERSIONS_MESSAGE_HEAD\n${sortedUpdates.join('\n')}")
-        }    
     }
 }
