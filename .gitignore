@@ -1,9 +1,3 @@
-*.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
 .idea
 build
 uptodate-gradle-plugin.iml

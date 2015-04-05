@@ -1,3 +1,9 @@
+1.5.1
+-----
+New features:
+* [#36](https://github.com/4finance/uptodate-gradle-plugin/pull/36) Add possibility to report project name in update header
+* [#42](https://github.com/4finance/uptodate-gradle-plugin/pull/46) Workaround for wrong content type returned from jCenter
+
 1.5.0
 -----
 Breaking changes:

@@ -42,7 +42,7 @@ class MavenNewVersionFinderFactory implements NewVersionFinderFactory {
 
     private Closure<Future> getLatestFromMavenCentralRepo = { HTTPBuilder httpBuilder, List<String> versionToExcludePatterns, Dependency dependency ->
         httpBuilder.handler.failure = logOnlyFailureHandler(log, dependency.name)
-        httpBuilder.get(queryString: "q=${escape("g:\"$dependency.group\"")}+AND+${escape("a:\"$dependency.name\"")}&core=gav&rows10&wt=json".toString()) { resp, json ->
+        httpBuilder.get(queryString: buildQueryString(dependency)) { resp, json ->
             if (!json) {
                 return []
             }
@@ -51,5 +51,11 @@ class MavenNewVersionFinderFactory implements NewVersionFinderFactory {
             }.collect { new Version(it.v) }.max()
             return [dependency, new Dependency(dependency, latestNonExcludedVersion)]
         }
+    }
+
+    private String buildQueryString(Dependency dependency) {
+        String groupCriteria = escape("g:\"$dependency.group\"")
+        String artifactCriteria = escape("a:\"$dependency.name\"")
+        return "q=${groupCriteria}+AND+${artifactCriteria}&core=gav&rows10&wt=json"
     }
 }
