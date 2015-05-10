@@ -22,7 +22,7 @@ import static com.ofg.uptodate.finder.http.HTTPBuilderProvider.FailureHandlers.l
 @Slf4j
 class JCenterNewVersionFinderFactory implements NewVersionFinderFactory {
 
-    public static final String JCENTER_REPO_URL = "http://jcenter.bintray.com/"
+    public static final String JCENTER_REPO_URL = "https://jcenter.bintray.com/"
 
     @Override
     NewVersionFinder create(UptodatePluginExtension uptodatePluginExtension, List<Dependency> dependencies) {
