@@ -14,5 +14,4 @@ class VersionPatterns {
     public static String caseInsensitive(String pattern) {
         return "(?i)$pattern"
     }
-
 }

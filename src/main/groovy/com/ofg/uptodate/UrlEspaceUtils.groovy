@@ -9,5 +9,4 @@ class UrlEspaceUtils {
     public static String escape(String paramValue) {
         return encode(paramValue, URL_ENCODING)
     }
-
 }
