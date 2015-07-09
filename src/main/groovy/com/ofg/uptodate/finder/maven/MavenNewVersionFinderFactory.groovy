@@ -18,7 +18,6 @@ import java.util.concurrent.Future
 import static com.ofg.uptodate.UrlEspaceUtils.escape
 import static com.ofg.uptodate.finder.http.HTTPBuilderProvider.FailureHandlers.logOnlyFailureHandler
 
-@PackageScope
 @Slf4j
 class MavenNewVersionFinderFactory implements NewVersionFinderFactory {
 

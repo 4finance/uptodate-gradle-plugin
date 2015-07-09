@@ -5,7 +5,7 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.5'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:+'
 
         if (project.hasProperty('coverage')) {
             classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:1.0.2'
@@ -33,10 +33,21 @@ dependencies {
     compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
 
     testCompile 'junit:junit:4.11'
-    testCompile 'org.spockframework:spock-core:0.7-groovy-1.8'
+    testCompile "org.spockframework:spock-core:${getGroovyVersion()}"
     testCompile 'com.github.tomakehurst:wiremock:1.47'
+    testCompile 'com.google.guava:guava:18.0'
     testRuntime 'cglib:cglib-nodep:2.2.2'
     testRuntime 'org.objenesis:objenesis:1.2'
+}
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
+String getGroovyVersion() {
+    return Double.valueOf(gradle.gradleVersion) > 1.12 ? "1.0-groovy-2.3" : "0.7-groovy-1.8"
 }
 
 task wrapper(type: Wrapper) {
@@ -94,6 +105,7 @@ if (project.hasProperty('coverage')) {
 
     jacoco {
         toolVersion = '0.7.1.201405082137'
+        excludes = ['com.ofg.uptodate.dependency.maven.*']
     }
 
     jacocoTestReport {

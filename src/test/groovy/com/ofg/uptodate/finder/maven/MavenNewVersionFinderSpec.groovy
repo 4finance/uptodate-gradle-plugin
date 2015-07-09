@@ -66,7 +66,7 @@ class MavenNewVersionFinderSpec extends NewFinderSpec {
         given:
             artifactMetadataRequestResponse('org.hibernate', 'hibernate-core',
                     new SimpleTemplateEngine().createTemplate(RESPONSE_TEMPLATE).make([artifactVersion: artifactVersion]).toString())
-            project.extensions.uptodate.versionToExcludePatterns = [ALPHA, BETA, RC, CR, SNAPSHOT]
+            project.extensions.uptodate.setExcludedVersionPatterns([ALPHA, BETA, RC, CR, SNAPSHOT])
         and:
             project.dependencies.add(COMPILE_CONFIGURATION, 'org.hibernate:hibernate-core:0.5.5')
         when:
