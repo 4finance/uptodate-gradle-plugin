@@ -1,8 +1,8 @@
 package com.ofg.uptodate.dependency
 
 import groovy.transform.EqualsAndHashCode
-import org.gradle.mvn3.org.apache.maven.artifact.versioning.ArtifactVersion
-import org.gradle.mvn3.org.apache.maven.artifact.versioning.DefaultArtifactVersion
+import com.ofg.uptodate.dependency.maven.ArtifactVersion
+import com.ofg.uptodate.dependency.maven.DefaultArtifactVersion
 
 @EqualsAndHashCode
 class Version implements Comparable<Version> {

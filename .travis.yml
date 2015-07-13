@@ -1,9 +1,25 @@
+sudo: false
+
 language: groovy
+
 jdk:
-- oraclejdk8
+  - oraclejdk7
+  - oraclejdk8
+
+env:
+  - GRADLE_VERSION=1.12
+  - GRADLE_VERSION=2.4
+  - GRADLE_VERSION=2.5
+
+before_install:
+  - echo -e "\ndistributionUrl=http\://services.gradle.org/distributions/gradle-$GRADLE_VERSION-bin.zip" >> gradle/wrapper/gradle-wrapper.properties
+  - cat gradle/wrapper/gradle-wrapper.properties
+
+script:
+  - ./gradlew build --stacktrace --continue
 
 after_success:
-- ./gradlew test jacocoTestReport coveralls -Pcoverage
+  - ./gradlew test jacocoTestReport coveralls -Pcoverage
 
 notifications:
   webhooks:

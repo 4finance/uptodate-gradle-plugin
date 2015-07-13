@@ -70,6 +70,10 @@ class UptodatePluginExtension {
     }
 
     void setExcludedVersionPatterns(String... patternsToExclude) {
+        setExcludedVersionPatterns(Arrays.asList(patternsToExclude))
+    }
+
+    void setExcludedVersionPatterns(List<String> patternsToExclude) {
         excludedVersionPatterns.clear()
         excludedVersionPatterns.addAll(patternsToExclude)
     }
