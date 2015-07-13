@@ -69,12 +69,12 @@ Please note that excludes take precedence over includes.
 ### How to exclude non-final versions from reported updates?
 
 You can also provide patterns of versions that you would like to exclude.
-There are also some patterns (like BETA, RC, etc.) defined in com.ofg.uptodate.UptodatePluginExtension.VersionPatterns
+There are also some patterns (like BETA, RC, etc.) defined in UptodatePluginExtension.VersionPatterns
 
 By default following patterns are excluded: ALPHA, BETA, RC, CR, SNAPSHOT, MILESTONE, RELEASE( i.e. r08)
 
 ```
-import static com.ofg.uptodate.VersionPatterns.*
+import static VersionPatterns.*
 
 uptodate {
     setExcludedVersionPatterns ALPHA, BETA, '.*-demo-?\\d*$'

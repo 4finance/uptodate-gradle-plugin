@@ -1,3 +1,10 @@
+2.0.0
+-----
+Breaking changes:
+* [#49](https://github.com/4finance/uptodate-gradle-plugin/issues/49) Migrating to the new *io.fourfinanceit* packages
+* plugin available at http://plugins.gradle.org - see http://plugins.gradle.org/plugin/io.fourfinanceit.uptodate
+* renamed plugin from `com.ofg.uptodate` to `io.fourfinanceit.uptodate`
+
 1.5.1
 -----
 New features:
