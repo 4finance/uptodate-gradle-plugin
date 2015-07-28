@@ -1,3 +1,8 @@
+1.5.2
+-----
+Bug fixes:
+* [#51](https://github.com/4finance/uptodate-gradle-plugin/pull/52) Added support for Gradle 2.5
+
 1.5.1
 -----
 New features:
