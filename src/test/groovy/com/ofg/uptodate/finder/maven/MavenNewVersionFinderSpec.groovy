@@ -8,8 +8,8 @@ import spock.lang.Unroll
 
 import static com.ofg.uptodate.Jsons.*
 import static com.ofg.uptodate.VersionPatterns.*
-import static com.ofg.uptodate.reporting.NewVersionLogger.NO_NEW_VERSIONS_MESSAGE
-import static com.ofg.uptodate.reporting.NewVersionLogger.NEW_VERSIONS_MESSAGE_HEADER
+import static com.ofg.uptodate.reporting.NewVersionProcessor.NO_NEW_VERSIONS_MESSAGE
+import static com.ofg.uptodate.reporting.NewVersionProcessor.NEW_VERSIONS_MESSAGE_HEADER
 
 @Mixin([MavenResponseProvider, HttpProxyServerProvider])
 class MavenNewVersionFinderSpec extends NewFinderSpec {
