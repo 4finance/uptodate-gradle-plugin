@@ -137,6 +137,42 @@ uptodate {
 }
 ```
 
+### How to break the build if new dependencies have been found?
+
+You can add the possibility to break the build for new versions of dependencies by applying the following closure
+
+```
+uptodate {
+    breakTheBuild {
+        enabled = true
+    }
+}
+```
+
+If turned on the default behaviour is such that if ANY new dependency is found then the build will be broken.
+ 
+You can customize the inclusion and exclusion patterns by the following methods:
+
+```
+uptodate {
+    breakTheBuild {
+        enabled = true
+        include('regex for dependency group or name to break the build if newer version is found', 'another regex')
+        exclude('regex for dependency group or name NOT to break the build if newer version is found', 'another regex')
+    }
+}
+```
+
+To make the functionality available on demand you can apply for example a project property:
+
+```
+uptodate {
+    breakTheBuild {
+        enabled = project.hasProperty('uptodateBuildBreakingEnabled')
+    }
+}
+```
+
 ### How to run the plugin on every build?
 
 You can run the plugin automatically on every build, just by adding to your build.gradle

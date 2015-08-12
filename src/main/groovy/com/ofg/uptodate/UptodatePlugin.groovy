@@ -4,7 +4,7 @@ import com.ofg.uptodate.dependency.Dependency
 import com.ofg.uptodate.finder.jcenter.JCenterNewVersionFinderFactory
 import com.ofg.uptodate.finder.maven.MavenNewVersionFinderFactory
 import com.ofg.uptodate.finder.NewVersionFinderInAllRepositories
-import com.ofg.uptodate.reporting.NewVersionLogger
+import com.ofg.uptodate.reporting.NewVersionProcessor
 import groovy.util.logging.Slf4j
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -41,7 +41,7 @@ class UptodatePlugin implements Plugin<Project> {
                         [new MavenNewVersionFinderFactory().create(uptodatePluginExtension, dependencies),
                          new JCenterNewVersionFinderFactory().create(uptodatePluginExtension, dependencies)])
                 Set<Dependency> dependenciesWithNewVersions = newVersionFinder.findNewer(dependencies)
-                new NewVersionLogger(loggerProxy, project.name, uptodatePluginExtension.reportProjectName).reportUpdates(dependenciesWithNewVersions)
+                new NewVersionProcessor(loggerProxy, project.name, uptodatePluginExtension).reportUpdates(dependenciesWithNewVersions)
             } else {
                 loggerProxy.lifecycle(log, 'No dependencies found in project configuration.')
             }

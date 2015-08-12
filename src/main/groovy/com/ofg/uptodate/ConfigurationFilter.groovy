@@ -10,7 +10,7 @@ class ConfigurationFilter {
         projectConfigurations = project.configurations.findAll()
     }
 
-    Set<Configuration> getConfigurations(UptodatePluginExtension.IncludedExcludedConfigurationsHolder configurationsHolder) {
+    Set<Configuration> getConfigurations(FiltersHolder configurationsHolder) {
         Set<Configuration> configurations = getIncludedConfigurations(configurationsHolder.included)
         return configurations.findAll { !configurationsHolder.excluded.contains(it.name) }
     }

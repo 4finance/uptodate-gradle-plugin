@@ -78,14 +78,14 @@ class UptodatePluginExtension {
         excludedVersionPatterns.addAll(patternsToExclude)
     }
 
-    final IncludedExcludedConfigurationsHolder configurations = new IncludedExcludedConfigurationsHolder()
+    final FiltersHolder configurations = new FiltersHolder()
 
     /**
      * String names of configurations to include for checking
      * @param configurations
      */
     void includeConfigurations(String... configurations) {
-        this.configurations.included.addAll(configurations)
+        this.configurations.include(configurations)
     }
 
     /**
@@ -93,11 +93,40 @@ class UptodatePluginExtension {
      * @param configurations
      */
     void excludeConfigurations(String... configurations) {
-        this.configurations.excluded.addAll(configurations)
+        this.configurations.exclude(configurations)
     }
 
-    static class IncludedExcludedConfigurationsHolder {
-        final Set<String> included = []
-        final Set<String> excluded = []
+    BuildBreakerConfiguration buildBreaker = new BuildBreakerConfiguration()
+
+    void breakTheBuild(Closure closure) {
+        closure.delegate = buildBreaker
+        closure.call()
+    }
+
+    static class BuildBreakerConfiguration {
+
+        /**
+         * Define if you want to break the build if new versions were found
+         */
+        boolean enabled = false
+
+        FiltersHolder filters = new FiltersHolder()
+
+        /**
+         * String names of patterns for either group or dependency name to include for checking
+         * @param patterns
+         */
+        void includePatterns(String... patterns) {
+            this.filters.include(patterns)
+        }
+
+        /**
+         * String names of patterns for either group or dependency name to exclude for checking
+         * @param patterns
+         */
+        void excludedPatterns(String... patterns) {
+            this.filters.exclude(patterns)
+        }
+
     }
 }

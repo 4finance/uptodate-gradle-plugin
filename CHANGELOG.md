@@ -1,3 +1,8 @@
+1.6.0
+-----
+New features:
+* [#16](https://github.com/4finance/uptodate-gradle-plugin/issues/16) Fail build if new versions of specified packages are found
+
 1.5.2
 -----
 Bug fixes:

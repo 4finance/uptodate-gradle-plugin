@@ -7,7 +7,7 @@ import static com.ofg.uptodate.Jsons.JUNIT_RESPONSE
 import static com.ofg.uptodate.Jsons.OLD_HIBERNATE_RESPONSE
 import static com.ofg.uptodate.Xmls.HIBERNATE_CORE_META_DATA
 import static com.ofg.uptodate.Xmls.OLD_JUNIT_META_DATA
-import static com.ofg.uptodate.reporting.NewVersionLogger.NEW_VERSIONS_MESSAGE_HEADER
+import static com.ofg.uptodate.reporting.NewVersionProcessor.NEW_VERSIONS_MESSAGE_HEADER
 
 @Mixin([MavenResponseProvider, JCenterResponseProvider])
 class AllRepositoriesnewVersionFinderSpec extends NewFinderSpec {
