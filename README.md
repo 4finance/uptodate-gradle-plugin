@@ -157,8 +157,8 @@ You can customize the inclusion and exclusion patterns by the following methods:
 uptodate {
     breakTheBuild {
         enabled = true
-        include('regex for dependency group or name to break the build if newer version is found', 'another regex')
-        exclude('regex for dependency group or name NOT to break the build if newer version is found', 'another regex')
+        includePatterns('regex for dependency group or name to break the build if newer version is found', 'another regex')
+        excludePatterns('regex for dependency group or name NOT to break the build if newer version is found', 'another regex')
     }
 }
 ```
