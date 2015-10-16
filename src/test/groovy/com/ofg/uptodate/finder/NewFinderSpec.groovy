@@ -31,7 +31,7 @@ abstract class NewFinderSpec extends WireMockSpec {
     protected Integer getHttpServerPort() {
         return MOCK_HTTP_SERVER_PORT
     }
-  
+
     protected void artifactMetadataRequestResponse(String group, String name, String response) {
         artifactMetadataRequestResponse(HttpStatus.SC_OK)
     }

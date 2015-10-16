@@ -1,5 +1,4 @@
 package com.ofg.uptodate.finder.jcenter
-
 import com.ofg.uptodate.finder.HttpProxyServerProvider
 import com.ofg.uptodate.finder.NewFinderSpec
 import groovy.text.SimpleTemplateEngine
@@ -8,8 +7,8 @@ import spock.lang.Unroll
 
 import static com.ofg.uptodate.VersionPatterns.*
 import static com.ofg.uptodate.Xmls.*
-import static com.ofg.uptodate.reporting.NewVersionProcessor.NO_NEW_VERSIONS_MESSAGE
 import static com.ofg.uptodate.reporting.NewVersionProcessor.NEW_VERSIONS_MESSAGE_HEADER
+import static com.ofg.uptodate.reporting.NewVersionProcessor.NO_NEW_VERSIONS_MESSAGE
 
 @Mixin([JCenterResponseProvider, HttpProxyServerProvider])
 class JCenterNewVersionFinderSpec extends NewFinderSpec {
@@ -85,6 +84,22 @@ class JCenterNewVersionFinderSpec extends NewFinderSpec {
     }
 
     def 'should not list dependencies from excluded configurations'() {
+        given:
+            artifactMetadataRequestResponse('org.hibernate', 'hibernate-core', HIBERNATE_CORE_META_DATA)
+            artifactMetadataRequestResponse('junit', 'junit', JUNIT_META_DATA)
+        and:
+            project.dependencies.add(COMPILE_CONFIGURATION, 'org.hibernate:hibernate-core:4.2.9.Final')
+            project.dependencies.add(TEST_COMPILE_CONFIGURATION, 'junit:junit:4.8')
+        and:
+            project.extensions.uptodate.excludeConfigurations(COMPILE_CONFIGURATION)
+        when:
+            executeUptodateTask()
+        then:
+            1 * loggerProxy.lifecycle(_, NEW_VERSIONS_MESSAGE_HEADER +
+                "'junit:junit:4.11'")
+    }
+
+    def 'should successfuly'() {
         given:
             artifactMetadataRequestResponse('org.hibernate', 'hibernate-core', HIBERNATE_CORE_META_DATA)
             artifactMetadataRequestResponse('junit', 'junit', JUNIT_META_DATA)

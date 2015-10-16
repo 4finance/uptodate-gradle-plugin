@@ -1,20 +1,17 @@
 package com.ofg.uptodate.finder.jcenter
-
+import java.util.concurrent.Future
 import com.ofg.uptodate.UptodatePluginExtension
 import com.ofg.uptodate.dependency.Dependency
 import com.ofg.uptodate.dependency.Version
 import com.ofg.uptodate.dependency.VersionPatternMatcher
+import com.ofg.uptodate.finder.FinderConfiguration
 import com.ofg.uptodate.finder.NewVersionFinder
 import com.ofg.uptodate.finder.NewVersionFinderFactory
-import com.ofg.uptodate.finder.http.HTTPBuilderProvider
-import com.ofg.uptodate.finder.FinderConfiguration
 import com.ofg.uptodate.finder.RepositorySettings
-import groovy.transform.PackageScope
+import com.ofg.uptodate.finder.http.HTTPBuilderProvider
 import groovy.util.logging.Slf4j
 import groovy.util.slurpersupport.NodeChild
 import groovyx.net.http.HTTPBuilder
-
-import java.util.concurrent.Future
 
 import static com.ofg.uptodate.finder.http.HTTPBuilderProvider.FailureHandlers.logOnlyFailureHandler
 
@@ -42,7 +39,7 @@ class JCenterNewVersionFinderFactory implements NewVersionFinderFactory {
     private Closure<Future> getLatestFromJCenterRepo = { HTTPBuilder httpBuilder, List<String> versionToExcludePatterns, Dependency dependency ->
         httpBuilder.handler.failure = logOnlyFailureHandler(log, dependency.name)
         handleApplicationUnknownContentTypeAsXml(httpBuilder)
-        httpBuilder.get(path: "/${dependency.group.split('\\.').join('/')}/${dependency.name}/maven-metadata.xml") { resp, xml ->
+        httpBuilder.get(path: "/${dependency.group.split('\\.').join('/')}/${dependency.name}/maven-metadata.xml", contentType : 'application/xml') { resp, xml ->
             if (!xml) {
                 return []
             }
