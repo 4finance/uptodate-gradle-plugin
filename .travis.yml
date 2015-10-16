@@ -15,6 +15,8 @@ env:
   - GRADLE_VERSION=1.12
   - GRADLE_VERSION=2.4
   - GRADLE_VERSION=2.5
+  - GRADLE_VERSION=2.6
+  - GRADLE_VERSION=2.7
 
 before_install:
   - echo -e "\ndistributionUrl=http\://services.gradle.org/distributions/gradle-$GRADLE_VERSION-bin.zip" >> gradle/wrapper/gradle-wrapper.properties
