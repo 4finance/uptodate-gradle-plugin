@@ -46,7 +46,12 @@ class JCenterNewVersionFinderFactory implements NewVersionFinderFactory {
             if (!xml) {
                 return []
             }
-            return [dependency, new Dependency(dependency, getLatestDependencyVersion(xml.versioning.release.text(), xml, versionToExcludePatterns))]
+            try {
+                return [dependency, new Dependency(dependency, getLatestDependencyVersion(xml.versioning.release.text(), xml, versionToExcludePatterns))]
+            } catch (Exception e) {
+                log.error("Exception occurred while trying to fetch latest dependencies. The fetched XML is [$xml]".toString(), e)
+                return []
+            }
         } as Future
     }
 
