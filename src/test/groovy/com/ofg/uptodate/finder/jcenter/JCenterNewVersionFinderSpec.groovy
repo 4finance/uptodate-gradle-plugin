@@ -99,22 +99,6 @@ class JCenterNewVersionFinderSpec extends NewFinderSpec {
                 "'junit:junit:4.11'")
     }
 
-    def 'should successfuly'() {
-        given:
-            artifactMetadataRequestResponse('org.hibernate', 'hibernate-core', HIBERNATE_CORE_META_DATA)
-            artifactMetadataRequestResponse('junit', 'junit', JUNIT_META_DATA)
-        and:
-            project.dependencies.add(COMPILE_CONFIGURATION, 'org.hibernate:hibernate-core:4.2.9.Final')
-            project.dependencies.add(TEST_COMPILE_CONFIGURATION, 'junit:junit:4.8')
-        and:
-            project.extensions.uptodate.excludeConfigurations(COMPILE_CONFIGURATION)
-        when:
-            executeUptodateTask()
-        then:
-            1 * loggerProxy.lifecycle(_, NEW_VERSIONS_MESSAGE_HEADER +
-                "'junit:junit:4.11'")
-    }
-
     def 'should fail to find any updates due to timeout'() {
         given:
             stubResponseWithADelayOf(500)
