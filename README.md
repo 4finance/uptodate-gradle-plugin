@@ -26,6 +26,8 @@ New versions available:
 
 ### How to install it?
 
+Latest version is [ ![Download](https://api.bintray.com/packages/4finance/uptodate-gradle-plugin/uptodate-gradle-plugin/images/download.svg) ](https://bintray.com/4finance/uptodate-gradle-plugin/uptodate-gradle-plugin/_latestVersion) . You can change `+` to some other version to have a concrete one instead of a latest one.
+
 #### Step 1: Add dependency to JCenter and to the plugin
 ```
 buildscript {
@@ -33,7 +35,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.ofg:uptodate-gradle-plugin:1.5.0'
+        classpath 'com.ofg:uptodate-gradle-plugin:+'
     }
 }
 ```
