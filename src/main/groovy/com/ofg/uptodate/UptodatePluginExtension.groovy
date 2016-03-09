@@ -21,6 +21,11 @@ class UptodatePluginExtension {
     boolean ignoreJCenter = false
 
     /**
+     * Set to false to ignore buildscipt-dependencies
+     */
+    boolean findBuildDependencies = true
+
+    /**
      * Switch to show whether you have missing JCenter dependency in your repositories 
      */
     boolean showMissingJCenterMessage = true

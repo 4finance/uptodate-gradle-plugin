@@ -36,6 +36,9 @@ class UptodatePlugin implements Plugin<Project> {
         Task createdTask = project.task(TASK_NAME) << { Task task ->
             printMissingJCenterRepoIfApplicable(uptodatePluginExtension, project)
             List<Dependency> dependencies = getDependencies(project)
+            if (uptodatePluginExtension.findBuildDependencies) {
+                dependencies.addAll(getBuildDependencies(project))
+            }
             if (dependencies) {
                 NewVersionFinderInAllRepositories newVersionFinder = new NewVersionFinderInAllRepositories(loggerProxy,
                         [new MavenNewVersionFinderFactory().create(uptodatePluginExtension, dependencies),
@@ -66,6 +69,15 @@ class UptodatePlugin implements Plugin<Project> {
         return project.repositories.find {
             it.name == GRADLE_BINTRAY_JCENTER_REPO_NAME
         }
+    }
+
+    private List<Dependency> getBuildDependencies(Project project) {
+        return project.buildscript.configurations.collectNested { conf ->
+            conf.dependencies.findAll { dep -> dep.name && dep.group && dep.version }.collect { dep ->
+                log.debug("Collecting build-dependency with group: [$dep.group] name: [$dep.name] and version: [$dep.version]")
+                new Dependency(dep.group, dep.name, dep.version)
+            }
+        }.flatten().unique()
     }
 
     private List<Dependency> getDependencies(Project project) {
