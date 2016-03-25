@@ -23,10 +23,10 @@ before_install:
   - cat gradle/wrapper/gradle-wrapper.properties
 
 script:
-  - ./gradlew build --stacktrace --continue
+  - ./gradlew build --stacktrace --continue -S
 
 after_success:
-  - ./gradlew test jacocoTestReport coveralls -Pcoverage
+  - ./gradlew test jacocoTestReport coveralls -Pcoverage -S
 
 notifications:
   webhooks:
