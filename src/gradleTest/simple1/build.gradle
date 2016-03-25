@@ -1,0 +1,31 @@
+buildscript {
+    repositories {  
+        flatDir {
+            dir '../../../libs'
+        }
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.ofg:uptodate-gradle-plugin:%%VERSION%%'
+//        classpath 'com.ofg:uptodate-gradle-plugin:1.6.2'
+        classpath 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'com.ofg.uptodate'
+
+repositories {
+    jcenter()
+}
+
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.12'
+    testCompile 'junit:junit:4.11'
+}
+
+task runGradleTest {
+    dependsOn 'uptodate'
+//    dependsOn 'buildEnvironment'
+}
