@@ -5,7 +5,7 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${Double.valueOf(gradle.gradleVersion) > 1.12 ? "+" : "0.5"}"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
 
         if (project.hasProperty('coverage')) {
             classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:1.0.2'
@@ -35,7 +35,9 @@ dependencies {
     compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
 
     testCompile 'junit:junit:4.11'
-    testCompile "org.spockframework:spock-core:${getGroovyVersion()}"
+    testCompile("org.spockframework:spock-core:1.0-groovy-2.4") {
+        exclude module: 'groovy-all'    //will be taken from GradleApi
+    }
     testCompile 'com.github.tomakehurst:wiremock:1.47'
     testCompile 'com.google.guava:guava:18.0'
     testRuntime 'cglib:cglib-nodep:2.2.2'
@@ -48,12 +50,8 @@ test {
     }
 }
 
-String getGroovyVersion() {
-    return Double.valueOf(gradle.gradleVersion) > 1.12 ? "1.0-groovy-2.3" : "0.7-groovy-1.8"
-}
-
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '2.12'
 }
 
 bintrayUpload.dependsOn 'build'
