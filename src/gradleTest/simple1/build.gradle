@@ -1,8 +1,5 @@
 buildscript {
-    repositories {  
-        flatDir {
-            dir '../../../libs'
-        }
+    repositories {
         jcenter()
     }
     dependencies {
@@ -25,7 +22,5 @@ dependencies {
     testCompile 'junit:junit:4.11'
 }
 
-task runGradleTest {
-    dependsOn 'uptodate'
-//    dependsOn 'buildEnvironment'
-}
+task runGradleTest(dependsOn: ['uptodate'])
+//task runGradleTest(dependsOn: ['buildEnvironment'])

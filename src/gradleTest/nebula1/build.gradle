@@ -1,0 +1,14 @@
+apply plugin: 'groovy'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile gradleApi()
+    testCompile 'junit:junit:4.11'
+    testCompile 'com.netflix.nebula:nebula-test:4.0.0'  //TODO: Adjust version to current Gradle version
+}
+
+task runGradleTest(dependsOn: ['test'])
+//task runGradleTest(dependsOn: ['buildEnvironment'])

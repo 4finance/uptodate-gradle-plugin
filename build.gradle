@@ -6,6 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+//        classpath 'org.ysb33r.gradle:gradletest:0.5.5-SNAPSHOT'
         classpath 'org.ysb33r.gradle:gradletest:0.5.4'
 
         if (project.hasProperty('coverage')) {
@@ -44,6 +45,7 @@ dependencies {
     testCompile 'com.google.guava:guava:18.0'
     testRuntime 'cglib:cglib-nodep:2.2.2'
     testRuntime 'org.objenesis:objenesis:1.2'
+    testCompile 'com.netflix.nebula:nebula-test:4.0.0'
 }
 
 test {
@@ -86,7 +88,7 @@ bintray {
 }
 
 gradleTest {
-    versions '2.12'
+    versions('2.11', '2.12')
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
