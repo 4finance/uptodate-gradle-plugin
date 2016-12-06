@@ -13,14 +13,17 @@ cache:
 
 env:
   - GRADLE_VERSION=1.12
-  - GRADLE_VERSION=2.4
-  - GRADLE_VERSION=2.5
-  - GRADLE_VERSION=2.6
-  - GRADLE_VERSION=2.7
+  - GRADLE_VERSION=2.0
+  - GRADLE_VERSION=2.14
+  - GRADLE_VERSION=3.0
+  - GRADLE_VERSION=3.2
 
 before_install:
   - echo -e "\ndistributionUrl=http\://services.gradle.org/distributions/gradle-$GRADLE_VERSION-bin.zip" >> gradle/wrapper/gradle-wrapper.properties
   - cat gradle/wrapper/gradle-wrapper.properties
+
+install:
+ - true
 
 script:
   - ./gradlew build --stacktrace --continue

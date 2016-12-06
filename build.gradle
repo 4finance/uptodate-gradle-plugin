@@ -5,7 +5,7 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${Double.valueOf(gradle.gradleVersion) > 1.12 ? "+" : "0.5"}"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:+"
 
         if (project.hasProperty('coverage')) {
             classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:1.0.2'
@@ -35,7 +35,9 @@ dependencies {
     compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
 
     testCompile 'junit:junit:4.11'
-    testCompile "org.spockframework:spock-core:${getGroovyVersion()}"
+    testCompile("org.spockframework:spock-core:${getSpockVersion()}") {
+        exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+    }
     testCompile 'com.github.tomakehurst:wiremock:1.47'
     testCompile 'com.google.guava:guava:18.0'
     testRuntime 'cglib:cglib-nodep:2.2.2'
@@ -48,8 +50,9 @@ test {
     }
 }
 
-String getGroovyVersion() {
-    return Double.valueOf(gradle.gradleVersion) > 1.12 ? "1.0-groovy-2.3" : "0.7-groovy-1.8"
+String getSpockVersion() {
+    String spockGroovyVersion = GroovySystem.version.replaceAll(/\.\d+$/,'')
+    return Double.valueOf(gradle.gradleVersion) < 2.0 ? "0.7-groovy-1.8" : "1.0-groovy-$spockGroovyVersion"
 }
 
 task wrapper(type: Wrapper) {
