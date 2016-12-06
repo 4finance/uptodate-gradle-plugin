@@ -33,7 +33,7 @@ class UptodatePlugin implements Plugin<Project> {
     void apply(Project project) {
         project.extensions.create(TASK_NAME, UptodatePluginExtension)
         UptodatePluginExtension uptodatePluginExtension = project.extensions.uptodate
-        Task createdTask = project.task(TASK_NAME) << { Task task ->
+        Task createdTask = project.task(TASK_NAME).doLast { Task task ->
             printMissingJCenterRepoIfApplicable(uptodatePluginExtension, project)
             List<Dependency> dependencies = getDependencies(project)
             if (uptodatePluginExtension.findBuildDependencies) {
