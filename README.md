@@ -188,3 +188,13 @@ But be warned, this will slow down the build by a few seconds (required to hit m
 ### Changelog
 
 To see what has changed in recent versions of Uptodate plugin see the [CHANGELOG](CHANGELOG.md) 
+
+### Releasing
+
+1. Update in `build.gradle` version
+2. Build version locally `./gradlew clean build`
+3. Set bintrayUser and bintrayKey in your system properties
+4. Publish changes using `./gradlew bintrayUpload`
+5. Tag version using `git tag <version>`
+6. Push tags to github `git push --tags`
+7. Update to next version with `-SNAPSHOT` suffix
